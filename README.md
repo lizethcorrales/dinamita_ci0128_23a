@@ -1,4 +1,10 @@
-# Equipo Dinamita
+<div align="center">
+
+  <!--- https://readme-typing-svg.herokuapp.com --->
+[![Typing SVG](https://readme-typing-svg.herokuapp.com?font=Cabin&size=40&duration=1500&pause=250&color=F7F7F7&background=FFFFFF00&center=true&vCenter=true&multiline=true&repeat=false&width=300&height=75&lines=Equipo+Dinamita)](https://git.io/typing-svg)
+
+</div>
+
 ## Desarrolladores
 - Sabrina Brenes Hernández. C01309
 - Gabriel Chacón Garro. C02063
