@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Calendario</title>
+  <link rel="stylesheet" href="styleCalendario.css">
+	
+</head>
+<body>
+  <div class="calendar-container">
+    <div class="calendar">
+      <h2 class="month-year"></h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Dom</th>
+            <th>Lun</th>
+            <th>Mar</th>
+            <th>Mié</th>
+            <th>Jue</th>
+            <th>Vie</th>
+            <th>Sáb</th>
+          </tr>
+        </thead>
+        <tbody id="calendar-body">
+        </tbody>
+      </table>
+      
+	<script>
+		var today = new Date();
+		var currentMonth = today.getMonth();
+		var currentYear = today.getFullYear();
+
+		var months = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+
+		var monthAndYear = document.createElement("h2");
+		monthAndYear.innerHTML = months[currentMonth] + " " + currentYear;
+    monthAndYear.classList.add("month-year"); // add the class to the element
+		document.body.appendChild(monthAndYear);
+
+		renderCalendar(currentMonth, currentYear);
+
+		function renderCalendar(month, year) {
+			var firstDay = new Date(year, month, 1).getDay();
+			var daysInMonth = new Date(year, month + 1, 0).getDate();
+
+			var calendarBody = document.getElementById("calendar-body");
+			calendarBody.innerHTML = "";
+      var today = new Date();
+      var date = 1;
+
+      for (var i = 0; i < 6; i++) {
+          var row = document.createElement("tr");
+
+          for (var j = 0; j < 7; j++) {
+              if (i === 0 && j < firstDay) {
+                  var cell = document.createElement("td");
+                  cell.innerHTML = "";
+                  cell.style.borderColor = "white";
+                  row.appendChild(cell);
+              } else if (date > daysInMonth) {
+                  break;
+              } else {
+                  var cell = document.createElement("td");
+                  if (date >= today.getDate() ) { // Agregamos la condición para que los días menores al día actual no tengan contenido
+                    day = date < 10 ? '0' +  date : date;
+                    cell.setAttribute("data-date", currentYear+"-"+ currentMonth  +"-"+ day);
+                    cell.innerHTML = date;
+                      if (date === today.getDate() && year === today.getFullYear() && month === today.getMonth()) {
+                          cell.classList.add("today");
+                      }
+                      if( j == 2){
+                        cell.style.backgroundColor = "#ff8577";
+                      }
+                      row.appendChild(cell);
+                  } else {
+                    cell.style.borderColor = "white";
+                    row.appendChild(cell);
+                  }
+                  date++;
+               }
+    }
+    calendarBody.appendChild(row);
+
+}
+
+		}
+	</script>
+    </div>
+    <div class="calendar">
+      <h2 class="month-year"></h2>
+      <table id="table2">
+        <thead>
+          <tr>
+            <th>Dom</th>
+            <th>Lun</th>
+            <th>Mar</th>
+            <th>Mié</th>
+            <th>Jue</th>
+            <th>Vie</th>
+            <th>Sáb</th>
+          </tr>
+        </thead>
+        <tbody id="calendar-body2">
+        </tbody>
+      </table>
+      
+	<script>
+		var today = new Date();
+		var currentMonth = today.getMonth();
+		var currentYear = today.getFullYear();
+   
+
+		var months = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+
+		var monthAndYear = document.createElement("h2");
+    currentMonth = (currentMonth + 1) % 12;
+		monthAndYear.innerHTML = months[currentMonth] + " " + currentYear;
+    monthAndYear.classList.add("month-year2"); // add the class to the element
+		document.body.appendChild(monthAndYear);
+
+		renderCalendar(currentMonth, currentYear);
+
+		function renderCalendar(month, year) {
+			var firstDay = new Date(year, month, 1).getDay();
+			var daysInMonth = new Date(year, month + 1, 0).getDate();
+
+			var calendarBody = document.getElementById("calendar-body2");
+			calendarBody.innerHTML = "";
+      var date = 1;
+
+      for (var i = 0; i < 6; i++) {
+				var row = document.createElement("tr");
+
+				for (var j = 0; j < 7; j++) {
+					if (i === 0 && j < firstDay) {
+						var cell = document.createElement("td");
+						cell.innerHTML = "";
+            cell.style.borderColor = "white";
+            row.appendChild(cell);
+					} else if (date > daysInMonth) {
+						break;
+					} else {
+						var cell = document.createElement("td");
+            
+            day = date < 10 ? '0' +  date : date;
+            cell.setAttribute("data-date", currentYear+"-"+ (currentMonth + 1) % 12 +"-"+ day);
+						cell.innerHTML = date;
+						if (date === today.getDate() && year === today.getFullYear() && month === today.getMonth()) {
+							cell.classList.add("today");
+						}
+            if( j == 2){
+              cell.style.backgroundColor = "#ff8577";
+            }
+            row.appendChild(cell);
+						date++;
+					}
+				}
+				calendarBody.appendChild(row);
+			}
+		}
+
+		</script>
+
+    <script>
+      //var celda = document.querySelector('td[data-date="2023-5-05"]'); importante
+      //celda.style.backgroundColor = "yellow"; importante
+     </script>
+
+    </div>
+  </div>
+
+</body>
+</html>
