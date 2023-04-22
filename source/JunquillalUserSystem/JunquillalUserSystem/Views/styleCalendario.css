@@ -37,7 +37,7 @@
       font-weight:lighter;
       color: black;
       text-align: center; /* center the text horizontally */
-      position: fixed;
+      position: absolute;
       top: 120px;
       left: 32.5%;
       transform: translateX(-50%); /* adjust for the element's width */
@@ -50,7 +50,7 @@
       font-weight:lighter;
       color: black;
       text-align: center; /* center the text horizontally */
-      position: fixed;
+      position: absolute;
       top: 120px;
       left: 67.5%;
       transform: translateX(-50%); /* adjust for the element's width */
@@ -65,3 +65,21 @@
     .calendar {
       margin: 0 50px;
     }
+
+    @media screen and (max-width: 768px) {
+      .month-year {
+        font-size: 20px; /* ajusta el tamaño de fuente para pantallas de tablet */
+        top: 80px; /* ajusta la posición superior del elemento en relación con la pantalla */
+        left: 20%; /* ajusta la posición horizontal del elemento en relación con la pantalla */
+        transform: translateX(-50%); /* centra el elemento horizontalmente */
+      }
+
+      .month-year2 {
+        font-size: 20px; /* ajusta el tamaño de fuente para pantallas de tablet */
+        top: 80px; /* ajusta la posición superior del elemento en relación con la pantalla */
+        right: 40%; /* ajusta la posición horizontal del elemento en relación con la pantalla */
+        transform: translateX(-50%); /* centra el elemento horizontalmente */
+      }
+    }
+
+
