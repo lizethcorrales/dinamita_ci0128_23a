@@ -1,0 +1,90 @@
+﻿@*
+
+*@
+@{
+	ViewData["Title"] = "Reservaciones";
+}
+<div>
+    <h3>Reservaciones</h3>
+</div>
+<br>
+<div>
+    <h4>Solicitante de Reserva</h4>
+    <form>
+		<label for=“primerNombre”>Primer Nombre:</label>
+		<input type=“text” name=“primerNombre” placeholder="Ingrese su nombre" size="50">
+		<br>
+		<label for=“primerApellido”>Primer Apellido:</label>
+		<input type=“text” name=“primerApellido” placeholder="Ingrese primer apellido" size="50">
+		<br>
+		<label for=“segundoApellido”>Segundo Apellido:</label>
+		<input type=“text” name=“segundoApellido” placeholder="Ingrese su segundo apellido" size="50">
+		<br>
+
+		<br>
+		<h5>
+			Tipo de identificación
+		</h5>
+		<input type="radio" id="Nacional" name="nacionalidad" value="Nacional">
+		<label for="Nacional">Nacional</label>
+		<input type="radio" id="Extranjero" name="nacionalidad" value="Extranjero">
+		<label for="Extranjero">Extranjero</label><br>
+
+		<br>
+		<h5>
+			Identificación
+		</h5>
+
+		<label for=“identificacion”>Identificación:</label>
+		<input type=“text” name=“identificacion” placeholder="123456789" size="50">
+		<br>
+
+		<br>
+		<h5>
+			País
+		</h5>
+		<select name="pais" id="pais">
+			<option value="costaRica">Costa Rica</option>
+			<option value="panama">Panamá</option>
+			<option value="canada">Canadá</option>
+			<option value="mexico">México</option>
+		</select>
+		
+		<br>
+		<br>
+		<h5>
+			Motivo de Visita
+		</h5>
+		<input type="radio" id="Ocio" name="motivo" value="Ocio">
+		<label for="Ocio">Ocio</label>
+		<input type="radio" id="Academico" name="motivo" value="Academico">
+		<label for="Academico">Académico</label><br>
+	</form>
+
+	<br>
+	<!-- Se debe de cambiar el localhost-->
+	<button type="button" onclick="location.href='https://localhost:7042/'" value="cancelar">Cancelar</button>
+	<button type="button" value="continuar">Continuar</button>
+
+</div>
+
+<!--
+	<form>
+	<label for= “username”>User name:</label>
+	<input type=“text” name=“username” value=“”>
+
+<br>
+
+	<laber for= “password”>Password:</label>
+	<input type=“password” name=“password” value=“”>
+
+<br>
+
+<input type=“ratio” name=“ratiobutton” value=“student”> Student <br>
+<input type=“ratio” name=“ratiobutton” value=“professor”> Professor <br>
+
+	<input type=“submit” values=“Submit”>
+</form>
+
+-->
+
