@@ -19,45 +19,59 @@
         <form id="cantidad" min="1" max="40">
             <br />
 
-            <div id="adulto_nacional" >
+            <div id="adulto_nacional">
                 <label for="cantidad_Adultos_Nacional">Adultos nacionales</label>
-                <input type="number" name="cantidad_Adultos_Nacional" id="cantidad_Adultos_Nacional" required min="0" max="40" />
+                <input type="number" name="cantidad_Adultos_Nacional" id="cantidad_Adultos_Nacional" required min="0" max="40" value="0" />
             </div>
 
             <br />
 
-            <div id="ninno_nacional" >
-                <label for="cantidad_Ninnos_Nacional">Niños nacionales</label >
-                <input type="number" name="cantidad_Ninnos_Nacional" id="cantidad_Ninnos_Nacional" required min="0" max="40"/>
+            <div id="ninno_nacional">
+                <label for="cantidad_Ninnos_Nacional">Niños nacionales</label>
+                <input type="number" name="cantidad_Ninnos_Nacional" id="cantidad_Ninnos_Nacional" required min="0" max="40" value="0" />
             </div>
 
             <br />
 
-            <div id="adulto_extranjero" >
+            <div id="adulto_extranjero">
                 <label for="cantidad_Adultos_Extranjero">Adultos extranjeros</label>
-                <input type="number" name="cantidad_Adultos_Extranjero" id="cantidad_Adultos_Extranjero" required min="0" max="40"/>
+                <input type="number" name="cantidad_Adultos_Extranjero" id="cantidad_Adultos_Extranjero" required min="0" max="40" value="0" />
             </div>
 
             <br />
 
-            <div id="ninno_extranjero" >
+            <div id="ninno_extranjero">
                 <label for="cantidad_ninnos_extranjero">Niños extranjeros</label>
-                <input type="number" name="cantidad_ninnos_extranjero" id="cantidad_ninnos_extranjero" required min="0" max="40"/>
+                <input type="number" name="cantidad_ninnos_extranjero" id="cantidad_ninnos_extranjero" required min="0" max="40" value="0" />
             </div>
 
             <br />
 
-            <button id="siguiente_calendario">Siguiente</button>
+            <button id="siguiente_calendario" onclick="verificarDatosCantidad()">Siguiente</button>
+            <div id="PocasP" style="visibility:hidden">Por favor revise que haya al menos una persona</div>
+            <div id="ExcedeP" style="visibility:hidden">Por favor revise que no hayan más de 40 personas</div>
         </form>
     </section>
     <br />
     <br />
     <footer>
-        Junquillal
+        Reserva Junquillal
     </footer>
 
     <script>
-        fun
+        function verificarDatosCantidad() {
+            var adultosNacionales = document.getElementById("cantidad_Adultos_Nacional");
+            var ninnosNacionales = document.getElementById("cantidad_Ninnos_Nacional");
+            var adultosExtranjeros = document.getElementById("cantidad_Adultos_Extranjero");
+            var ninnosExtranjeros = document.getElementById("cantidad_ninnos_extranjero");
+            var cantidad = adultosNacionales + adultosExtranjeros + ninnosNacionales + ninnosExtranjeros;
+
+            if (cantidad > 0 && cantidad <= 40) {
+                return true;
+            }
+            alert("Revise que haya al menos una persona o que la cantidad de personas no exceda las 40");
+            return false;
+        }
     </script>
 
 </body>
