@@ -1,0 +1,40 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    ViewData["Title"] = "Reservaciones";
+}
+
+<div>
+    <h3>Reservaciones</h3>
+</div>
+<br>
+
+<p>Imagen</p>
+
+<br>
+<div>
+    <form>
+        <label>
+            Fecha de entrada:
+            <input type="date" name="entrada" required pattern="\d{2}-\d{2}-\d{4}" />
+            <span class="validity"></span>
+        </label>
+        <br>
+        <label>
+            Fecha de salida:
+            <input type="date" name="salida" required pattern="\d{2}-\d{2}-\d{4}" />
+            <span class="validity"></span>
+        </label>
+    </form>
+    <br>
+    <h5>Descripción</h5>
+    <p>Un texto con la descripción</p>
+
+    <h6>Precio</h6>
+    <p>0.0 colones</p>
+    <button type="submit">Confirmar</button>
+</div>
+
+
+
