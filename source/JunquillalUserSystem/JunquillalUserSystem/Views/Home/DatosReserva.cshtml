@@ -1,0 +1,45 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    ViewData["Title"] = "Reservaciones";
+}
+
+<div>
+    <h3>Reservaciones</h3>
+</div>
+<br>
+<div>
+    <h4>Datos de Reserva</h4>
+    <form>
+		<br>
+		<h5>
+			Cantidad de Vehículos
+		</h5>
+		<select name="vehiculo" id="vehiculo">
+			<option value="1">1</option>
+			<option value="2">2</option>
+			<option value="3">3</option>
+			<option value="4">4</option>
+		</select>
+
+		<br>
+		<br>
+		<label for=“placa1”>Placa 1:</label>
+		<input type=“text” name=“placa1” placeholder="placa del vehículo" size="50">
+		<br>
+		<label for=“placa2”>Placa 2:</label>
+		<input type=“text” name=“placa2” placeholder="placa del vehículo" size="50">
+		<br>
+		<label for=“placa3”>Placa 3:</label>
+		<input type=“text” name=“placa3” placeholder="placa del vehículo" size="50">
+		<br>
+		<label for=“placa4”>Placa 4:</label>
+		<input type=“text” name=“placa4” placeholder="placa del vehículo" size="50">
+		<br>
+    </form>
+	<button type="button" onclick="location.href='../Home/Reservaciones'" value="atras">Atrás</button>
+	<button type="button" onclick="location.href='../Home/'" value=" continuar">Continuar</button>
+<div/>
+
+
