@@ -1,85 +1,100 @@
 @charset "utf-8";
 /* CSS Document */
 
-    table {
-      border-collapse: separate;
-      border-spacing: 10px;
-      margin: auto;
-      margin-top: 200px;
-    }
-    
+.ui-state-selected {
+  background-color: lightgreen;
+  color: #fff;
+}
 
-    td {
-      padding: 10px;
-      border: 1.5px solid black;
-      height: 30px;
-      width: 30px;
-      font-size: 20px;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      font-weight: 300;
-      text-align: center;
-    }
-
-    th {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      font-weight: 300;
-    }
-
-    td:not(.no-border):not(:empty):hover {
-     background-color: rgb(69, 67, 67) ;
-     color: white;
-    }
-
-    .month-year {
-      font-size: 24px;
-      font-family:'Times New Roman', Times, serif;
-      font-size: 24px;
-      font-weight:lighter;
-      color: black;
-      text-align: center; /* center the text horizontally */
-      position: absolute;
-      top: 120px;
-      left: 32.5%;
-      transform: translateX(-50%); /* adjust for the element's width */
-    }
-
-    .month-year2 {
-      font-size: 24px;
-      font-family:'Times New Roman', Times, serif;
-      font-size: 24px;
-      font-weight:lighter;
-      color: black;
-      text-align: center; /* center the text horizontally */
-      position: absolute;
-      top: 120px;
-      left: 67.5%;
-      transform: translateX(-50%); /* adjust for the element's width */
-    }
+.reserved {
+  background-color: #ff8577;
+  color: #fff;
+}
+.ui-datepicker {
+ 
+  
+  opacity: 20;
+  height: 200px;
+  width: 400px;
+  border-color: "white";
+  
+}
 
 
-    .calendar-container {
-      display: flex;
-      justify-content: center;
-    }
+.ui-datepicker-calendar {
+width: 100%;
+}
 
-    .calendar {
-      margin: 0 50px;
-    }
 
-    @media screen and (max-width: 768px) {
-      .month-year {
-        font-size: 20px; /* ajusta el tamaño de fuente para pantallas de tablet */
-        top: 80px; /* ajusta la posición superior del elemento en relación con la pantalla */
-        left: 20%; /* ajusta la posición horizontal del elemento en relación con la pantalla */
-        transform: translateX(-50%); /* centra el elemento horizontalmente */
+#label-fecha-entrada {
+  position: fixed;
+  top: 20%;
+  left: 35%;
+  transform: translate(-50%, -50%);
+  display: block;
+  width: 100%;
+  text-align: center;
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+#fecha-entrada{
+  position: fixed;
+  top: 30%;
+  left: 30%;
+}
+
+#label-fecha-salida {
+  position: fixed;
+  top: 20%;
+  left: 65%;
+  transform: translate(-50%, -50%);
+  display: block;
+  width: 100%;
+  text-align: center;
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+
+#fecha-salida{
+  position: fixed;
+  top: 30%;
+  left: 60%;
+}
+
+
+
+
+
+    @media screen and (max-width: 668px) {
+
+      #fecha-entrada{
+        left: 13%;
       }
 
-      .month-year2 {
-        font-size: 20px; /* ajusta el tamaño de fuente para pantallas de tablet */
-        top: 80px; /* ajusta la posición superior del elemento en relación con la pantalla */
-        right: 40%; /* ajusta la posición horizontal del elemento en relación con la pantalla */
-        transform: translateX(-50%); /* centra el elemento horizontalmente */
+      #label-fecha-entrada {
+
+        left: 28%;
       }
+
+      #label-fecha-salida {
+        
+        left: 73%;
+      
+      }
+      
+      .ui-datepicker {
+        height: 200px;
+        width: 300px;
+        border-color: "white";
+        margin-right: 20px;
+        
+      }
+      
+      
     }
 
 
