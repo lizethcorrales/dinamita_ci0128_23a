@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Reservas Junquillal</title>
     <link rel="stylesheet" href="cantidadStyle.css">
+    <script defer src="CantidadValidacion.js"></script>
 </head>
 
 <body>
@@ -16,7 +17,7 @@
         </div>
     </header>
     <section>
-        <form id="cantidad" min="1" max="40">
+        <form id="cantidad" action="" method="GET">
             <br />
 
             <div id="adulto_nacional">
@@ -47,9 +48,9 @@
 
             <br />
 
-            <button id="siguiente_calendario" onclick="verificarDatosCantidad()">Siguiente</button>
-            <div id="PocasP" style="visibility:hidden">Por favor revise que haya al menos una persona</div>
-            <div id="ExcedeP" style="visibility:hidden">Por favor revise que no hayan más de 40 personas</div>
+            <button type="submit" id="siguiente_calendario" onclick="verificarDatosCantidad()">Siguiente</button>
+            <br />
+            <div id="error"></div>
         </form>
     </section>
     <br />
@@ -57,22 +58,6 @@
     <footer>
         Reserva Junquillal
     </footer>
-
-    <script>
-        function verificarDatosCantidad() {
-            var adultosNacionales = document.getElementById("cantidad_Adultos_Nacional");
-            var ninnosNacionales = document.getElementById("cantidad_Ninnos_Nacional");
-            var adultosExtranjeros = document.getElementById("cantidad_Adultos_Extranjero");
-            var ninnosExtranjeros = document.getElementById("cantidad_ninnos_extranjero");
-            var cantidad = adultosNacionales + adultosExtranjeros + ninnosNacionales + ninnosExtranjeros;
-
-            if (cantidad > 0 && cantidad <= 40) {
-                return true;
-            }
-            alert("Revise que haya al menos una persona o que la cantidad de personas no exceda las 40");
-            return false;
-        }
-    </script>
 
 </body>
 </html>
