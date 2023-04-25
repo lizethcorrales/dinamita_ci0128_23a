@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html>
 
@@ -16,99 +18,7 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/i18n/jquery-ui-i18n.min.js"></script>
-    <script>
-      $.datepicker.setDefaults($.datepicker.regional['es']);
-
-$(function () {
-
-    var reservedDates = ["2023-05-02", "2023-05-03", "2023-05-04"]; // Fechas reservadas en formato YYYY-MM-DD
-    
-    var currentDate = new Date();
-    var nextMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 2, 0);
-    var maxDate = nextMonth.getFullYear() + "-" + (nextMonth.getMonth() + 1) + "-" + nextMonth.getDate();
-    
-    $("#fecha-entrada").datepicker({
-        dateFormat: "yy-mm-dd",
-        minDate: 0,
-        maxDate: maxDate,
-        fontSize: 20,
-
-        beforeShowDay: function (date) {
-            var dateString = $.datepicker.formatDate("yy-mm-dd", date);
-            if ($.inArray(dateString, reservedDates) !== -1) {
-                return [false, "reserved"];
-            } else {
-                return [true, ""];
-            }
-        },
-        onSelect: function (selectedDate) {
-            $("#fecha-salida").datepicker("option", "minDate", selectedDate);
-            $("#fecha-salida").focus();
-            var startDate = $(this).datepicker("getDate");
-            if (startDate != null) {
-                var endDate = $("#fecha-salida").datepicker("getDate");
-                if (endDate != null) {
-                    var reservedInBetween = false;
-                    var currentDate = new Date(startDate);
-                    while (currentDate <= endDate) {
-                        var dateString = $.datepicker.formatDate("yy-mm-dd", currentDate);
-                        if ($.inArray(dateString, reservedDates) !== -1) {
-                            reservedInBetween = true;
-                            break;
-                        }
-                        currentDate.setDate(currentDate.getDate() + 1);
-                    }
-                    if (reservedInBetween) {
-                        $("#fecha-salida").val("");
-                        $("#fecha-salida").datepicker("option", "minDate", startDate);
-                    }
-                }
-            }
-        }
-    });
-
-    $("<style>").text(".ui-datepicker.visible { display: inline-block; }").appendTo("head");
-    $("#fecha-salida").datepicker({
-        dateFormat: "yy-mm-dd",
-        minDate: 1,
-        maxDate: maxDate,
-        show:true,
-        beforeShowDay: function (date) {
-            var dateString = $.datepicker.formatDate("yy-mm-dd", date);
-            if ($.inArray(dateString, reservedDates) !== -1) {
-                return [false, "reserved"];
-            } else {
-                return [true, ""];
-            }
-        },
-        hideIfNoPrevNext: false,
-        onSelect: function (selectedDate) {
-            $("#fecha-entrada").datepicker("option", "maxDate", selectedDate);
-            var endDate = $(this).datepicker("getDate");
-            if (endDate != null) {
-                var startDate = $("#fecha-entrada").datepicker("getDate");
-                if (startDate != null) {
-                    var reservedInBetween = false;
-                    var currentDate = new Date(startDate);
-                    while (currentDate <= endDate) {
-                        var dateString = $.datepicker.formatDate("yy-mm-dd", currentDate);
-                        if ($.inArray(dateString, reservedDates) !== -1) {
-                            reservedInBetween = true;
-                            break;
-                        }
-                        currentDate.setDate(currentDate.getDate() + 1);
-                    }
-                    if (reservedInBetween) {
-                        $("#fecha-salida").val("");
-                        $("#fecha-salida").datepicker("option", "minDate", startDate);
-                    }
-                }
-            }
-        }
-    });
-});
-
-    </script>
+    <script defer src="~/js/Calendario.js"></script>
 
 </body>
 
