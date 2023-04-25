@@ -1,4 +1,4 @@
-// JavaScript source code
+﻿// JavaScript source code
 var adultosNacionales = document.getElementById("cantidad_Adultos_Nacional");
 var ninnosNacionales = document.getElementById("cantidad_Ninnos_Nacional");
 var adultosExtranjeros = document.getElementById("cantidad_Adultos_Extranjero");
@@ -21,4 +21,5 @@ form.addEventListener("submit", (e) => {
         e.preventDefault();
         err.innerText = messages.join(", ");
     }
+
 })
