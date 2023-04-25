@@ -6,12 +6,4 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
-  <ItemGroup>
-    <None Include="wwwroot\css\styleCalendario.css" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="jQuery.UI.Combined" Version="1.12.1" />
-  </ItemGroup>
-
 </Project>
