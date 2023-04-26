@@ -1,0 +1,20 @@
+﻿.centrar {
+    margin: auto;
+    justify-content: center;
+    align-items: center;
+    text-align:center;
+}
+
+.button1 {
+    background: #F39800;
+    color: #fff;
+}
+
+.button2 {
+    background: #A2A2A2;
+    color: #fff;
+}
+
+.button {
+    border-radius: 10px;
+}
