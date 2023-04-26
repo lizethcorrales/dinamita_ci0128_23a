@@ -9,11 +9,20 @@ var err = document.getElementById("error");
 form.addEventListener("submit", (e) => {
     var cantidadP = parseInt(adultosNacionales.value) + parseInt(adultosExtranjeros.value) + parseInt(ninnosNacionales.value) + parseInt(ninnosExtranjeros.value);
     let messages = [];
+
+    if (cantidadP >= 1 && cantidadP <= 40) {
+        e.preventDefault();
+        window.location.href = "../Home/Calendario";
+        
+    }
+
     if (cantidadP < 1) {
+        alert(cantidadP);
         messages.push("Revise que haya al menos una persona");
     }
 
     if (cantidadP > 40) {
+        alert(cantidadP);
         messages.push("Revise que la cantidad de personas no exceda las 40");
     }
 
@@ -21,5 +30,4 @@ form.addEventListener("submit", (e) => {
         e.preventDefault();
         err.innerText = messages.join(", ");
     }
-
 })
