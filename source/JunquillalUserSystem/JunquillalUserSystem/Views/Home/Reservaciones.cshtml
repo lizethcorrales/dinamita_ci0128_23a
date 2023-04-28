@@ -1,77 +1,93 @@
-﻿@*
+﻿<!doctype html>
 
-*@
-@{
-	ViewData["Title"] = "Reservaciones";
-}
 
-<body>
+<html>
+	<head>
+		<script defer src="~/js/ReservacionesScript.js"> </script>
+	</head>
 
-	<div class="centrar">
-		<div>
-			<h3>Reservaciones</h3>
-		</div>
-		<br>
-		<div>
-			<h4>Solicitante de Reserva</h4>
-			<form>
-				<label for=“primerNombre”>Primer Nombre:</label>
-				<input type=“text” name=“primerNombre” placeholder="Ingrese su nombre" size="50">
-				<br>
-				<label for=“primerApellido”>Primer Apellido:</label>
-				<input type=“text” name=“primerApellido” placeholder="Ingrese primer apellido" size="50">
-				<br>
-				<label for=“segundoApellido”>Segundo Apellido:</label>
-				<input type=“text” name=“segundoApellido” placeholder="Ingrese su segundo apellido" size="50">
-				<br>
+	<body>
 
-				<br>
-				<h5>
-					Identificación
-				</h5>
-
-				<label for=“identificacion”>Identificación:</label>
-				<input type=“text” name=“identificacion” placeholder="123456789" size="50">
-
-				<br>
-				<br>
-				<h5>
-					Tipo de identificación
-				</h5>
-				<input type="radio" id="Nacional" name="nacionalidad" value="Nacional">
-				<label for="Nacional">Nacional</label>
-				<input type="radio" id="Extranjero" name="nacionalidad" value="Extranjero">
-				<label for="Extranjero">Extranjero</label><br>
-
-				<br>
-
-				<h5>
-					País
-				</h5>
-				<select name="pais" id="pais">
-					<option value="costaRica">Costa Rica</option>
-					<option value="panama">Panamá</option>
-					<option value="canada">Canadá</option>
-					<option value="mexico">México</option>
-				</select>
-		
-				<br>
-				<br>
-				<h5>
-					Motivo de Visita
-				</h5>
-				<input type="radio" id="Ocio" name="motivo" value="Ocio">
-				<label for="Ocio">Ocio</label>
-				<input type="radio" id="Academico" name="motivo" value="Academico">
-				<label for="Academico">Académico</label><br>
-			</form>
-
+		<div class="centrar">
+			<div>
+				<h3>Reservaciones</h3>
+			</div>
 			<br>
-			<button class="button2 button" type="button" onclick="location.href='../'" value="cancelar">Cancelar</button>
-			<button class="button1 button" type="button" onclick="location.href='../Home/DatosReserva'" value=" continuar">Continuar</button>
+			<div>
+				<h4>Solicitante de Reserva</h4>
+				<form>
+					<div class="formInput" id="divNombre">
+						<label for=“nombre”>Nombre:</label>
+						<input type='text' id="nombre" placeholder="Ingrese su nombre" size="50">
+						<p class="mensajeError" id="mensajeErrorNombre"></p>
+					</div>
+					<br>
+					<div>
+						<label for=“primerApellido”>Primer Apellido:</label>
+						<input type='text' name=“primerApellido” placeholder="Ingrese primer apellido" size="50">
 
+					</div>
+					<br>
+
+					<div>
+						<label for=“segundoApellido”>Segundo Apellido:</label>
+					<input type='text' name=“segundoApellido” placeholder="Ingrese su segundo apellido" size="50">
+
+					</div>
+					<br>
+
+					<br>
+					<h5>
+						Identificación
+					</h5>
+
+					<div>
+					<label for=“identificacion”>Identificación:</label>
+					<input type=“text” name=“identificacion” placeholder="123456789" size="50">
+
+					</div>
+					<br>
+					<br>
+					<h5>
+						Tipo de identificación
+					</h5>
+
+					<input type="radio" id="Nacional" name="nacionalidad" value="Nacional">
+					<label for="Nacional">Nacional</label>
+					<input type="radio" id="Extranjero" name="nacionalidad" value="Extranjero">
+					<label for="Extranjero">Extranjero</label><br>
+
+					<br>
+
+					<h5>
+						País
+					</h5>
+					<select name="pais" id="pais">
+						<option value="costaRica">Costa Rica</option>
+						<option value="panama">Panamá</option>
+						<option value="canada">Canadá</option>
+						<option value="mexico">México</option>
+					</select>
+		
+					<br>
+					<br>
+					<h5>
+						Motivo de Visita
+					</h5>
+					<input type="radio" id="Ocio" name="motivo" value="Ocio">
+					<label for="Ocio">Ocio</label>
+					<input type="radio" id="Academico" name="motivo" value="Academico">
+					<label for="Academico">Académico</label><br>
+				</form>
+
+				<br>
+				<button class="button2 button" type="button" onclick="location.href='../'" value="cancelar">Cancelar</button>
+				<button class="button1 button" id="continuar" type="button" value=" continuar">Continuar</button>
+
+			</div>
 		</div>
-	</div>
-</body>
+	
+	</body>
 
+</html>
 

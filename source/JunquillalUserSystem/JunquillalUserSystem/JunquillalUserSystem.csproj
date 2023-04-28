@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <None Include="wwwroot\css\styleReservacion.css" />
+    <None Include="wwwroot\js\ReservacionesScript.js" />
   </ItemGroup>
 
 </Project>
