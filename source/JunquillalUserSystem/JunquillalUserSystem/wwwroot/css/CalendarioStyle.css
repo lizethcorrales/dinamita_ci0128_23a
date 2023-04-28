@@ -39,25 +39,25 @@
 }
 
 .reserved {
-    opacity: 40;
+    opacity: 80;
     background-color: #ff8577;
-    color: #fff;
-    
+    color: #ff8577;
+    border: 2px solid #ff8577;
 }
+
 
 .ui-datepicker {
     opacity: 40;
-    height: 200px;
+    height: 330px;
     width: 400px;
-    font-size:20px;
-    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-    
+    font-size: 20px;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
+
 
 
 .ui-datepicker-calendar {
     width: 100%;
-   
 }
 
 

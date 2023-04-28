@@ -19,10 +19,7 @@ namespace JunquillalUserSystem.Controllers
         }
 
 
-        public IActionResult Calendario()
-        {
-            return View();
-        }
+
 
         public IActionResult FormularioCantidadPersonas()
         {
