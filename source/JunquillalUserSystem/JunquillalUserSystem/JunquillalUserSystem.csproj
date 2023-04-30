@@ -20,4 +20,9 @@
     <PackageReference Include="jQuery.UI.Combined" Version="1.12.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include="wwwroot\css\styleReservacion.css" />
+    <None Include="wwwroot\js\ReservacionesScript.js" />
+  </ItemGroup>
+
 </Project>
