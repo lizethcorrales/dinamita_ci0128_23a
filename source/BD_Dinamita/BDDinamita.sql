@@ -89,13 +89,14 @@ FOREIGN KEY(Nacionalidad, Poblacion, Actividad) REFERENCES Tarifa(Nacionalidad, 
 
 CREATE TABLE PrecioVisita(
 IdentificacionVisita CHAR(20) NOT NULL,
+FechaEntrada DATE NOT NULL, -- se le agrega porque es parte de la llave primaria de visita
 Nacionalidad VARCHAR(30) NOT NULL,
 Poblacion VARCHAR(30) NOT NULL,
 Actividad VARCHAR(30) NOT NULL,
 Cantidad SMALLINT,
 PrecioActual DOUBLE PRECISION,
-PRIMARY KEY(IdentificacionVisita, Nacionalidad, Poblacion, Actividad),
-FOREIGN KEY (IdentificacionVisita) REFERENCES Visita(Identificacion),
+PRIMARY KEY(IdentificacionVisita, FechaEntrada, Nacionalidad, Poblacion, Actividad),
+FOREIGN KEY (IdentificacionVisita, FechaEntrada) REFERENCES Visita (Identificacion, FechaEntrada),
 FOREIGN KEY(Nacionalidad, Poblacion, Actividad) REFERENCES Tarifa(Nacionalidad, Poblacion, Actividad)
 );
 
@@ -124,7 +125,7 @@ ComprobantePago CHAR(6) NOT NULL,
 Precio DOUBLE PRECISION,
 Cantidad SMALLINT,
 PRIMARY KEY(TipoServicio, IdentificacionHospedero, ComprobantePago),
-FOREIGN KEY(TipoServicio) REFERENCES Servicio(Tipo),
+FOREIGN KEY(TipoServicio) REFERENCES Servicios(Tipo),
 FOREIGN KEY(IdentificacionHospedero) REFERENCES Hospedero(Identificacion),
 FOREIGN KEY(ComprobantePago) REFERENCES Pago(Comprobante)
 );
@@ -132,13 +133,118 @@ FOREIGN KEY(ComprobantePago) REFERENCES Pago(Comprobante)
 CREATE TABLE VisitaSolicita(
 TipoServicio VARCHAR(50) NOT NULL,
 IdentificacionVisita CHAR(20) NOT NULL,
+FechaEntrada DATE NOT NULL, -- se le agrega porque es parte de la llave primaria de visita
 ComprobantePago CHAR(6) NOT NULL,
 Precio DOUBLE PRECISION,
 Cantidad SMALLINT,
 PRIMARY KEY(TipoServicio, IdentificacionVisita, Precio),
-FOREIGN KEY(TipoServicio) REFERENCES Servicio(Tipo),
-FOREIGN KEY(IdentificacionVisita) REFERENCES Visita(Identificacion),
+FOREIGN KEY(TipoServicio) REFERENCES Servicios(Tipo),
+FOREIGN KEY(IdentificacionVisita, FechaEntrada) REFERENCES Visita(Identificacion, FechaEntrada),
 FOREIGN KEY(ComprobantePago) REFERENCES Pago(Comprobante)
 );
+
+-- Insertar tuplas de prueba
+
+INSERT INTO Pais 
+VALUES ('Costa Rica'), ('Panama'), ('Alemania'), ('Estados Unidos'), ('España'), ('Inglaterra')
+
+
+INSERT INTO Hospedero
+VALUES ('206780989', 'hoquadoibizo-2894@yopmail.com','Mateo', 'Barrantes', 'García', '0', 'Costa Rica'),
+		('906750989', 'kucrexawagreu-9178@yopmail.com','Allen', 'Quesada', 'Sanchez', '0', 'Estados Unidos'),
+		('806550769', 'loinazudelu-1663@yopmail.com','Gwen', 'Rodriguez', 'Chacón', '0', 'Estados Unidos'),
+		('106950745', 'kudelayequau-3433@yopmail.com','Ana', 'Smith', 'Morales', '0', 'Costa Rica'),
+		('307980965', 'lappiddebrouyau-4416@yopmail.com','Gerardo', 'Brenes', 'Suarez', '0', 'Alemania'),
+		('404580125', 'criprauquijeura-2692@yopmail.com','Nicolle', 'Hernández', 'Matarrita', '0', 'Costa Rica'),
+		('503890135', 'valayouxeiga-6823@yopmail.com','Samuel', 'Zamora', 'Miranda', '0', 'España')
+
+
+INSERT INTO Reservacion 
+VALUES ('8865933684', '2023-06-01', '2023-06-03', '37290'),
+		('9932098365', '2023-05-11', '2023-05-13', '126.56'),
+		('2595141556', '2023-05-17', '2023-05-20', '74.58'),
+		('3957409889', '2023-05-11', '2023-05-14', '20340'),
+		('3463933048', '2023-05-17', '2023-05-20', '361.6'),
+		('9149985005', '2023-05-24', '2023-05-26', '180800'),
+		('5396857873', '2023-05-31', '2023-06-03', '18.08')
+
+
+INSERT INTO Placa
+VALUES ('8865933684', 'bgd-125'),
+		('9932098365', 'rfd-454'),
+		('2595141556', 'sdf-456'),
+		('3957409889', 'gtr-455'),
+		('3463933048', 'rtt-789'),
+		('9149985005', 'ter-987'),
+		('5396857873', 'fgd-478')
+
+INSERT INTO Tarifa
+VALUES ('Nacional', 'Adulto', 'Picnic', '2260', ''),
+		('Nacional', 'Niño', 'Picnic', '1130', ''),
+		('Extranjero', 'Adulto', 'Picnic', '13.56', ''),
+		('Extranjero', 'Niño', 'Picnic', '5.65', ''),
+		('Nacional', 'Adulto', 'Camping', '4520', ''),
+		('Nacional', 'Niño', 'Camping', '3390', ''),
+		('Extranjero', 'Adulto', 'Camping', '18.08', ''),
+		('Extranjero', 'Niño', 'Camping', '10.17', '')
+
+INSERT INTO PrecioReservacion
+VALUES ('8865933684', 'Nacional', 'Adulto', 'Camping', '6', '4520'),
+		('8865933684', 'Nacional', 'Niño', 'Camping', '3', '3390'),
+		('9932098365', 'Extranjero', 'Adulto', 'Camping', '7', '18.08'),
+		('2595141556', 'Extranjero', 'Adulto', 'Camping', '3', '18.08'),
+		('2595141556', 'Extranjero', 'Niño', 'Camping', '2', '10.17'),
+		('3957409889', 'Nacional', 'Adulto', 'Camping', '3', '4520'),
+		('3957409889', 'Nacional', 'Niño', 'Camping', '2', '3390'),
+		('3463933048', 'Extranjero', 'Adulto', 'Camping', '20', '18.08'),
+		('9149985005', 'Nacional', 'Adulto', 'Camping', '40', '4520'),
+		('5396857873', 'Extranjero', 'Adulto', 'Camping', '1', '18.08')
+
+INSERT INTO Parcela
+VALUES ('1', '10'),
+		('2', '10'),
+		('3', '20'),
+		('4', '2'),
+		('5', '10'),
+		('6', '10'),
+		('7', '10')
+
+INSERT INTO CaracteristicasParcela
+VALUES ('1', 'Frente a Playa', '121'),
+		('2', 'Frente a Playa', '121'),
+		('3', 'Frente a Playa', '181'),
+		('4', 'Bajo el sol', '120'),
+		('5', 'Bajo el sol', '121'),
+		('6', 'Frente a Playa', '121'),
+		('7', 'Bajo el sol', '121')
+
+INSERT INTO Hospedaje 
+VALUES ('8865933684', '1'),
+		('9932098365', '2'),
+		('2595141556', '5'),
+		('3957409889', '6'),
+		('3463933048', '3'),
+		('9149985005', '3'),
+		('9149985005', '7'),
+		('9149985005', '2'),
+		('5396857873', '4')
+
+INSERT INTO Pago
+VALUES ('908967', '2023-05-25'),
+		('345689', '2023-05-05'),
+		('122334', '2023-05-10'),
+		('675498', '2023-05-03'),
+		('211345', '2023-05-01'),
+		('808765', '2023-05-12'),
+		('544992', '2023-05-20')
+
+INSERT INTO HospederoRealiza
+VALUES ('206780989', '8865933684', '908967'),
+		('906750989', '9932098365', '345689'),
+		('806550769', '2595141556', '122334'),
+		('106950745', '3957409889', '675498'),
+		('307980965', '3463933048', '211345'),
+		('404580125', '9149985005', '808765'),
+		('503890135', '5396857873', '544992')
 
 
