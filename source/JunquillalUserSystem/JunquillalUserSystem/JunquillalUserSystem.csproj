@@ -7,6 +7,20 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Views\Home\CalendarioR.cshtml.cs" />
+    <Compile Remove="Views\Home\FileName.cshtml.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Remove="Views\Home\CalendarioR.cshtml" />
+    <Content Remove="Views\Home\FileName.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="jQuery.UI.Combined" Version="1.12.1" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Include="wwwroot\css\styleReservacion.css" />
     <None Include="wwwroot\js\ReservacionesScript.js" />
   </ItemGroup>

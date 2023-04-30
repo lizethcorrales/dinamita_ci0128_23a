@@ -1,0 +1,70 @@
+﻿@charset "utf-8";
+
+body {
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-weight: 400;
+    font-size: 17px;
+    padding: 0px;
+    margin: 0px;
+}
+
+#cantidad {
+    text-align: center;
+}
+
+#titulo {
+    background-color: #2C9E4C;
+    color: black;
+    display: flex;
+    flex-flow: column;
+    height: 90%;
+    color: white;
+    margin: 0px;
+    padding: 10px;
+    text-align: center;
+    border-radius: 10px;
+}
+
+input.valid {
+    border-color: seagreen;
+}
+
+input {
+    border: solid;
+    border-width: 2px;
+    border-radius:10px;
+}
+
+label {
+    display: inline-block;
+    width: 200px;
+}
+
+#error {
+    color: red;
+}
+
+#siguiente_calendario {
+    background-color: #F39800;
+}
+
+button {
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    color: white;
+    font-size: 15px;
+    border: none;
+    margin: 10px;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+#atras {
+    background-color: #A2A2A2;
+}
+
+h2 {
+    text-align: center;
+}
+ #instruccion {
+     text-align:center;
+ }

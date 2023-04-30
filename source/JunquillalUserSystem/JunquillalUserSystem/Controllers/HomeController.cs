@@ -18,6 +18,14 @@ namespace JunquillalUserSystem.Controllers
             return View();
         }
 
+
+
+
+        public IActionResult FormularioCantidadPersonas()
+        {
+            return View();
+        }
+
         public IActionResult Privacy()
         {
             return View();
