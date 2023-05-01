@@ -1,11 +1,5 @@
 ﻿namespace JunquillalUserSystem.Models
 {
-    struct servicio
-    {
-        public string Tipo;
-        public float precio;
-    }
-
     public class PagoModelo
     {
         public int comprobante { get; set; }
@@ -15,7 +9,7 @@
 
     public class PagoServicios : PagoModelo 
     { 
-        public List<servicio> listaServicio { get; set; }
+        public List<ServicioModelo> listaServicio { get; set; }
         public float precioServicios { get; set; }
         public int cantidadServicios { get; set; }
  
