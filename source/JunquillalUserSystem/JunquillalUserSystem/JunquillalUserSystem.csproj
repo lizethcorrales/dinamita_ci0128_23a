@@ -14,6 +14,7 @@
   <ItemGroup>
     <Content Remove="Views\Home\CalendarioR.cshtml" />
     <Content Remove="Views\Home\FileName.cshtml" />
+    <Content Remove="Views\Home\Reservaciones.cshtml" />
   </ItemGroup>
 
   <ItemGroup>
