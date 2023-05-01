@@ -1,0 +1,116 @@
+﻿
+<!DOCTYPE html>
+<html>
+
+    <head>
+
+        <title>Calendario</title>
+
+        <link href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" rel="stylesheet" />
+        <script src="//code.jquery.com/jquery-3.5.1.js"></script>
+        <script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+        <script defer src="~/js/DesplegarCamposDisponibles.js"></script>
+        <link rel="stylesheet" href="~/css/CamposDisponiblesStyle.css">
+    </head>
+    
+    <body>
+        <label id="label-fecha-entrada" for="fecha-entrada">Fecha de entrada:</label>
+        <input type="text" id="fecha-entrada" name="fecha-entrada" readonly>
+        <button class="button2"  id="btn-siguiente"> Siguiente </button>
+        <button class="button1" type="button" id="buscar"> Buscar </button>
+        <div id="error"></div>
+
+
+        <h4>Campos Disponibles</h4>
+        
+    
+        <h5>Casetilla</h5>
+    <p id="casetilla"> </p>
+       
+        
+
+    @*
+        <label id="casetilla" for="casetilla">Campos casetilla:</label>
+        <input type="text" id="casetilla" name="casetilla" readonly>
+        *@
+        <label id="online" for="online">Campos online:</label>
+        <input type="text" id="online" name="online" readonly>
+
+
+        <script>
+            
+
+            $(function () {
+
+                var reservedDates = @Html.Raw(Json.Serialize(ViewBag.reservedDates)); // Fechas reservadas en formato YYYY-MM-DD
+
+                var currentDate = new Date();
+                var nextMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 2, 0);
+                var maxDate = nextMonth.getFullYear() + "-" + (nextMonth.getMonth() + 1) + "-" + nextMonth.getDate();
+
+                $("#fecha-entrada").datepicker({
+                    dateFormat: "yy-mm-dd",
+                    minDate: 0,
+                    maxDate: maxDate,
+                    fontSize: 20,
+
+                    beforeShowDay: function (date) {
+                        var dateString = $.datepicker.formatDate("yy-mm-dd", date);
+                        if ($.inArray(dateString, reservedDates) !== -1) {
+                            return [false, "reserved"];
+                        } else {
+                            return [true, ""];
+                        }
+                    },
+                    onSelect: function (selectedDate) {
+                        $("#fecha-salida").datepicker("option", "minDate", selectedDate);
+                        $("#fecha-salida").focus();
+                        var startDate = $(this).datepicker("getDate");
+                        if (startDate != null) {
+                            var endDate = $("#fecha-salida").datepicker("getDate");
+                            if (endDate != null) {
+                                var reservedInBetween = false;
+                                var currentDate = new Date(startDate);
+                                while (currentDate <= endDate) {
+                                    var dateString = $.datepicker.formatDate("yy-mm-dd", currentDate);
+                                    if ($.inArray(dateString, reservedDates) !== -1) {
+                                        reservedInBetween = true;
+                                        break;
+                                    }
+                                    currentDate.setDate(currentDate.getDate() + 1);
+                                }
+                                if (reservedInBetween) {
+                                    $("#fecha-salida").val("");
+                                    $("#fecha-salida").datepicker("option", "minDate", startDate);
+                                }
+                            }
+                        }
+                    }
+                });
+
+                $("<style>").text(".ui-datepicker.visible { display: inline-block; }").appendTo("head");
+               
+            });
+
+            var err = document.getElementById("error");
+            const btnSiguiente = document.querySelector('#btn-siguiente');
+            btnSiguiente.addEventListener('click', function () {
+                const fechaEntrada = document.querySelector('#fecha-entrada').value;
+                if (fechaEntrada) {
+                    window.location.href = '../Home/FormularioCantidadPersonas';
+
+                } else {    
+
+                        err.innerText = "Debes llenar la fecha";
+
+                }
+            });
+            
+        </script>
+        @{
+            await Html.RenderPartialAsync("_ValidationScriptsPartial");
+        }
+
+    </body>
+
+</html>
