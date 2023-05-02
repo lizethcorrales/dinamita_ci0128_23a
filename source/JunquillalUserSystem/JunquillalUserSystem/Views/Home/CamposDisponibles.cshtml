@@ -5,12 +5,12 @@
     <head>
 
         <title>Calendario</title>
-
+        <link rel="stylesheet" href="~/css/CamposDisponiblesStyle.css">
         <link href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" rel="stylesheet" />
         <script src="//code.jquery.com/jquery-3.5.1.js"></script>
         <script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
         <script defer src="~/js/DesplegarCamposDisponibles.js"></script>
-        <link rel="stylesheet" href="~/css/CamposDisponiblesStyle.css">
+       
     </head>
     
     <body>
@@ -21,21 +21,15 @@
         <div id="error"></div>
 
 
-        <h4>Campos Disponibles</h4>
-        
-    
-        <h5>Casetilla</h5>
-    <p id="casetilla"> </p>
-       
+
+        <h4>Campos Disponibles</h4>   
         
 
-    @*
-        <label id="casetilla" for="casetilla">Campos casetilla:</label>
-        <input type="text" id="casetilla" name="casetilla" readonly>
-        *@
-        <label id="online" for="online">Campos online:</label>
-        <input type="text" id="online" name="online" readonly>
-
+        <div id="camposDisponibles">
+            <label id="label_campos" for="label_campos">Campos casetilla:</label>
+            <input type="text" id="campos" name="campos" readonly>
+            <p style="color:red"></p>
+        </div>
 
         <script>
             

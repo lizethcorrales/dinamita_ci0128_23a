@@ -1,12 +1,14 @@
 ﻿var fechaEntrada = document.getElementById("fecha-entrada");
-var casetilla = document.getElementById("casetilla");
-var online = document.getElementById("online");
+var campos = document.getElementById("campos");
+var divCamposDisponibles = document.querySelector("#camposDisponibles");
+
+console.log(divCamposDisponibles.childElementCount);
 
 buscar.addEventListener("click", (e) => {
-    console.log("Entra");
-    console.log(fechaEntrada.value);
-    if (fechaEntrada.value.length != 0) {
-        //casetilla.setAttribute("value", "30");
-        casetilla.textContent = "30";
+    if (fechaEntrada.value != "") {
+        campos.value = "30";
+        divCamposDisponibles.lastElementChild.textContent = "";
+    } else {
+        divCamposDisponibles.lastElementChild.textContent = "Debe de ingresar una fecha válida";
     }
 });
