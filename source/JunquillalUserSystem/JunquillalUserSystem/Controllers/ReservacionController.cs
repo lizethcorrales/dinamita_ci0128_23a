@@ -1,24 +1,27 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using JunquillalUserSystem.Models;
+using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using System.Numerics;
-
+using System.Text.Json;
 namespace JunquillalUserSystem.Controllers
 {
     public class ReservacionController : Controller
     {
         public IActionResult FormularioCantidadPersonas()
         {
-
+            
             return View();
         }
 
         [HttpPost]
         public IActionResult Calendario()
         {
-          
 
+           ReservacionModelo reservacion = new ReservacionModelo();
+           reservacion.Identificador = int.Parse(Request.Form["cantidad_Adultos_Nacional"]);
+            TempData["Reservacion"] = JsonSerializer.Serialize(reservacion);
             // Imprimir los valores recibidos del formulario
-            System.Diagnostics.Debug.Write($"Cantidad adultos nacionales: {Request.Form["cantidad_Adultos_Nacional"]}");
+          
             var reservedDates = new[] { "2023-05-02", "2023-05-03", "2023-05-04", "2023-05-30" };
             ViewBag.reservedDates = reservedDates;
             return View();
@@ -27,8 +30,11 @@ namespace JunquillalUserSystem.Controllers
 
 
         [HttpPost]
-        public IActionResult Reservaciones(string startDate, string endDate)
+        public IActionResult Reservaciones()
         {
+
+            ReservacionModelo reservacion = JsonSerializer.Deserialize<ReservacionModelo>((string)TempData["Reservacion"]);
+            System.Diagnostics.Debug.Write($"Cantidad de personas: {reservacion.Identificador}");
             var fechaEntrada = Request.Form["fecha-entrada"];
             var fechaSalida = Request.Form["fecha-salida"];
             System.Diagnostics.Debug.Write($"Fecha entrada: {fechaEntrada}");
