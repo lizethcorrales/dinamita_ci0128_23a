@@ -3,10 +3,13 @@ using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using System.Numerics;
 using System.Text.Json;
+using JunquillalUserSystem.Handlers;
+
 namespace JunquillalUserSystem.Controllers
 {
     public class ReservacionController : Controller
     {
+        private ReservacionHandler reservacionHandler = new ReservacionHandler();
         public IActionResult FormularioCantidadPersonas()
         {
             
@@ -16,8 +19,9 @@ namespace JunquillalUserSystem.Controllers
         [HttpPost]
         public IActionResult Calendario()
         {
-
-           ReservacionModelo reservacion = new ReservacionModelo();
+    
+            System.Diagnostics.Debug.Write(reservacionHandler.CostoTotal("9149985005"));
+            ReservacionModelo reservacion = new ReservacionModelo();
            reservacion.Identificador = int.Parse(Request.Form["cantidad_Adultos_Nacional"]);
             TempData["Reservacion"] = JsonSerializer.Serialize(reservacion);
             // Imprimir los valores recibidos del formulario
