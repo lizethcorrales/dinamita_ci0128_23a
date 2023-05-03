@@ -1,6 +1,4 @@
 ﻿<!doctype html>
-
-
 <html>
 	<head>
 		<script defer src="~/js/ReservacionesScript.js"> </script>
@@ -22,40 +20,35 @@
 						<p class="mensajeError" id="mensajeErrorNombre"></p>
 					</div>
 					<br>
-				<div class="formInput" id="divApellido1">
-
+					<div class="formInput" id="divApellido1">
 						<label for="primerApellido">Primer Apellido:</label>
 						<input type='text' id="primerApellido" placeholder="Ingrese primer apellido" size="50">
 					     <p class="mensajeError" id="mensajeErrorApellido1"></p>
-
 					</div>
 					<br>
-
-				<div class="formInput" id="divApellido2">
-					<label for="segundoApellido">Segundo Apellido:</label>
-					<input type='text' id="segundoApellido" placeholder="Ingrese su segundo apellido" size="50">
-					<p class="mensajeError" id="mensajeErrorApellido2"></p>
-
+					<div class="formInput" id="divApellido2">
+						<label for="segundoApellido">Segundo Apellido:</label>
+						<input type='text' id="segundoApellido" placeholder="Ingrese su segundo apellido" size="50">
+						<p class="mensajeError" id="mensajeErrorApellido2"></p>
 					</div>
-					<br>
 
+					<br>
 					<br>
 
 					<h5>
 						Identificación
 					</h5>
 
-				<div class="formInput" id="divIdent">
-					<label for="identificacion">Identificación:</label>
-					<input type="text" id="identificacion" placeholder="123456789" size="50">
-					<p class="mensajeError" id="mensajeErrorIdent"></p>
-
+					<div class="formInput" id="divIdent">
+						<label for="identificacion">Identificación:</label>
+						<input type="text" id="identificacion" placeholder="123456789" size="50">
+						<p class="mensajeError" id="mensajeErrorIdent"></p>
 					</div>
+
 					<br>
 					<br>
-					<h5>
-						Tipo de identificación
-					</h5>
+
+					<h5>Tipo de identificación</h5>
 
 					<input type="radio" id="Nacional" name="nacionalidad" value="Nacional">
 					<label for="Nacional">Nacional</label>
@@ -64,9 +57,8 @@
 
 					<br>
 
-					<h5>
-						País
-					</h5>
+					<h5>País</h5>
+
 					<select name="pais" id="pais">
 						<option value="costaRica">Costa Rica</option>
 						<option value="panama">Panamá</option>
@@ -77,22 +69,57 @@
 		
 					<br>
 					<br>
-					<h5>
-						Motivo de Visita
-					</h5>
+
+					<h5>Motivo de Visita</h5>
+
 					<input type="radio" id="Ocio" name="motivo" value="Ocio">
 					<label for="Ocio">Ocio</label>
 					<input type="radio" id="Academico" name="motivo" value="Academico">
 					<label for="Academico">Académico</label><br>
 				</form>
-
 				<br>
-				<button class="button2 button" type="button" onclick="location.href='../'" value="cancelar">Cancelar</button>
-				<button class="button1 button" id="continuar" type="button" value=" continuar">Continuar</button>
+				<br>
+				<h4>Datos de Reserva</h4>
+				<form>
+					<br>
+					<h5>Cantidad de Vehículos</h5>
+					<select name="vehiculo" id="vehiculo">
+						<option value="0">0</option>
+						<option value="1">1</option>
+						<option value="2">2</option>
+						<option value="3">3</option>
+						<option value="4">4</option>
+					</select>
+				<br><br>
 
+					<div class="formInput" id="divPlaca1">
+						<label id="label-placa1" for=“placa1” hidden>Placa 1:</label>
+						<input type=“text” name=“placa1” placeholder="placa del vehículo" size="50" id="placa1" hidden>
+						<p class="mensajeError" id="mensajeErrorApellido1" hidden>Debe digitar una placa</p>
+					</div>
+
+					<div class="formInput" id="divPlaca2">
+						<label id="label-placa2" for=“placa2” hidden>Placa 2:</label>
+						<input type=“text” name=“placa2” placeholder="placa del vehículo" size="50" id="placa2" hidden>
+						<p class="mensajeError" id="mensajeErrorApellido1" hidden>Debe digitar una placa</p>
+					</div>
+					<div class="formInput" id="divPlaca3">
+						<label id="label-placa3" for=“placa3” hidden>Placa 3:</label>
+						<input type=“text” name=“placa3” placeholder="placa del vehículo" size="50" id="placa3" hidden>
+						<p class="mensajeError" id="mensajeErrorApellido1" hidden>Debe digitar una placa</p>
+					</div>
+					<div class="formInput" id="divPlaca4">
+						<label id="label-placa4" for=“placa4” hidden>Placa 4:</label>
+						<input type=“text” name=“placa4” placeholder="placa del vehículo" size="50" id="placa4" hidden>
+						<p class="mensajeError" id="mensajeErrorApellido1" hidden>Debe digitar una placa</p>
+					</div>
+				</form>
+				<br>
+				<button id="atras" class="button2 button" type="button" onclick="location.href='../Home'" value="atras">Atrás</button>
+				<button id="continuar" class="button1 button" type="button" value=" continuar">Continuar</button>
 			</div>
 		</div>
 	
 	</body>
 
-</html
+</html>
