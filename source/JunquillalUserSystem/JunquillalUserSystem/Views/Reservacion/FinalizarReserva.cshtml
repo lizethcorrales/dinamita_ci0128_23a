@@ -6,23 +6,38 @@
 }
 
 <div class="centrar">
-    <div>
-        <h3>Reservaciones</h3>
-    </div>
     <br>
 
-    <img src="~/img/FinalReservaciones.png" alt="Imagen Ilustrativa">
+    <img src="https://camping.cr/wp-content/uploads/2021/03/Imagen-2-7.jpg"
+         alt="Imagen Ilustrativa" style="width: 40%">
 
     <br>
+</div>
+
+
+<div style="text-align:justify">
+
+
     <div>
         <br>
-        <h5>Descripción</h5>
-        <p>Un texto con la descripción</p>
+    </div>
+        @if (ViewBag.mensaje != null && !string.IsNullOrEmpty(ViewBag.mensaje.ToString()))
+        {
+            <div>@Html.Raw(ViewBag.mensaje.ToString())</div>
+        }else
+        {
+          <p>Un texto con la descripción</p>
+        }
+
+
+    <div class="centrar">
 
         <h6>Precio</h6>
         <p>0.0 colones</p>
         <button class="button1 button" type="submit">Confirmar</button>
+ 
     </div>
-</div>
+
+
 
 

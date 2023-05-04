@@ -7,7 +7,10 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Specialized;
-
+using System.Text;
+using Microsoft.Extensions.Primitives;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace JunquillalUserSystem.Handlers
 {
@@ -187,5 +190,59 @@ namespace JunquillalUserSystem.Handlers
 
             return hospedero;
         }
+
+        public string CrearConfirmacionMensaje(ReservacionModelo reservacion, HospederoModelo hospedero)
+        {
+            StringBuilder sb = new StringBuilder();
+
+            // Encabezado
+            sb.Append("<h2 style='text-align:center;'>Confirmación de Reserva</h2><br><br>");
+
+            sb.Append("<h3>Datos del hospedero: </h3><br>");
+            sb.Append("<h6>Identificación: " + hospedero.Identificacion + "</h6>");
+            sb.Append("<h6>Nacionalidad: " + hospedero.Nacionalidad + "</h6>");
+            sb.Append("<h6>Tipo de identificación: " + hospedero.TipoIdentificacion + "</h6>");
+            sb.Append("<br><h6>" + hospedero.Nombre + " " +
+                      hospedero.Apellido1 + " " + hospedero.Apellido2 + ", es un placer darles la bienvenida " +
+                      "a Junquillal. Le deseamos un disfrute de su estadia,\n a continuación adjuntamos informacion de " +
+                      "su reserva: </h6><br>");
+            sb.Append("<h6>" + "</h6><br>");
+            sb.Append("<h3> Detalles de la reserva: </h3><br>");
+            sb.Append("<h6>Tu código de reservación es: " + reservacion.Identificador + "</h6>");
+            sb.Append("<h6>Primer día: " + reservacion.PrimerDia + "</h6>");
+            sb.Append("<h6>Último día: " + reservacion.UltimoDia + "</h6>");
+            sb.Append("<h6>Cantidad de personas: " + reservacion.cantTipoPersona.Sum() + "</h6>");
+            sb.Append("<ul>");
+
+            if (reservacion.cantTipoPersona[0] != 0)
+            {
+                sb.Append("<li>Adultos nacionales: " + reservacion.cantTipoPersona[0] + "</li>");
+            }
+            if (reservacion.cantTipoPersona[1] != 0)
+            {
+                sb.Append("<li>Niños nacionales: " + reservacion.cantTipoPersona[1] + "</li>");
+            }
+            if (reservacion.cantTipoPersona[2] != 0)
+            {
+                sb.Append("<li>Adultos extranjeros: " + reservacion.cantTipoPersona[2] + "</li>");
+            }
+            if (reservacion.cantTipoPersona[3] != 0)
+            {
+                sb.Append("<li>Niños extranjeros: " + reservacion.cantTipoPersona[3] + "</li>");
+            }
+            sb.Append("</ul><br>");
+            sb.Append("<h6>Placas de vehículos:</h6>");
+            sb.Append("<ul>");
+            foreach (string placa in reservacion.placasVehiculos)
+            {
+                sb.Append("<li>Placa: " + placa + "</li>");
+            }
+            sb.Append("</ul><br>");
+            sb.Append("<h6>Motivo de la visita: " + hospedero.Motivo + "</h6>");
+
+            return sb.ToString();
+
+        }
     }
+
 }
