@@ -1,5 +1,5 @@
 ﻿namespace JunquillalUserSystem.Models
- 
+
 {
     public class ReservacionModelo
     {
@@ -12,7 +12,7 @@
         public List<String> placasVehiculos { get; set; }
         public string actividadVisita { get; set; }
 
-        
+
 
         public ReservacionModelo()
         {

@@ -19,7 +19,7 @@ namespace JunquillalUserSystem.Controllers
 
         [HttpPost]
         public IActionResult Calendario()
-        {   
+        {
             ReservacionModelo reservacion = new ReservacionModelo();
             reservacion = reservacionHandler.LlenarCantidadPersonas(reservacion,Request.Form);
             TempData["Reservacion"] = JsonSerializer.Serialize(reservacion);
