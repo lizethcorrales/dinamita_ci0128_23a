@@ -6,6 +6,7 @@ using System.Data.SqlClient;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Specialized;
 
 namespace JunquillalUserSystem.Handlers
 {
@@ -60,6 +61,19 @@ namespace JunquillalUserSystem.Handlers
             //System.Diagnostics.Debug.Write(columna["Nombre"]);
             //
             return (double)costo.Value;
+        }
+
+        public ReservacionModelo llenarCantidadPersonas(ReservacionModelo reservacion, IFormCollection form)
+        {
+
+             reservacion.cantTipoPersona.Add(int.Parse(form["cantidad_Adultos_Nacional"]));
+             reservacion.cantTipoPersona.Add(int.Parse(form["cantidad_Ninnos_Nacional"]));
+             reservacion.cantTipoPersona.Add(int.Parse(form["cantidad_Adultos_Extranjero"]));
+             reservacion.cantTipoPersona.Add(int.Parse(form["cantidad_ninnos_extranjero"]));
+          
+
+
+            return reservacion;
         }
     }
 }

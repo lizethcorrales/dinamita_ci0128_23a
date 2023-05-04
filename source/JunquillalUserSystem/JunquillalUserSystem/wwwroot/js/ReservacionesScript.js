@@ -23,6 +23,10 @@ var placa2 = document.getElementById("placa2");
 var placa3 = document.getElementById("placa3");
 var placa4 = document.getElementById("placa4");
 
+var form = document.getElementById("datosImportantes");
+
+
+
 continuar.addEventListener("click", (e) => {
 	var pasar = 1;
 	if (nombre.value.length < 1) {
@@ -80,7 +84,7 @@ continuar.addEventListener("click", (e) => {
 		}
 	}
 	if (pasar > 0) {
-		location.href = '../Home/FinalizarReserva';
+		form.submit();
 	}
 });
 
