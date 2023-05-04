@@ -5,12 +5,18 @@
         public string Nombre { get; set; }
         public string Apellido1 { get; set; }
         public string Apellido2 { get; set; }
-        public int Identificacion { get; set; }
+        public string Identificacion { get; set; }
         public string Nacionalidad { get; set; }
-        public string Estado { get; set; }
+        public int Estado { get; set; }
+        public string Telefono { get; set; }
+        public string Email { get; set; }
+
+        public string TipoIdentificacion { get; set; }
+
+        public string Motivo { get; set; }
 
     }
 
-    // En vez de este modelo se puede hacer un modelo persona y ver luego si hace herencia
+    
 }
 

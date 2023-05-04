@@ -8,12 +8,14 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Specialized;
 
+
 namespace JunquillalUserSystem.Handlers
 {
     public class ReservacionHandler
     {
         private SqlConnection conexion;
         private string rutaConexion;
+        private static readonly Random _random = new Random();
         public ReservacionHandler()
         {
             var builder = WebApplication.CreateBuilder();
@@ -105,7 +107,7 @@ namespace JunquillalUserSystem.Handlers
             comandoParaConsulta.ExecuteNonQuery();
         }
 
-        public ReservacionModelo llenarCantidadPersonas(ReservacionModelo reservacion, IFormCollection form)
+        public ReservacionModelo LlenarCantidadPersonas(ReservacionModelo reservacion, IFormCollection form)
         {
 
              reservacion.cantTipoPersona.Add(int.Parse(form["cantidad_Adultos_Nacional"]));
@@ -116,6 +118,74 @@ namespace JunquillalUserSystem.Handlers
 
 
             return reservacion;
+        }
+
+        public ReservacionModelo LlenarFechas(ReservacionModelo reservacion, IFormCollection form)
+        {
+
+            reservacion.PrimerDia = form["fecha-entrada"];
+            reservacion.UltimoDia = form["fecha-salida"];
+
+            return reservacion;
+        }
+
+        public ReservacionModelo LlenarInformacionResarva(ReservacionModelo reservacion, IFormCollection form)
+        {
+
+            if (form["placa1"] != "")
+            {
+                reservacion.placasVehiculos.Add(form["placa1"]);
+
+            }
+
+            if (form["placa2"] != "")
+            {
+                reservacion.placasVehiculos.Add(form["placa2"]);
+
+            }
+
+            if (form["placa3"] != "")
+            {
+                reservacion.placasVehiculos.Add(form["placa1"]);
+
+            }
+
+            if (form["placa4"] != "")
+            {
+                reservacion.placasVehiculos.Add(form["placa1"]);
+
+            }
+
+            int length = 10;
+
+            const string allowedChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            var result = new char[length];
+
+            for (int i = 0; i < length; i++)
+            {
+                result[i] = allowedChars[_random.Next(0, allowedChars.Length)];
+            }
+
+            reservacion.Identificador = new string(result);
+
+            return reservacion;
+        }
+        public HospederoModelo LlenarHospedero(IFormCollection form)
+        {
+            HospederoModelo hospedero = new HospederoModelo();
+
+            hospedero.Nombre = form["nombre"];
+            hospedero.Apellido1 = form["primerApellido"];
+            hospedero.Apellido2 = form["segundoApellido"];
+            hospedero.Identificacion = form["identificacion"];
+            hospedero.Telefono = form["segundoApellido"];
+            hospedero.Email = form["email"];
+            hospedero.TipoIdentificacion = form["nacionalidad"];
+            hospedero.Nacionalidad = form["pais"];
+            hospedero.Motivo = form["motivo"];
+            hospedero.Estado = 0;
+
+            return hospedero;
         }
     }
 }
