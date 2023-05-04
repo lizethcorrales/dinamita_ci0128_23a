@@ -19,8 +19,8 @@ namespace JunquillalUserSystem.Controllers
         [HttpPost]
         public IActionResult Calendario()
         {
-    
-            System.Diagnostics.Debug.Write(reservacionHandler.CostoTotal("9149985005"));
+
+            reservacionHandler.insertar_PrecioReservacion("9932098365", "2", "1", "0", "4");
             ReservacionModelo reservacion = new ReservacionModelo();
            reservacion.Identificador = int.Parse(Request.Form["cantidad_Adultos_Nacional"]);
             TempData["Reservacion"] = JsonSerializer.Serialize(reservacion);

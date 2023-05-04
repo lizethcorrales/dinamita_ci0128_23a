@@ -61,5 +61,47 @@ namespace JunquillalUserSystem.Handlers
             //
             return (double)costo.Value;
         }
+
+        public void insertar_PrecioReservacion(string indentificador, string adulto_nacional,
+            string ninno_nacional, string adulto_extranjero, string ninno_extranjero)
+        {
+            string consulta = "insertar_PrecioReservacion";
+            SqlCommand comandoParaConsulta = new SqlCommand(consulta, conexion);
+            comandoParaConsulta.CommandType = CommandType.StoredProcedure;
+            comandoParaConsulta.Parameters.AddWithValue("@identificador_Reserva", indentificador);
+            comandoParaConsulta.Parameters.AddWithValue("@adulto_nacional", adulto_nacional);
+            comandoParaConsulta.Parameters.AddWithValue("@ninno_nacional", ninno_nacional);
+            comandoParaConsulta.Parameters.AddWithValue("@adulto_extranjero", adulto_extranjero);
+            comandoParaConsulta.Parameters.AddWithValue("@ninno_extranjero", ninno_extranjero);
+            conexion.Open();
+            comandoParaConsulta.ExecuteNonQuery();
+        }
+        public void insertarReserva(string identificador, string primerDia, string ultimoDia, string estado)
+        {
+            string consulta = "insertar_Reservacion";
+            SqlCommand comandoParaConsulta = new SqlCommand(consulta, conexion);
+            comandoParaConsulta.CommandType = CommandType.StoredProcedure;
+            comandoParaConsulta.Parameters.AddWithValue("@identificacion_entrante", identificador);
+            comandoParaConsulta.Parameters.AddWithValue("@primerDia_entrante", primerDia);
+            comandoParaConsulta.Parameters.AddWithValue("@ultimoDia_entrante", ultimoDia);
+            comandoParaConsulta.Parameters.AddWithValue("@estado_entrante", estado);
+            conexion.Open();
+            comandoParaConsulta.ExecuteNonQuery();
+        }
+        public void insertarHospedero(string identificacion, string email, string nombre, string apellido1,
+            string apellido2, bool estado)
+        {
+            string consulta = "insertar_hospedero";
+            SqlCommand comandoParaConsulta = new SqlCommand(consulta, conexion);
+            comandoParaConsulta.CommandType = CommandType.StoredProcedure;
+            comandoParaConsulta.Parameters.AddWithValue("@identificacion_entrante", identificacion);
+            comandoParaConsulta.Parameters.AddWithValue("@email_entrante", email);
+            comandoParaConsulta.Parameters.AddWithValue("@nombre_entrante", nombre);
+            comandoParaConsulta.Parameters.AddWithValue("@apellido1_entrante", apellido1);
+            comandoParaConsulta.Parameters.AddWithValue("@apellido2_entrante", apellido2);
+            comandoParaConsulta.Parameters.AddWithValue("@estado_entrante", estado);
+            conexion.Open();
+            comandoParaConsulta.ExecuteNonQuery();
+        }
     }
 }
