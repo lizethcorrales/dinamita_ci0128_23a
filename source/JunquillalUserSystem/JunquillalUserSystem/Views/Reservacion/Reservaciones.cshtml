@@ -13,22 +13,22 @@
 			<br>
 			<div>
 				<h4>Solicitante de Reserva</h4>
-				<form>
+			<form id="datosImportantes" action="FinalizarReserva" method="POST">
 					<div class="formInput" id="divNombre">
 						<label for="nombre">Nombre:</label>
-						<input type='text' id="nombre" placeholder="Ingrese su nombre" size="50">
+					<input type="text" id="nombre" name="nombre" placeholder="Ingrese su nombre" size="50">
 						<p class="mensajeError" id="mensajeErrorNombre"></p>
 					</div>
 					<br>
 					<div class="formInput" id="divApellido1">
 						<label for="primerApellido">Primer Apellido:</label>
-						<input type='text' id="primerApellido" placeholder="Ingrese primer apellido" size="50">
+					<input type="text" id="primerApellido" name="primerApellido" placeholder="Ingrese primer apellido" size="50">
 					     <p class="mensajeError" id="mensajeErrorApellido1"></p>
 					</div>
 					<br>
 					<div class="formInput" id="divApellido2">
 						<label for="segundoApellido">Segundo Apellido:</label>
-						<input type='text' id="segundoApellido" placeholder="Ingrese su segundo apellido" size="50">
+					<input type="text" id="segundoApellido" name="segundoApellido" placeholder="Ingrese su segundo apellido" size="50">
 						<p class="mensajeError" id="mensajeErrorApellido2"></p>
 					</div>
 
@@ -39,7 +39,7 @@
 
 					<div class="formInput" id="divIdent">
 						<label for="identificacion">Identificación:</label>
-						<input type="text" id="identificacion" placeholder="123456789" size="50">
+					<input type="text" id="identificacion" name="identificacion" placeholder="123456789" size="50">
 						<p class="mensajeError" id="mensajeErrorIdent"></p>
 					</div>
 
@@ -49,11 +49,11 @@
 					<h5>Datos de Contacto</h5>
 					<div class="formInput" id="divTelefono">
 						<label for="telefono">Teléfono:</label>
-						<input type="tel" id="telefono" placeholder="80000000" size="50" maxlength="10">
+					<input type="tel" id="telefono" name="telefono" placeholder="80000000" size="50" maxlength="10">
 					</div>
 					<div class="formInput" id="divEmail">
 						<label for="email">Correo electrónico:</label>
-						<input type="email" id="email" placeholder="example@domian.com" size="50" maxlength="50">
+					<input type="email" id="email" name="email" placeholder="example@domian.com" size="50" maxlength="50">
 					</div>
 
 					<br>
@@ -62,7 +62,7 @@
 
 					<h5>Tipo de identificación</h5>
 
-					<input type="radio" id="Nacional" name="nacionalidad" value="Nacional">
+				<input type="radio" id="Nacional"  name="nacionalidad" value="Nacional">
 					<label for="Nacional">Nacional</label>
 					<input type="radio" id="Extranjero" name="nacionalidad" value="Extranjero">
 					<label for="Extranjero">Extranjero</label><br>
@@ -105,29 +105,29 @@
 					<br><br>
 
 					<div class="formInput" id="divPlaca1">
-						<label id="label-placa1" for=“placa1” hidden>Placa 1:</label>
-						<input type=“text” name=“placa1” placeholder="placa del vehículo" size="50" id="placa1" hidden>
-						<p class="mensajeError" id="mensajeErrorApellido1" hidden>Debe digitar una placa</p>
+						<label id="label-placa1" for="placa1" >Placa 1:</label>
+						<input type="text" name="placa1" placeholder="placa del vehículo" size="50" id="placa1" >
+						<p class="mensajeError" id="mensajeErrorApellido1" >Debe digitar una placa</p>
 					</div>
 
 					<div class="formInput" id="divPlaca2">
-						<label id="label-placa2" for=“placa2” hidden>Placa 2:</label>
-						<input type=“text” name=“placa2” placeholder="placa del vehículo" size="50" id="placa2" hidden>
-						<p class="mensajeError" id="mensajeErrorApellido1" hidden>Debe digitar una placa</p>
+						<label id="label-placa2" for="placa2" >Placa 2:</label>
+						<input type="text" name="placa2" placeholder="placa del vehículo" size="50" id="placa2" >
+						<p class="mensajeError" id="mensajeErrorApellido1" >Debe digitar una placa</p>
 					</div>
 					<div class="formInput" id="divPlaca3">
-						<label id="label-placa3" for=“placa3” hidden>Placa 3:</label>
-						<input type=“text” name=“placa3” placeholder="placa del vehículo" size="50" id="placa3" hidden>
-						<p class="mensajeError" id="mensajeErrorApellido1" hidden>Debe digitar una placa</p>
+						<label id="label-placa3" for="placa3" >Placa 3:</label>
+						<input type="text" name="placa3" placeholder="placa del vehículo" size="50" id="placa3" >
+						<p class="mensajeError" id="mensajeErrorApellido1" >Debe digitar una placa</p>
 					</div>
 					<div class="formInput" id="divPlaca4">
-						<label id="label-placa4" for=“placa4” hidden>Placa 4:</label>
-						<input type=“text” name=“placa4” placeholder="placa del vehículo" size="50" id="placa4" hidden>
-						<p class="mensajeError" id="mensajeErrorApellido1" hidden>Debe digitar una placa</p>
+						<label id="label-placa4" for="placa4" >Placa 4:</label>
+						<input type="text" name="placa4" placeholder="placa del vehículo" size="50" id="placa4" >
+						<p class="mensajeError" id="mensajeErrorApellido1" >Debe digitar una placa</p>
 					</div>
 				</form>
 				<br>
-				<button id="atras" class="button2 button" type="button" onclick="location.href='../Home'" value="atras">Atrás</button>
+			<button id="atras" class="button2 button" type="button" onclick="history.back()" value="atras">Atrás</button>
 				<button id="continuar" class="button1 button" type="button" value=" continuar">Continuar</button>
 			</div>
 		</div>
