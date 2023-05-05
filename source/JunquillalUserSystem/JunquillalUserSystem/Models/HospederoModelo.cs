@@ -1,5 +1,6 @@
 ﻿namespace JunquillalUserSystem.Models
 {
+
     public class HospederoModelo
     {
         public string Nombre { get; set; }
@@ -17,6 +18,6 @@
 
     }
 
-    
+
 }
 

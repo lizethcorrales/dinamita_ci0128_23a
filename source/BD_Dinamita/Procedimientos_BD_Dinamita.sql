@@ -99,3 +99,64 @@ BEGIN
 		VALUES (@identificador_Reserva, 'Extranjero', 'Niño', 'Camping', @ninno_extranjero, @precio);
 
 END;
+
+
+
+CREATE PROCEDURE insertar_Placas (
+	@identificador_reserva AS VARCHAR(10),
+	@placa1 AS CHAR(10),
+	@placa2 AS CHAR(10),
+	@placa3 AS CHAR(10),
+	@placa4 AS CHAR(10)
+) AS
+BEGIN 
+	IF (@placa1 <> '')
+		INSERT INTO Placa 
+		VALUES (@identificador_reserva, @placa1);
+
+	IF (@placa2 <> '')
+		INSERT INTO Placa 
+		VALUES (@identificador_reserva, @placa2);
+
+	IF (@placa3 <> '')
+		INSERT INTO Placa 
+		VALUES (@identificador_reserva, @placa3);
+
+	IF (@placa4 <> '')
+		INSERT INTO Placa 
+		VALUES (@identificador_reserva, @placa4);
+
+END;
+
+
+CREATE PROCEDURE insertar_Pago (
+	@comprobante AS CHAR(6),
+	@fecha_pago AS DATE
+) AS
+BEGIN 
+	SELECT Pago.Comprobante
+	FROM Pago
+	WHERE PAGO.Comprobante = @comprobante;
+
+	IF (@@ROWCOUNT = 0)
+		INSERT INTO Pago 
+		VALUES (@comprobante, @fecha_pago);
+END;
+
+
+CREATE PROCEDURE insertar_HospederoRealiza(
+	@identificador_hospedero AS CHAR(20),
+	@identificador_reserva AS VARCHAR(10),
+	@identificador_pago AS CHAR(6)
+) AS
+BEGIN
+	SELECT *
+	FROM HospederoRealiza
+	WHERE HospederoRealiza.IdentificadorReserva = @identificador_reserva AND 
+			HospederoRealiza.IdentificacionHospedero  = @identificador_hospedero AND 
+			HospederoRealiza.ComprobantePago = @identificador_pago;
+
+	IF (@@ROWCOUNT <= 0)
+		INSERT INTO HospederoRealiza
+		VALUES (@identificador_hospedero, @identificador_reserva, @identificador_pago);
+END;

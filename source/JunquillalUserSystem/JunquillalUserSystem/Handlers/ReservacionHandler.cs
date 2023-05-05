@@ -13,6 +13,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Mail;
 using System.Net;
+using Microsoft.AspNetCore.Builder;
+
+
+
 
 namespace JunquillalUserSystem.Handlers
 {
@@ -108,6 +112,44 @@ namespace JunquillalUserSystem.Handlers
             comandoParaConsulta.Parameters.AddWithValue("@apellido1_entrante", apellido1);
             comandoParaConsulta.Parameters.AddWithValue("@apellido2_entrante", apellido2);
             comandoParaConsulta.Parameters.AddWithValue("@estado_entrante", estado);
+            conexion.Open();
+            comandoParaConsulta.ExecuteNonQuery();
+        }
+
+        public void insertarPlacas(string identificador, string placa1, string placa2, string placa3, string placa4)
+        {
+            string consulta = "insertar_Placas";
+            SqlCommand comandoParaConsulta = new SqlCommand(consulta, conexion);
+            comandoParaConsulta.CommandType = CommandType.StoredProcedure;
+            comandoParaConsulta.Parameters.AddWithValue("@identificador_reserva", identificador);
+            comandoParaConsulta.Parameters.AddWithValue("@placa1", placa1);
+            comandoParaConsulta.Parameters.AddWithValue("@placa2", placa2);
+            comandoParaConsulta.Parameters.AddWithValue("@placa3", placa3);
+            comandoParaConsulta.Parameters.AddWithValue("@placa4", placa4);
+            conexion.Open();
+            comandoParaConsulta.ExecuteNonQuery();
+        }
+
+        public void insertarPago(string comprobante, string fechaPago)
+        {
+            string consulta = "insertar_Pago";
+            SqlCommand comandoParaConsulta = new SqlCommand(consulta, conexion);
+            comandoParaConsulta.CommandType = CommandType.StoredProcedure;
+            comandoParaConsulta.Parameters.AddWithValue("@comprobante", comprobante);
+            comandoParaConsulta.Parameters.AddWithValue("@fecha_pago", fechaPago);
+            conexion.Open();
+            comandoParaConsulta.ExecuteNonQuery();
+        }
+
+        public void insertarHospederoRealiza(string identificador_hospedero, string identificador_Reserva, 
+            string identificador_pago)
+        {
+            string consulta = "insertar_HospederoRealiza";
+            SqlCommand comandoParaConsulta = new SqlCommand(consulta, conexion);
+            comandoParaConsulta.CommandType = CommandType.StoredProcedure;
+            comandoParaConsulta.Parameters.AddWithValue("@identificador_hospedero", identificador_hospedero);
+            comandoParaConsulta.Parameters.AddWithValue("@identificador_reserva", identificador_Reserva);
+            comandoParaConsulta.Parameters.AddWithValue("@identificador_pago", identificador_pago);
             conexion.Open();
             comandoParaConsulta.ExecuteNonQuery();
         }
