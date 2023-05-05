@@ -46,6 +46,7 @@ namespace JunquillalUserSystem.Controllers
             reservacion = reservacionHandler.LlenarInformacionResarva(reservacion,Request.Form);
             HospederoModelo hospedero = reservacionHandler.LlenarHospedero(Request.Form);
             string confirmacion = reservacionHandler.CrearConfirmacionMensaje(reservacion,hospedero);
+            reservacionHandler.EnviarEmail(confirmacion,hospedero.Email);
             ViewBag.mensaje = new HtmlString(confirmacion);
             return View();
         }

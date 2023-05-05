@@ -11,6 +11,8 @@ using System.Text;
 using Microsoft.Extensions.Primitives;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Mail;
+using System.Net;
 
 namespace JunquillalUserSystem.Handlers
 {
@@ -241,6 +243,26 @@ namespace JunquillalUserSystem.Handlers
             sb.Append("<h6>Motivo de la visita: " + hospedero.Motivo + "</h6>");
 
             return sb.ToString();
+
+        }
+
+        public void EnviarEmail(string mensaje , string correo)
+        {
+            SmtpClient smtp = new SmtpClient("smtp.office365.com", 587);
+            smtp.EnableSsl = true;
+            smtp.Credentials = new NetworkCredential("dinamita_PI@outlook.com", "PI_JUNQUILLAL");
+            smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
+            smtp.UseDefaultCredentials = false;
+
+            MailMessage mail = new MailMessage();
+            mail.From = new MailAddress("dinamita_PI@outlook.com", "Confirmacion de reserva");
+            mail.To.Add(new MailAddress("dinamita_PI@outlook.com"));
+            mail.Subject = "Un gusto saludarle por parte de Junquillal";
+            mail.IsBodyHtml = true;
+            mail.Body = mensaje;
+
+            smtp.Send(mail);
+
 
         }
     }
