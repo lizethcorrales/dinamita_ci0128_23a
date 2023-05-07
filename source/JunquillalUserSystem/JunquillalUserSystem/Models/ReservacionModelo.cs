@@ -18,6 +18,7 @@
         {
             cantTipoPersona = new List<int>();
             placasVehiculos = new List<string>();
+
         }
     }
 

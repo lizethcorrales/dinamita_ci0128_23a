@@ -61,7 +61,8 @@ namespace JunquillalUserSystem.Handlers
             comandoParaConsulta.Parameters.Add(costo);
             conexion.Open();
             comandoParaConsulta.ExecuteNonQuery();
-           
+            conexion.Close();
+
             //CONSULTA NORMAL
 
             //System.Diagnostics.Debug.Write(costo.Value);
@@ -87,6 +88,7 @@ namespace JunquillalUserSystem.Handlers
             comandoParaConsulta.Parameters.AddWithValue("@ninno_extranjero", ninno_extranjero);
             conexion.Open();
             comandoParaConsulta.ExecuteNonQuery();
+            conexion.Close();
         }
         public void insertarReserva(string identificador, string primerDia, string ultimoDia, string estado)
         {
@@ -99,6 +101,7 @@ namespace JunquillalUserSystem.Handlers
             comandoParaConsulta.Parameters.AddWithValue("@estado_entrante", estado);
             conexion.Open();
             comandoParaConsulta.ExecuteNonQuery();
+            conexion.Close();
         }
         public void insertarHospedero(string identificacion, string email, string nombre, string apellido1,
             string apellido2, bool estado)
@@ -114,6 +117,7 @@ namespace JunquillalUserSystem.Handlers
             comandoParaConsulta.Parameters.AddWithValue("@estado_entrante", estado);
             conexion.Open();
             comandoParaConsulta.ExecuteNonQuery();
+            conexion.Close();
         }
 
         public void insertarPlacas(string identificador, string placa1, string placa2, string placa3, string placa4)
@@ -128,6 +132,7 @@ namespace JunquillalUserSystem.Handlers
             comandoParaConsulta.Parameters.AddWithValue("@placa4", placa4);
             conexion.Open();
             comandoParaConsulta.ExecuteNonQuery();
+            conexion.Close();
         }
 
         public void insertarPago(string comprobante, string fechaPago)
@@ -139,6 +144,50 @@ namespace JunquillalUserSystem.Handlers
             comandoParaConsulta.Parameters.AddWithValue("@fecha_pago", fechaPago);
             conexion.Open();
             comandoParaConsulta.ExecuteNonQuery();
+            conexion.Close();
+        }
+
+        public void InsertarEnBaseDatos(HospederoModelo hospedero , ReservacionModelo reservacion)
+        {
+
+            insertarHospedero(hospedero.Identificacion, hospedero.Email , hospedero.Nombre , hospedero.Apellido1
+                ,hospedero.Apellido2,false);
+            insertarReserva(reservacion.Identificador,reservacion.PrimerDia,reservacion.UltimoDia,"0");
+
+            switch (reservacion.placasVehiculos.Count)
+            {
+                case 0:
+                    insertarPlacas(reservacion.Identificador, "", "", "", "");
+                    break;
+                case 1:
+                    insertarPlacas(reservacion.Identificador, reservacion.placasVehiculos[0], "", "", "");
+                    break;
+                case 2:
+                    insertarPlacas(reservacion.Identificador, reservacion.placasVehiculos[0], reservacion.placasVehiculos[1], "", "");
+                    break;
+                case 3:
+                    insertarPlacas(reservacion.Identificador, reservacion.placasVehiculos[0], reservacion.placasVehiculos[1],
+                        reservacion.placasVehiculos[2], "");
+                    break;
+                case 4:
+                    insertarPlacas(reservacion.Identificador, reservacion.placasVehiculos[0], reservacion.placasVehiculos[1],
+                       reservacion.placasVehiculos[2], reservacion.placasVehiculos[3]);
+                    break;
+
+            }
+
+            insertar_PrecioReservacion(reservacion.Identificador , reservacion.cantTipoPersona[0].ToString(),
+            reservacion.cantTipoPersona[1].ToString(), reservacion.cantTipoPersona[2].ToString(), 
+            reservacion.cantTipoPersona[3].ToString());
+
+            string identificadorPago = crearIdentificador(6);
+            DateOnly date = new DateOnly();
+            insertarPago(identificadorPago, date.ToString());
+
+            insertarHospederoRealiza(hospedero.Identificacion, reservacion.Identificador,
+            identificadorPago);
+
+
         }
 
         public void insertarHospederoRealiza(string identificador_hospedero, string identificador_Reserva, 
@@ -203,8 +252,14 @@ namespace JunquillalUserSystem.Handlers
 
             }
 
-            int length = 10;
+            string identificador = crearIdentificador(10);
+            reservacion.Identificador = identificador;
 
+            return reservacion;
+        }
+
+        public string crearIdentificador(int length)
+        {
             const string allowedChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
             var result = new char[length];
 
@@ -213,9 +268,7 @@ namespace JunquillalUserSystem.Handlers
                 result[i] = allowedChars[_random.Next(0, allowedChars.Length)];
             }
 
-            reservacion.Identificador = new string(result);
-
-            return reservacion;
+            return new string(result);
         }
         public HospederoModelo LlenarHospedero(IFormCollection form)
         {

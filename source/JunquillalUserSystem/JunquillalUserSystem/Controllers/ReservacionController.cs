@@ -48,6 +48,14 @@ namespace JunquillalUserSystem.Controllers
             string confirmacion = reservacionHandler.CrearConfirmacionMensaje(reservacion,hospedero);
             reservacionHandler.EnviarEmail(confirmacion,hospedero.Email);
             ViewBag.mensaje = new HtmlString(confirmacion);
+
+
+            reservacionHandler.InsertarEnBaseDatos(hospedero,reservacion);
+            ViewBag.costoTotal = reservacionHandler.CostoTotal(reservacion.Identificador).ToString();
+
+
+
+
             return View();
         }
     }

@@ -33,8 +33,18 @@
     <div class="centrar">
 
         <h6>Precio</h6>
-        <p>0.0 colones</p>
-        <button class="button1 button" type="submit">Confirmar</button>
+        @if (ViewBag.costoTotal != null && !string.IsNullOrEmpty(ViewBag.costoTotal.ToString()))
+        {
+            <div>@Html.Raw(ViewBag.costoTotal .ToString())</div>
+            <p>@Html.Raw(ViewBag.costoTotal .ToString())</p>
+            
+        }
+        else
+        {
+            <p>0.0 colones</p>
+        }
+        
+        <button class="button1 button" type="submit" method="POST" action="">Confirmar</button>
  
     </div>
 
