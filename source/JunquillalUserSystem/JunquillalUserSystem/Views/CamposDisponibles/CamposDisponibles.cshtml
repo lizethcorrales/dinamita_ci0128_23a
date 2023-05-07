@@ -26,9 +26,15 @@
         
 
         <div id="camposDisponibles">
-            <label id="label_campos" for="label_campos">Campos casetilla:</label>
-            <input type="text" id="campos" name="campos" readonly>
-            <p style="color:red"></p>
+        <label id="label_campos" for="label_campos">Campos casetilla:</label>
+        @if (ViewBag.camposDisponibles != null && !string.IsNullOrEmpty(ViewBag.camposDisponibles) )
+        {
+            <input type="text" id="campos" name="campos" value=@Html.Raw(ViewBag.camposDisponibles) readonly>
+        }
+        
+        
+            
+         <p style="color:red"></p>
         </div>
 
         <script>
