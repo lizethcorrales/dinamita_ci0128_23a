@@ -172,3 +172,50 @@ BEGIN
     JOIN PrecioReservacion AS p ON r.IdentificadorReserva = p.IdentificadorReserva
     WHERE r.PrimerDia <= @fecha AND r.UltimoDia >= @fecha
 END;
+
+
+--Encuentra los dias no disponibles a la hora de elegir dias de entrada y salida en el calendario
+-- se toma en cuenta la cantidad de personas que van en la reservacion
+
+CREATE PROCEDURE [dbo].[BuscarDiasNoDisponibles]
+    @fechas VARCHAR(MAX),
+    @cantidadPersonas INT,
+    @result VARCHAR(MAX) OUTPUT
+AS
+BEGIN
+    -- Convertir la cadena de fechas en una tabla temporal
+    DECLARE @fechasTabla TABLE (RowNum INT, fecha DATE);
+    DECLARE @xml XML = N'<root><fecha>' + REPLACE(@fechas, ',', '</fecha><fecha>') + '</fecha></root>';
+    INSERT INTO @fechasTabla (RowNum, fecha)
+    SELECT ROW_NUMBER() OVER (ORDER BY (SELECT NULL)) AS RowNum, fecha.value('.', 'date') AS fecha
+    FROM @xml.nodes('//root/fecha') AS T(fecha);
+
+    -- Crear una tabla temporal para almacenar las fechas dentro del intervalo dado
+    DECLARE @diasNoDisponibles TABLE (fecha DATE);
+
+    -- Buscar los días no disponibles
+    DECLARE @fecha DATE;
+    DECLARE @contador INT = 1;
+    WHILE @contador <= (SELECT COUNT(*) FROM @fechasTabla)
+    BEGIN
+        SET @fecha = (SELECT fecha FROM @fechasTabla WHERE RowNum = @contador);
+        IF EXISTS (
+            SELECT 1
+            FROM Reservacion r
+            
+            WHERE r.PrimerDia <= @fecha AND r.UltimoDia >= @fecha
+            GROUP BY r.PrimerDia , r.CantidadTotalPersonas
+            HAVING SUM(r.CantidadTotalPersonas) + @cantidadPersonas > 15
+                OR 15 - SUM(r.CantidadTotalPersonas) < @cantidadPersonas
+        )
+        BEGIN
+            INSERT INTO @diasNoDisponibles (fecha) VALUES (@fecha);
+        END;
+        SET @contador = @contador + 1;
+    END;
+
+    -- Devolver los días no disponibles como cadena de caracteres
+    DECLARE @resultString VARCHAR(MAX) = '';
+    SELECT @resultString = @resultString + CAST(fecha AS VARCHAR(10)) + ', ' FROM @diasNoDisponibles;
+    SET @result = LEFT(@resultString, LEN(@resultString) - 1);
+END;
