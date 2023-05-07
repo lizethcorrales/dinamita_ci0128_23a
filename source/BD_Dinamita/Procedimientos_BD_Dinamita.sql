@@ -72,11 +72,11 @@ BEGIN
 
 		SELECT @precio = Tarifa.precio
 		FROM Tarifa
-		WHERE Tarifa.Nacionalidad = 'Nacional' AND Tarifa.Poblacion = 'Niño' AND Tarifa.Actividad = 'Camping';
+		WHERE Tarifa.Nacionalidad = 'Nacional' AND Tarifa.Poblacion = 'NiÃ±o' AND Tarifa.Actividad = 'Camping';
 
 		IF (@ninno_nacional > 0) 
 		INSERT INTO PrecioReservacion
-		VALUES (@identificador_Reserva, 'Nacional', 'Niño', 'Camping', @ninno_nacional, @precio);
+		VALUES (@identificador_Reserva, 'Nacional', 'NiÃ±o', 'Camping', @ninno_nacional, @precio);
 
 	IF (@adulto_extranjero > 0)
 
@@ -92,11 +92,11 @@ BEGIN
 
 		SELECT @precio = Tarifa.precio
 		FROM Tarifa
-		WHERE Tarifa.Nacionalidad = 'Extranjero' AND Tarifa.Poblacion = 'Niño' AND Tarifa.Actividad = 'Camping';
+		WHERE Tarifa.Nacionalidad = 'Extranjero' AND Tarifa.Poblacion = 'NiÃ±o' AND Tarifa.Actividad = 'Camping';
 
 	IF (@ninno_extranjero >0) 
 		INSERT INTO PrecioReservacion
-		VALUES (@identificador_Reserva, 'Extranjero', 'Niño', 'Camping', @ninno_extranjero, @precio);
+		VALUES (@identificador_Reserva, 'Extranjero', 'NiÃ±o', 'Camping', @ninno_extranjero, @precio);
 
 END;
 
@@ -159,4 +159,16 @@ BEGIN
 	IF (@@ROWCOUNT <= 0)
 		INSERT INTO HospederoRealiza
 		VALUES (@identificador_hospedero, @identificador_reserva, @identificador_pago);
+END;
+
+CREATE PROCEDURE ReservasTotales(
+    @fecha AS DATE,
+    @espaciosOcupados AS INT OUTPUT
+)
+AS
+BEGIN
+    SELECT @espaciosOcupados = SUM(all p.Cantidad)
+    FROM Reservacion AS r
+    JOIN PrecioReservacion AS p ON r.IdentificadorReserva = p.IdentificadorReserva
+    WHERE r.PrimerDia <= @fecha AND r.UltimoDia >= @fecha
 END;
