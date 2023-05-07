@@ -201,6 +201,7 @@ namespace JunquillalUserSystem.Handlers
             comandoParaConsulta.Parameters.AddWithValue("@identificador_pago", identificador_pago);
             conexion.Open();
             comandoParaConsulta.ExecuteNonQuery();
+            conexion.Close();
         }
 
         public ReservacionModelo LlenarCantidadPersonas(ReservacionModelo reservacion, IFormCollection form)
