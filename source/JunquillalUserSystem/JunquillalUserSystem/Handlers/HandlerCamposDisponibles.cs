@@ -56,8 +56,11 @@ namespace JunquillalUserSystem.Handlers
             System.Diagnostics.Debug.Write(campos.Value);
             return (int)campos.Value;
         }
-
-        
+        public CamposDisponiblesModel LlenarFecha(CamposDisponiblesModel campos, IFormCollection form)
+        {
+            campos.fecha = form["fecha-entrada"];
+            return campos;
+        }
 
     }
 
