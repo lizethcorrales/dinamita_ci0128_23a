@@ -39,11 +39,12 @@ CREATE PROCEDURE insertar_Reservacion (
 	@identificacion_entrante AS VARCHAR(10),
 	@primerDia_entrante AS DATE,
 	@ultimoDia_entrante AS DATE,
-	@estado_entrante AS BIT
+	@estado_entrante AS BIT,
+	@cantidad_entrante AS SMALLINT
 ) AS
 BEGIN
 	INSERT INTO Reservacion
-		VALUES (@identificacion_entrante, @primerDia_entrante, @ultimoDia_entrante, @estado_entrante)
+		VALUES (@identificacion_entrante, @primerDia_entrante, @ultimoDia_entrante, @estado_entrante, @cantidad_entrante)
 END;
 
 

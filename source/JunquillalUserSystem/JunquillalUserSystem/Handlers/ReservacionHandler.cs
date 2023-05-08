@@ -91,7 +91,8 @@ namespace JunquillalUserSystem.Handlers
             comandoParaConsulta.ExecuteNonQuery();
             conexion.Close();
         }
-        public void insertarReserva(string identificador, string primerDia, string ultimoDia, string estado)
+        public void insertarReserva(string identificador, string primerDia, string ultimoDia, string estado,
+            string cantidad)
         {
             string consulta = "insertar_Reservacion";
             SqlCommand comandoParaConsulta = new SqlCommand(consulta, conexion);
@@ -100,6 +101,7 @@ namespace JunquillalUserSystem.Handlers
             comandoParaConsulta.Parameters.AddWithValue("@primerDia_entrante", primerDia);
             comandoParaConsulta.Parameters.AddWithValue("@ultimoDia_entrante", ultimoDia);
             comandoParaConsulta.Parameters.AddWithValue("@estado_entrante", estado);
+            comandoParaConsulta.Parameters.AddWithValue("@cantidad_entrante", cantidad);
             conexion.Open();
             comandoParaConsulta.ExecuteNonQuery();
             conexion.Close();
@@ -207,7 +209,10 @@ namespace JunquillalUserSystem.Handlers
 
             insertarHospedero(hospedero.Identificacion, hospedero.Email , hospedero.Nombre , hospedero.Apellido1
                 ,hospedero.Apellido2,false);
-            insertarReserva(reservacion.Identificador,reservacion.PrimerDia,reservacion.UltimoDia,"0");
+            int cantidadTotal = reservacion.cantTipoPersona[0] + reservacion.cantTipoPersona[1] +
+                reservacion.cantTipoPersona[2] + reservacion.cantTipoPersona[3];
+            insertarReserva(reservacion.Identificador,reservacion.PrimerDia,reservacion.UltimoDia,"0", 
+                cantidadTotal.ToString());
 
             switch (reservacion.placasVehiculos.Count)
             {
