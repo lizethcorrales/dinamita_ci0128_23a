@@ -206,7 +206,7 @@ BEGIN
             WHERE r.PrimerDia <= @fecha AND r.UltimoDia >= @fecha
             GROUP BY r.PrimerDia , r.CantidadTotalPersonas
             HAVING SUM(r.CantidadTotalPersonas) + @cantidadPersonas > 15
-                OR 15 - SUM(r.CantidadTotalPersonas) < @cantidadPersonas
+                OR 15 - SUM(r.CantidadTotalPersonas) < @cantidadPersonas 
         )
         BEGIN
             INSERT INTO @diasNoDisponibles (fecha) VALUES (@fecha);
@@ -214,8 +214,10 @@ BEGIN
         SET @contador = @contador + 1;
     END;
 
+
+
     -- Devolver los días no disponibles como cadena de caracteres
     DECLARE @resultString VARCHAR(MAX) = '';
-    SELECT @resultString = @resultString + CAST(fecha AS VARCHAR(10)) + ', ' FROM @diasNoDisponibles;
+    SELECT @resultString = @resultString + CAST(fecha AS VARCHAR(10)) + ',' FROM @diasNoDisponibles;
     SET @result = LEFT(@resultString, LEN(@resultString) - 1);
 END;

@@ -23,8 +23,8 @@ namespace JunquillalUserSystem.Controllers
             ReservacionModelo reservacion = new ReservacionModelo();
             reservacion = reservacionHandler.LlenarCantidadPersonas(reservacion,Request.Form);
             TempData["Reservacion"] = JsonSerializer.Serialize(reservacion);
-                   
-            var reservedDates = new[] { "2023-05-02", "2023-05-03", "2023-05-04", "2023-05-30" };
+
+            var reservedDates = reservacionHandler.BuscarDiasNoDisponibles(reservacion);
             ViewBag.reservedDates = reservedDates;
             return View();
         }

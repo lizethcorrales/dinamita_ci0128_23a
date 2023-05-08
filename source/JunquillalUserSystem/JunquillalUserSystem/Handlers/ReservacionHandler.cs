@@ -14,6 +14,7 @@ using System.Linq;
 using System.Net.Mail;
 using System.Net;
 using Microsoft.AspNetCore.Builder;
+using System.Diagnostics;
 
 
 
@@ -134,6 +135,60 @@ namespace JunquillalUserSystem.Handlers
             comandoParaConsulta.ExecuteNonQuery();
             conexion.Close();
         }
+
+
+
+        public string [] BuscarDiasNoDisponibles(ReservacionModelo reservacion)
+        {
+            int cantidadPersonas = reservacion.cantTipoPersona.Sum();
+            string fechas = ObtenerFechasEntreMeses();
+                // Crear el comando para ejecutar el procedimiento almacenado
+                using (SqlCommand command = new SqlCommand("BuscarDiasNoDisponibles", conexion))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+
+                    // Agregar los parámetros al comando
+                    command.Parameters.AddWithValue("@fechas", fechas);
+                    command.Parameters.AddWithValue("@cantidadPersonas", cantidadPersonas);
+
+                    // Agregar el parámetro de salida al comando
+                    SqlParameter resultParam = new SqlParameter("@result", SqlDbType.VarChar, -1);
+                    resultParam.Direction = ParameterDirection.Output;
+                    command.Parameters.Add(resultParam);
+
+                    // Abrir la conexión y ejecutar el comando
+                    conexion.Open();
+                    command.ExecuteNonQuery();
+                    conexion.Close();
+
+                // Obtener el resultado del parámetro de salida
+                string result = (string)command.Parameters["@result"].Value;
+
+                   // Retornar el resultado
+                 string[] vectorFechas = result.Split(',');
+                 return vectorFechas;
+                }
+            
+        }
+
+        public string ObtenerFechasEntreMeses()
+        {
+            DateTime hoy = DateTime.Today;
+            DateTime primerDiaMesActual = new DateTime(hoy.Year, hoy.Month, hoy.Day);
+            DateTime ultimoDiaMesSiguiente = primerDiaMesActual.AddMonths(2).AddDays(-1);
+            int totalDias = (ultimoDiaMesSiguiente - primerDiaMesActual).Days + 1;
+            string[] fechas = new string[totalDias];
+            for (int i = 0; i < totalDias; i++)
+            {
+                fechas[i] = primerDiaMesActual.AddDays(i).ToString("yyyy-MM-dd");
+            }
+
+
+            Debug.WriteLine($"Fechas {string.Join(",", fechas)}");
+            return string.Join(",", fechas);
+
+        }
+
 
         public void insertarPago(string comprobante, string fechaPago)
         {
@@ -352,7 +407,7 @@ namespace JunquillalUserSystem.Handlers
 
             MailMessage mail = new MailMessage();
             mail.From = new MailAddress("dinamita_PI@outlook.com", "Confirmacion de reserva");
-            mail.To.Add(new MailAddress("dinamita_PI@outlook.com"));
+            mail.To.Add(new MailAddress(correo));
             mail.Subject = "Un gusto saludarle por parte de Junquillal";
             mail.IsBodyHtml = true;
             mail.Body = mensaje;
