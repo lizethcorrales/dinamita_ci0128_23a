@@ -18,7 +18,10 @@ namespace JunquillalUserSystem.Controllers
             return View();
         }
 
-
+        public IActionResult CamposDisponibles()
+        {
+            return View();
+        }
 
 
         public IActionResult FormularioCantidadPersonas()
