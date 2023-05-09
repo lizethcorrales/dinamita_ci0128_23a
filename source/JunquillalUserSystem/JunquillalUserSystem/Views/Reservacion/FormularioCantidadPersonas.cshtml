@@ -17,7 +17,7 @@
         </div>
     </header>
     <section>
-        <form id="cantidad" action="" method="GET">
+        <form  id="cantidad" action="Calendario" method="POST">
             <br />
             <div id="error"></div>
             <br />
@@ -47,9 +47,9 @@
                 <input type="number" name="cantidad_ninnos_extranjero" id="cantidad_ninnos_extranjero" required min="0" max="40" value="0" />
             </div>
 
-            <button type="submit" id="siguiente_calendario" onclick="verificarDatosCantidad()">Siguiente</button>
+            <button type="button" id="siguiente_calendario">Siguiente</button>
             <br />
-            <button id="atras" onclick="location.href='../Home/Index'">Atrás</button>
+            <button id="atras" type="button" onclick="history.back()">Atrás</button>
             <br />
         </form>
     </section>

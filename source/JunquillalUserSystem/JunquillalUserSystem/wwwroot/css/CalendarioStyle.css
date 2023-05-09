@@ -8,21 +8,18 @@
 
 
 .button1 {
-    position: fixed;
     background: #F39800 !important;
     color: #fff !important;
     border-radius: 10px;
-    margin-top: 22% !important;
-    margin-left: 45%;
+    width: 150px;
+    margin: 0 5px;
 }
 
 .button2 {
-    position: fixed;
     background: #A2A2A2 !important;
     color: #fff !important;
-    border-radius: 10px;
-    margin-top: 22% !important;
-    margin-left: 35%;
+    width: 150px;
+    margin: 0 5px;
 }
 
 .button {
@@ -30,12 +27,12 @@
 }
 
 #error {
-    position: fixed;
+   
     color: red;
-    margin-top: 28% !important;
-    margin-left: 36%;
+
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     font-size: 22px;
+    display: inline-block;
 }
 
 .reserved {
@@ -58,88 +55,53 @@
 
 .ui-datepicker-calendar {
     width: 100%;
+    
 }
 
 
 #label-fecha-entrada {
-    position: fixed;
-    top: 20%;
-    left: 35%;
-    transform: translate(-50%, -50%);
-    display: block;
-    width: 100%;
+    margin-right: 0px;
+    max-width: 100%;
     text-align: center;
     font-size: 1.2rem;
     font-weight: bold;
-    margin-bottom: 10px;
 }
 
 #fecha-entrada {
-    position: fixed;
-    top: 30%;
-    left: 30%;
+   
 }
 
 #label-fecha-salida {
-    position: fixed;
-    top: 20%;
-    left: 65%;
-    transform: translate(-50%, -50%);
-    display: block;
-    width: 100%;
+   
     text-align: center;
     font-size: 1.2rem;
     font-weight: bold;
-    margin-bottom: 10px;
 }
 
 
 #fecha-salida {
-    position: fixed;
-    top: 30%;
-    left: 60%;
+    
+}
+
+
+.centrar {
+    flex-direction: column;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+}
+
+.centrar1 {
+    margin-top: 90px;
+    flex-direction: row;
+    gap: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-width: 80%;
 }
 
 
 
 
-@media screen and (max-width: 668px) {
-
-    #fecha-entrada {
-        left: 13%;
-    }
-
-    #label-fecha-entrada {
-        left: 28%;
-    }
-
-    #label-fecha-salida {
-        left: 73%;
-    }
-
-    .ui-datepicker {
-        height: 200px;
-        width: 300px;
-       
-        margin-right: 20px;
-    }
-
-
-    .button1 {
-        position: fixed;
-        background: #F39800 !important;
-        color: #fff !important;
-        border-radius: 10px;
-        margin-top: 40% !important;
-        margin-left: 55%;
-    }
-
-    .button2 {
-        position: fixed;
-        background: #A2A2A2 !important;
-        color: #fff !important;
-        border-radius: 10px;
-        margin-top: 40% !important;
-        margin-left: 35%;
-    }
-}

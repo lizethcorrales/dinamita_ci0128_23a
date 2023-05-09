@@ -18,21 +18,30 @@
 </head>
 
 <body>
-    <label id="label-fecha-entrada" for="fecha-entrada">Fecha de entrada:</label>
-    <input type="text" id="fecha-entrada" name="fecha-entrada" readonly>
-    <label for="fecha-salida" id="label-fecha-salida">Fecha de salida:</label>
-    <input type="text" id="fecha-salida" name="fecha-salida" readonly>
-    <button class="button1"  id="btn-siguiente"> Siguiente </button>
-    <button class="button2" type="submit" onClick="location.href='../Home/Index'"> Regresar </button>
-    <div id="error"></div>
- 
+
+    <form id="fechas" action="Reservaciones" method="POST">
+    <div class="centrar">
     
+     <div class="centrar1">
+    <label id="label-fecha-entrada" for="fecha-entrada">Fecha de entrada:</label>
+    <label for="fecha-salida" id="label-fecha-salida">Fecha de salida:</label>
 
+    </div>
 
-
-
-
-
+    <div class="centrar1">
+    <input type="datetime" id="fecha-entrada" name="fecha-entrada" readonly>
+    
+    <input type="datetime" id="fecha-salida" name="fecha-salida" readonly>
+    </div>
+    <div class="centrar1">
+    <button class="button2" type="button" onclick="history.back()"> Regresar </button>
+    <button type="button" class="button1"  id="btn-siguiente"> Siguiente </button>
+        
+    </div>
+        <div id="error"></div>
+    </div>
+    
+    </form>
     @section Scripts{
 
         <script>
@@ -127,18 +136,21 @@
                 });
             });
 
+            var form = document.getElementById("fechas");
             var err = document.getElementById("error");
             const btnSiguiente = document.querySelector('#btn-siguiente');
             btnSiguiente.addEventListener('click', function () {
                 const fechaEntrada = document.querySelector('#fecha-entrada').value;
                 const fechaSalida = document.querySelector('#fecha-salida').value;
                 if (fechaEntrada && fechaSalida) {
-                    window.location.href = '../Home/FormularioCantidadPersonas';
+
+                    form.submit(); 
+               
                    
                 } else {    
                       
                         err.innerText = "Debes llenar las dos fechas";
-
+                        
                 }
             });
 

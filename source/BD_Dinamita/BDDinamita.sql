@@ -148,6 +148,50 @@ FOREIGN KEY(ComprobantePago) REFERENCES Pago(Comprobante)
 INSERT INTO Pais 
 VALUES ('Costa Rica'), ('Panama'), ('Alemania'), ('Estados Unidos'), ('España'), ('Inglaterra')
 
+--Se agrega un atributo cantidad de personas total a la tabla de Reservacion
+
+ALTER TABLE Reservacion
+ADD CantidadTotalPersonas SMALLINT;
+
+
+--Datos de prueba para el nuevo atributo
+UPDATE Reservacion
+SET CantidadTotalPersonas = '5'
+WHERE Reservacion.IdentificadorReserva = '3957409889';
+
+UPDATE Reservacion
+SET CantidadTotalPersonas = '5'
+WHERE Reservacion.IdentificadorReserva = '2595141556';
+
+
+UPDATE Reservacion
+SET CantidadTotalPersonas = '20'
+WHERE Reservacion.IdentificadorReserva = '3463933048';
+
+UPDATE Reservacion
+SET CantidadTotalPersonas = '1'
+WHERE Reservacion.IdentificadorReserva = '5396857873';
+
+UPDATE Reservacion
+SET CantidadTotalPersonas = '9'
+WHERE Reservacion.IdentificadorReserva = '8865933684';
+
+UPDATE Reservacion
+SET CantidadTotalPersonas = '5'
+WHERE Reservacion.IdentificadorReserva = '8BX2Wag6c7';
+
+UPDATE Reservacion
+SET CantidadTotalPersonas = '40'
+WHERE Reservacion.IdentificadorReserva = '9149985005';
+
+UPDATE Reservacion
+SET CantidadTotalPersonas = '7'
+WHERE Reservacion.IdentificadorReserva = '9932098365';
+
+UPDATE Reservacion
+SET CantidadTotalPersonas = '7'
+WHERE Reservacion.IdentificadorReserva = 'XDHpYSWAWB';
+
 
 INSERT INTO Hospedero
 VALUES ('206780989', 'hoquadoibizo-2894@yopmail.com','Mateo', 'Barrantes', 'García', '0', 'Costa Rica'),

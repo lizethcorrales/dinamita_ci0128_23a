@@ -13,11 +13,14 @@
 
   <ItemGroup>
     <Content Remove="Views\Home\CalendarioR.cshtml" />
+    <Content Remove="Views\Home\DatosReserva.cshtml" />
     <Content Remove="Views\Home\FileName.cshtml" />
+    <Content Remove="Views\Home\Reservaciones.cshtml" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="jQuery.UI.Combined" Version="1.12.1" />
+    <PackageReference Include="jQuery.UI.Combined" Version="1.13.2" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.8.5" />
   </ItemGroup>
 
   <ItemGroup>
