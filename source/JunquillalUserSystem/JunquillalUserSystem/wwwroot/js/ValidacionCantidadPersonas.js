@@ -6,15 +6,13 @@ var ninnosExtranjeros = document.getElementById("cantidad_ninnos_extranjero");
 var form = document.getElementById("cantidad");
 var err = document.getElementById("error");
 
-form.addEventListener("submit", (e) => {
+const submitButton = document.getElementById('siguiente_calendario');
+submitButton.addEventListener('click', validarFormulario);
+
+function validarFormulario(event) {
+    event.preventDefault();
     var cantidadP = parseInt(adultosNacionales.value) + parseInt(adultosExtranjeros.value) + parseInt(ninnosNacionales.value) + parseInt(ninnosExtranjeros.value);
     let messages = [];
-
-    if ((cantidadP >= 1 && cantidadP <= 40) && (adultosNacionales.value > 0 || adultosExtranjeros.value > 0)) {
-        e.preventDefault();
-        window.location.href = "Calendario";
-        
-    }
 
     if (cantidadP < 1) {
         messages.push("Revise que haya al menos una persona");
@@ -29,7 +27,12 @@ form.addEventListener("submit", (e) => {
     }
 
     if (messages.length > 0) {
-        e.preventDefault();
+        event.preventDefault();
         err.innerText = messages.join(", ");
+        return false;
     }
-})
+
+    if ((cantidadP >= 1 && cantidadP <= 40) && (adultosNacionales.value > 0 || adultosExtranjeros.value > 0)) {
+        form.submit();        
+    }
+}

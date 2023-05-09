@@ -12,7 +12,7 @@ Nombre VARCHAR(20) NOT NULL,
 Apellido1 VARCHAR(20) NOT NULL,
 Apellido2 VARCHAR(20),
 Estado BIT,
-NombrePais VARCHAR(30) NOT NULL,
+NombrePais VARCHAR(30) NOT NULL, -- se elimina esto
 PRIMARY KEY (Identificacion),
 FOREIGN KEY(NombrePais) REFERENCES Pais (Nombre),
 UNIQUE (Email)
@@ -148,6 +148,50 @@ FOREIGN KEY(ComprobantePago) REFERENCES Pago(Comprobante)
 INSERT INTO Pais 
 VALUES ('Costa Rica'), ('Panama'), ('Alemania'), ('Estados Unidos'), ('España'), ('Inglaterra')
 
+--Se agrega un atributo cantidad de personas total a la tabla de Reservacion
+
+ALTER TABLE Reservacion
+ADD CantidadTotalPersonas SMALLINT;
+
+
+--Datos de prueba para el nuevo atributo
+UPDATE Reservacion
+SET CantidadTotalPersonas = '5'
+WHERE Reservacion.IdentificadorReserva = '3957409889';
+
+UPDATE Reservacion
+SET CantidadTotalPersonas = '5'
+WHERE Reservacion.IdentificadorReserva = '2595141556';
+
+
+UPDATE Reservacion
+SET CantidadTotalPersonas = '20'
+WHERE Reservacion.IdentificadorReserva = '3463933048';
+
+UPDATE Reservacion
+SET CantidadTotalPersonas = '1'
+WHERE Reservacion.IdentificadorReserva = '5396857873';
+
+UPDATE Reservacion
+SET CantidadTotalPersonas = '9'
+WHERE Reservacion.IdentificadorReserva = '8865933684';
+
+UPDATE Reservacion
+SET CantidadTotalPersonas = '5'
+WHERE Reservacion.IdentificadorReserva = '8BX2Wag6c7';
+
+UPDATE Reservacion
+SET CantidadTotalPersonas = '40'
+WHERE Reservacion.IdentificadorReserva = '9149985005';
+
+UPDATE Reservacion
+SET CantidadTotalPersonas = '7'
+WHERE Reservacion.IdentificadorReserva = '9932098365';
+
+UPDATE Reservacion
+SET CantidadTotalPersonas = '7'
+WHERE Reservacion.IdentificadorReserva = 'XDHpYSWAWB';
+
 
 INSERT INTO Hospedero
 VALUES ('206780989', 'hoquadoibizo-2894@yopmail.com','Mateo', 'Barrantes', 'García', '0', 'Costa Rica'),
@@ -247,4 +291,35 @@ VALUES ('206780989', '8865933684', '908967'),
 		('404580125', '9149985005', '808765'),
 		('503890135', '5396857873', '544992')
 
+-- Modificaciones y mejoras a las tablas 
+ALTER TABLE Reservacion 
+ADD Estado INT CHECK (Estado >= 0 AND Estado <= 2); 
 
+
+-- se elimina la llave foranea de nombrePais con Pais de la tabla Hospedero
+
+-- Creacion de una nueva tabla para la cantidad de personas por pais en una reserva
+
+CREATE TABLE TieneNacionalidad(
+IdentificadorReserva VARCHAR(10) NOT NULL,
+NombrePais VARCHAR(30) NOT NULL,
+Cantidad SMALLINT,
+PRIMARY KEY (IdentificadorReserva, NombrePais),
+FOREIGN KEY (IdentificadorReserva) REFERENCES Reservacion(IdentificadorReserva),
+FOREIGN KEY (NombrePais) REFERENCES Pais(Nombre)
+);
+
+--Se le agregan valores nuevos de prueba al nuevo atributo de la tabla Reservacion
+UPDATE Reservacion
+SET Estado = '0';
+
+-- Se agregan datos de prueba a la nueva tabla de nacionalidades
+
+INSERT INTO TieneNacionalidad
+VALUES ('8865933684', 'Costa Rica', '9'), 
+		('2595141556', 'Estados Unidos', '5'),
+		('3463933048', 'Alemania', '20'),
+		('3957409889', 'Costa Rica', '5'),
+		('5396857873', 'España', '1'),
+		('9149985005', 'Costa Rica', '40'),
+		('9932098365', 'Inglaterra', '7')
