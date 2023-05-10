@@ -12,9 +12,9 @@ Nombre VARCHAR(20) NOT NULL,
 Apellido1 VARCHAR(20) NOT NULL,
 Apellido2 VARCHAR(20),
 Estado BIT,
-NombrePais VARCHAR(30) NOT NULL, -- se elimina esto
+NombrePais VARCHAR(30) NOT NULL, -- esto se borra en nuevas actualizaciones
 PRIMARY KEY (Identificacion),
-FOREIGN KEY(NombrePais) REFERENCES Pais (Nombre),
+FOREIGN KEY(NombrePais) REFERENCES Pais (Nombre), -- esto se borra en nuevas actualizaciones
 UNIQUE (Email)
 );
 
@@ -146,7 +146,7 @@ FOREIGN KEY(ComprobantePago) REFERENCES Pago(Comprobante)
 -- Insertar tuplas de prueba
 
 INSERT INTO Pais 
-VALUES ('Costa Rica'), ('Panama'), ('Alemania'), ('Estados Unidos'), ('España'), ('Inglaterra')
+VALUES ('Costa Rica'), ('Panama'), ('Alemania'), ('Estados Unidos'), ('Espaï¿½a'), ('Inglaterra')
 
 --Se agrega un atributo cantidad de personas total a la tabla de Reservacion
 
@@ -194,13 +194,13 @@ WHERE Reservacion.IdentificadorReserva = 'XDHpYSWAWB';
 
 
 INSERT INTO Hospedero
-VALUES ('206780989', 'hoquadoibizo-2894@yopmail.com','Mateo', 'Barrantes', 'García', '0', 'Costa Rica'),
+VALUES ('206780989', 'hoquadoibizo-2894@yopmail.com','Mateo', 'Barrantes', 'Garcï¿½a', '0', 'Costa Rica'),
 		('906750989', 'kucrexawagreu-9178@yopmail.com','Allen', 'Quesada', 'Sanchez', '0', 'Estados Unidos'),
-		('806550769', 'loinazudelu-1663@yopmail.com','Gwen', 'Rodriguez', 'Chacón', '0', 'Estados Unidos'),
+		('806550769', 'loinazudelu-1663@yopmail.com','Gwen', 'Rodriguez', 'Chacï¿½n', '0', 'Estados Unidos'),
 		('106950745', 'kudelayequau-3433@yopmail.com','Ana', 'Smith', 'Morales', '0', 'Costa Rica'),
 		('307980965', 'lappiddebrouyau-4416@yopmail.com','Gerardo', 'Brenes', 'Suarez', '0', 'Alemania'),
-		('404580125', 'criprauquijeura-2692@yopmail.com','Nicolle', 'Hernández', 'Matarrita', '0', 'Costa Rica'),
-		('503890135', 'valayouxeiga-6823@yopmail.com','Samuel', 'Zamora', 'Miranda', '0', 'España')
+		('404580125', 'criprauquijeura-2692@yopmail.com','Nicolle', 'Hernï¿½ndez', 'Matarrita', '0', 'Costa Rica'),
+		('503890135', 'valayouxeiga-6823@yopmail.com','Samuel', 'Zamora', 'Miranda', '0', 'Espaï¿½a')
 
 
 INSERT INTO Reservacion 
@@ -224,22 +224,22 @@ VALUES ('8865933684', 'bgd-125'),
 
 INSERT INTO Tarifa
 VALUES ('Nacional', 'Adulto', 'Picnic', '2260', ''),
-		('Nacional', 'Niño', 'Picnic', '1130', ''),
+		('Nacional', 'Niï¿½o', 'Picnic', '1130', ''),
 		('Extranjero', 'Adulto', 'Picnic', '13.56', ''),
-		('Extranjero', 'Niño', 'Picnic', '5.65', ''),
+		('Extranjero', 'Niï¿½o', 'Picnic', '5.65', ''),
 		('Nacional', 'Adulto', 'Camping', '4520', ''),
-		('Nacional', 'Niño', 'Camping', '3390', ''),
+		('Nacional', 'Niï¿½o', 'Camping', '3390', ''),
 		('Extranjero', 'Adulto', 'Camping', '18.08', ''),
-		('Extranjero', 'Niño', 'Camping', '10.17', '')
+		('Extranjero', 'Niï¿½o', 'Camping', '10.17', '')
 
 INSERT INTO PrecioReservacion
 VALUES ('8865933684', 'Nacional', 'Adulto', 'Camping', '6', '4520'),
-		('8865933684', 'Nacional', 'Niño', 'Camping', '3', '3390'),
+		('8865933684', 'Nacional', 'Niï¿½o', 'Camping', '3', '3390'),
 		('9932098365', 'Extranjero', 'Adulto', 'Camping', '7', '18.08'),
 		('2595141556', 'Extranjero', 'Adulto', 'Camping', '3', '18.08'),
-		('2595141556', 'Extranjero', 'Niño', 'Camping', '2', '10.17'),
+		('2595141556', 'Extranjero', 'Niï¿½o', 'Camping', '2', '10.17'),
 		('3957409889', 'Nacional', 'Adulto', 'Camping', '3', '4520'),
-		('3957409889', 'Nacional', 'Niño', 'Camping', '2', '3390'),
+		('3957409889', 'Nacional', 'Niï¿½o', 'Camping', '2', '3390'),
 		('3463933048', 'Extranjero', 'Adulto', 'Camping', '20', '18.08'),
 		('9149985005', 'Nacional', 'Adulto', 'Camping', '40', '4520'),
 		('5396857873', 'Extranjero', 'Adulto', 'Camping', '1', '18.08')
@@ -320,6 +320,9 @@ VALUES ('8865933684', 'Costa Rica', '9'),
 		('2595141556', 'Estados Unidos', '5'),
 		('3463933048', 'Alemania', '20'),
 		('3957409889', 'Costa Rica', '5'),
-		('5396857873', 'España', '1'),
+		('5396857873', 'Espaï¿½a', '1'),
 		('9149985005', 'Costa Rica', '40'),
 		('9932098365', 'Inglaterra', '7')
+
+
+--Falta agregar tabla de nacionalidad de las visitas parecida a TieneNacionalidad con Hospedero, para el sprint 2
