@@ -1,0 +1,107 @@
+﻿@charset "utf-8";
+/* CSS Document */
+
+.ui-state-selected {
+    background-color: lightgreen;
+    color: #fff;
+}
+
+
+.button1 {
+    background: #F39800 !important;
+    color: #fff !important;
+    border-radius: 10px;
+    width: 150px;
+    margin: 0 5px;
+}
+
+.button2 {
+    background: #A2A2A2 !important;
+    color: #fff !important;
+    width: 150px;
+    margin: 0 5px;
+}
+
+.button {
+    border-radius: 10px;
+}
+
+#error {
+   
+    color: red;
+
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 22px;
+    display: inline-block;
+}
+
+.reserved {
+    opacity: 80;
+    background-color: #ff8577;
+    color: #ff8577;
+    border: 2px solid #ff8577;
+}
+
+
+.ui-datepicker {
+    opacity: 40;
+    height: 330px;
+    width: 400px;
+    font-size: 20px;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+
+
+.ui-datepicker-calendar {
+    width: 100%;
+    
+}
+
+
+#label-fecha-entrada {
+    margin-right: 0px;
+    max-width: 100%;
+    text-align: center;
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+#fecha-entrada {
+   
+}
+
+#label-fecha-salida {
+   
+    text-align: center;
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+
+#fecha-salida {
+    
+}
+
+
+.centrar {
+    flex-direction: column;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+}
+
+.centrar1 {
+    margin-top: 90px;
+    flex-direction: row;
+    gap: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-width: 80%;
+}
+
+
+
+
