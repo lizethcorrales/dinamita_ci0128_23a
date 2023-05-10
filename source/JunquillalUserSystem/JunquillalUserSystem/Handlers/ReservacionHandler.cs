@@ -206,6 +206,10 @@ namespace JunquillalUserSystem.Handlers
             
         }
 
+        /*
+         * Obtienes las fechas en un intervalo que va desde el dia actual
+         * hasta el ultimo dia del siguiente mes
+         */ 
         public string ObtenerFechasEntreMeses()
         {
             DateTime hoy = DateTime.Today;
@@ -314,6 +318,10 @@ namespace JunquillalUserSystem.Handlers
             conexion.Close();
         }
 
+        /*
+         * Obtiene los datos de la cantidad de personas que se almacenaron
+         * en el form y se guardan en el modelo reservacion
+         */ 
         public ReservacionModelo LlenarCantidadPersonas(ReservacionModelo reservacion, IFormCollection form)
         {
 
@@ -327,6 +335,9 @@ namespace JunquillalUserSystem.Handlers
             return reservacion;
         }
 
+        /*
+         * Obtiene las fechas del form y las guarda en el modelo reservacion
+         */ 
         public ReservacionModelo LlenarFechas(ReservacionModelo reservacion, IFormCollection form)
         {
 
@@ -336,6 +347,9 @@ namespace JunquillalUserSystem.Handlers
             return reservacion;
         }
 
+        /*
+         * Obtiene la informacion importante del form y la guarda en el modelo reserva
+         */ 
         public ReservacionModelo LlenarInformacionResarva(ReservacionModelo reservacion, IFormCollection form)
         {
 
@@ -369,6 +383,9 @@ namespace JunquillalUserSystem.Handlers
             return reservacion;
         }
 
+        /*
+         * Crea un ID de tamaño "length"
+        */
         public string crearIdentificador(int length)
         {
             const string allowedChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
@@ -381,6 +398,10 @@ namespace JunquillalUserSystem.Handlers
 
             return new string(result);
         }
+
+        /*
+         * Llena el modelo hospedero con la informacion del form
+         */ 
         public HospederoModelo LlenarHospedero(IFormCollection form)
         {
             HospederoModelo hospedero = new HospederoModelo();
@@ -399,6 +420,10 @@ namespace JunquillalUserSystem.Handlers
             return hospedero;
         }
 
+        /*
+         * Genera la descripcion de confirmacion de la reserva con la informacion
+         * del modelo de reservacion y hospedero
+         */ 
         public string CrearConfirmacionMensaje(ReservacionModelo reservacion, HospederoModelo hospedero)
         {
             StringBuilder sb = new StringBuilder();
@@ -452,6 +477,10 @@ namespace JunquillalUserSystem.Handlers
 
         }
 
+
+        /*
+         * Envia el mensaje de la descripcion al correo del hospedero
+         */ 
         public void EnviarEmail(string mensaje , string correo)
         {
             SmtpClient smtp = new SmtpClient("smtp.office365.com", 587);
