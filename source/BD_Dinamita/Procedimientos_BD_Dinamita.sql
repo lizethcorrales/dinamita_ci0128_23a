@@ -1,10 +1,11 @@
 --PROCEDIMIENTOS DE LA BASE DE DATOS
-
+-- Este procedimiento devuelve el costo total de la reserva a partir de la información contenida en la tabla PrecioReservacion.
 CREATE PROCEDURE calcularCostoTotalReserva (
      @identificador_Reserva AS VARCHAR(10),
      @costo_Total AS DOUBLE PRECISION OUTPUT
 ) AS 
 BEGIN
+    -- Se obtiene el producto de la cantidad de personas (de cierta población:niño/adulto, nacional/extranjero) por su tarifa, posteriormente es sumado para obtener el precio total de la reserva.
     SELECT @costo_Total = SUM(PrecioReservacion.Cantidad * PrecioReservacion.PrecioActual)
     FROM PrecioReservacion
     WHERE PrecioReservacion.IdentificadorReserva = @identificador_Reserva
@@ -12,14 +13,13 @@ BEGIN
 END;
 
 
-
+-- Este procedimiento agrega los datos del hospedero a la tabla Hospedero, según los datos recibidos por parámetro.
 CREATE PROCEDURE insertar_Hospedero (
 	@identificacion_entrante AS CHAR(20),
 	@email_entrante AS VARCHAR(60),
 	@nombre_entrante AS VARCHAR(20),
 	@apellido1_entrante AS VARCHAR(20),
-	@apellido2_entrante AS VARCHAR(20),
-	@estado_entrante AS BIT
+	@apellido2_entrante AS VARCHAR(20)
 ) AS
 BEGIN 
 	SELECT Hospedero.Identificacion
@@ -29,12 +29,12 @@ BEGIN
 	IF @@ROWCOUNT = 0 
 		 INSERT INTO Hospedero
 		 VALUES (@identificacion_entrante, @email_entrante, @nombre_entrante, @apellido1_entrante,
-				 @apellido2_entrante, @estado_entrante);
+				 @apellido2_entrante);
 END;
 
 
 
---Se elimina precio total de los atributos de la tabla reservacion
+-- Este procedimiento agrega la información de una reserva a la tabla Reservacion
 CREATE PROCEDURE insertar_Reservacion (
 	@identificacion_entrante AS VARCHAR(10),
 	@primerDia_entrante AS DATE,
@@ -48,61 +48,94 @@ BEGIN
 END;
 
 
-
-CREATE PROCEDURE insertar_PrecioReservacion(
+-- Este procedimiento agrega a la tabla PrecioReservacion, el precio por cada tipo de población registrada en la reservación.
+ALTER PROCEDURE [dbo].[insertar_PrecioReservacion](
 	@identificador_Reserva AS VARCHAR(10),
 	@adulto_nacional AS SMALLINT,
-	@ninno_nacional AS SMALLINT,
+	@ninno_nacional_mayor6 AS SMALLINT,
+	@ninno_nacional_menor6 AS SMALLINT,
+	@adulto_mayor_nacional AS SMALLINT,
 	@adulto_extranjero AS SMALLINT,
-	@ninno_extranjero AS SMALLINT
+	@ninno_extranjero AS SMALLINT,
+	@adulto_mayor_extranjero AS SMALLINT
 ) AS
 BEGIN
 	DECLARE @precio AS DOUBLE PRECISION;
 
 	IF (@adulto_nacional > 0)
-
+		BEGIN
 		SELECT @precio = Tarifa.precio
 		FROM Tarifa
 		WHERE Tarifa.Nacionalidad = 'Nacional' AND Tarifa.Poblacion = 'Adulto' AND Tarifa.Actividad = 'Camping';
 
-		IF @adulto_nacional > 0
 		INSERT INTO PrecioReservacion
 		VALUES (@identificador_Reserva, 'Nacional', 'Adulto', 'Camping', @adulto_nacional, @precio);
+		END;
 
-	IF (@ninno_nacional > 0) 
+	IF (@ninno_nacional_menor6 > 0) 
+		BEGIN
+		SELECT @precio = Tarifa.precio
+		FROM Tarifa
+		WHERE Tarifa.Nacionalidad = 'Nacional' AND Tarifa.Poblacion = 'Niño menor 6 años' AND Tarifa.Actividad = 'Camping';
+ 
+		INSERT INTO PrecioReservacion
+		VALUES (@identificador_Reserva, 'Nacional', 'Niño menor 6 años', 'Camping', @ninno_nacional_menor6, @precio);
+		END;
 
+	IF (@ninno_nacional_mayor6 > 0) 
+		BEGIN
 		SELECT @precio = Tarifa.precio
 		FROM Tarifa
 		WHERE Tarifa.Nacionalidad = 'Nacional' AND Tarifa.Poblacion = 'Niño' AND Tarifa.Actividad = 'Camping';
-
-		IF (@ninno_nacional > 0) 
+ 
 		INSERT INTO PrecioReservacion
-		VALUES (@identificador_Reserva, 'Nacional', 'Niño', 'Camping', @ninno_nacional, @precio);
+		VALUES (@identificador_Reserva, 'Nacional', 'Niño', 'Camping', @ninno_nacional_mayor6, @precio);
+		END;
+
+	IF (@adulto_mayor_nacional > 0)
+		BEGIN
+		SELECT @precio = Tarifa.precio
+		FROM Tarifa
+		WHERE Tarifa.Nacionalidad = 'Nacional' AND Tarifa.Poblacion = 'Adulto Mayor' AND Tarifa.Actividad = 'Camping';
+
+		INSERT INTO PrecioReservacion
+		VALUES (@identificador_Reserva, 'Nacional', 'Adulto Mayor', 'Camping', @adulto_mayor_nacional, @precio);
+		END;
 
 	IF (@adulto_extranjero > 0)
-
+		BEGIN
 		SELECT @precio = Tarifa.precio
 		FROM Tarifa
 		WHERE Tarifa.Nacionalidad = 'Extranjero' AND Tarifa.Poblacion = 'Adulto' AND Tarifa.Actividad = 'Camping';
 
-		IF (@adulto_extranjero > 0)
 		INSERT INTO PrecioReservacion
 		VALUES (@identificador_Reserva, 'Extranjero', 'Adulto', 'Camping', @adulto_extranjero, @precio);
+		END;
 
 	IF (@ninno_extranjero >0) 
-
+		BEGIN
 		SELECT @precio = Tarifa.precio
 		FROM Tarifa
 		WHERE Tarifa.Nacionalidad = 'Extranjero' AND Tarifa.Poblacion = 'Niño' AND Tarifa.Actividad = 'Camping';
 
-	IF (@ninno_extranjero >0) 
 		INSERT INTO PrecioReservacion
 		VALUES (@identificador_Reserva, 'Extranjero', 'Niño', 'Camping', @ninno_extranjero, @precio);
+		END;
+
+	IF (@adulto_mayor_extranjero > 0)
+		BEGIN
+		SELECT @precio = Tarifa.precio
+		FROM Tarifa
+		WHERE Tarifa.Nacionalidad = 'Nacional' AND Tarifa.Poblacion = 'Adulto Mayor' AND Tarifa.Actividad = 'Camping';
+
+		INSERT INTO PrecioReservacion
+		VALUES (@identificador_Reserva, 'Extranjero', 'Adulto Mayor', 'Camping', @adulto_mayor_extranjero, @precio);
+		END;
 
 END;
 
 
-
+-- Este procedimiento agrega las placas ingresadas por el reservante a la tabla Placa
 CREATE PROCEDURE insertar_Placas (
 	@identificador_reserva AS VARCHAR(10),
 	@placa1 AS CHAR(10),
@@ -129,7 +162,7 @@ BEGIN
 
 END;
 
-
+-- Este procedimiento agrega la fecha de pago y su respectivo comprobante a la tabla Pago
 CREATE PROCEDURE insertar_Pago (
 	@comprobante AS CHAR(6),
 	@fecha_pago AS DATE
@@ -144,7 +177,7 @@ BEGIN
 		VALUES (@comprobante, @fecha_pago);
 END;
 
-
+-- Este procedimiento registra el pago de una reservación realizada por un hospedero 
 CREATE PROCEDURE insertar_HospederoRealiza(
 	@identificador_hospedero AS CHAR(20),
 	@identificador_reserva AS VARCHAR(10),
@@ -162,6 +195,7 @@ BEGIN
 		VALUES (@identificador_hospedero, @identificador_reserva, @identificador_pago);
 END;
 
+-- Este procedimiento calcula la cantidad de reservas realizadas en un día específico
 CREATE PROCEDURE ReservasTotales(
     @fecha AS DATE,
     @espaciosOcupados AS INT OUTPUT
@@ -175,9 +209,8 @@ BEGIN
 END;
 
 
---Encuentra los dias no disponibles a la hora de elegir dias de entrada y salida en el calendario
--- se toma en cuenta la cantidad de personas que van en la reservacion
-
+--Este procedimiento encuentra los dias no disponibles al momento de elegir dias de entrada y salida en el calendario
+-- se toma en cuenta la cantidad de personas que registradas en la reservación
 CREATE PROCEDURE [dbo].[BuscarDiasNoDisponibles]
     @fechas VARCHAR(MAX),
     @cantidadPersonas INT,
