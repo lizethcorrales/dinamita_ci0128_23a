@@ -38,20 +38,11 @@ namespace JunquillalUserSystem.Handlers
             SqlCommand comandoParaConsulta = new SqlCommand(consulta, conexion);
             comandoParaConsulta.CommandType = CommandType.StoredProcedure;
             comandoParaConsulta.Parameters.AddWithValue("@fecha", fecha);
-
-            //SqlParameter reserva = new SqlParameter("@identificador_Reserva", SqlDbType.VarChar);
-            //reserva.Value = identificadorReserva;
             SqlParameter campos = new SqlParameter("@espaciosOcupados", SqlDbType.Int);
             campos.Direction = ParameterDirection.Output;
             comandoParaConsulta.Parameters.Add(campos);
 
             conexion.Open();
-            /*
-            SqlDataReader lector = comandoParaConsulta.ExecuteReader();
-            lector.Read();
-            string resultado = (string)lector["@espaciosOcupados"];
-            System.Diagnostics.Debug.Write(resultado);
-            */
             comandoParaConsulta.ExecuteNonQuery();
             System.Diagnostics.Debug.Write(campos.Value);
             return (int)campos.Value;
