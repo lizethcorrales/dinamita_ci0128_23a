@@ -13,7 +13,9 @@ namespace JunquillalUserSystem.Controllers
     {
         private ReservacionHandler reservacionHandler = new ReservacionHandler();
         public IActionResult FormularioCantidadPersonas()
-        {        
+        {
+            ViewData["IsAdminArea"] = TempData["IsAdminArea"] ;
+            TempData["IsAdminArea"] = TempData["IsAdminArea"];
             return View();
         }
 
@@ -26,6 +28,8 @@ namespace JunquillalUserSystem.Controllers
 
             var reservedDates = reservacionHandler.BuscarDiasNoDisponibles(reservacion);
             ViewBag.reservedDates = reservedDates;
+            ViewData["IsAdminArea"] = TempData["IsAdminArea"];
+            TempData["IsAdminArea"] = TempData["IsAdminArea"];
             return View();
         }
 
@@ -36,6 +40,8 @@ namespace JunquillalUserSystem.Controllers
             ReservacionModelo reservacion = JsonSerializer.Deserialize<ReservacionModelo>((string)TempData["Reservacion"]);
             reservacion = reservacionHandler.LlenarFechas(reservacion,Request.Form);
             TempData["Reservacion"] = JsonSerializer.Serialize(reservacion);
+            ViewData["IsAdminArea"] = TempData["IsAdminArea"];
+            TempData["IsAdminArea"] = TempData["IsAdminArea"];
             return View();
         }
 
@@ -48,14 +54,13 @@ namespace JunquillalUserSystem.Controllers
             string confirmacion = reservacionHandler.CrearConfirmacionMensaje(reservacion,hospedero);
             reservacionHandler.EnviarEmail(confirmacion,hospedero.Email);
             ViewBag.mensaje = new HtmlString(confirmacion);
-
-
             reservacionHandler.InsertarEnBaseDatos(hospedero,reservacion);
             ViewBag.costoTotal = reservacionHandler.CostoTotal(reservacion.Identificador).ToString();
 
 
 
-
+            ViewData["IsAdminArea"] = TempData["IsAdminArea"];
+            TempData["IsAdminArea"] = TempData["IsAdminArea"];
             return View();
         }
         
