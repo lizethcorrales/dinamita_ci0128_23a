@@ -5,9 +5,6 @@ const divApellido1 = document.querySelector("#divApellido1");
 console.log(document.getElementById("nombre").value);
 const primerApellido = document.getElementById("primerApellido");
 
-const divApellido2 = document.querySelector("#divApellido2");
-var segundoApellido = document.getElementById("segundoApellido");
-
 const divIdentificacion = document.querySelector("#divIdent");
 var identificacion = document.getElementById("identificacion");
 
@@ -25,6 +22,10 @@ var placa4 = document.getElementById("placa4");
 
 var form = document.getElementById("datosImportantes");
 
+var pais = document.getElementById("pais");
+var provincia = document.getElementById("provincia");
+var tituloProvincia = document.getElementById("tituloProvincia");
+
 
 
 continuar.addEventListener("click", (e) => {
@@ -40,12 +41,6 @@ continuar.addEventListener("click", (e) => {
 		pasar = 0;
 	} else {
 		divApellido1.lastElementChild.textContent = "";
-	}
-	if (segundoApellido.value.length < 1) {
-		divApellido2.lastElementChild.textContent = "Apellido NO válido";
-		pasar = 0;
-	} else {
-		divApellido2.lastElementChild.textContent = "";
 	}
 	if (identificacion.value.length < 1) {
 		divIdentificacion.lastElementChild.textContent = "Identificación NO válido";
@@ -126,6 +121,20 @@ vehiculo.addEventListener("change", (e) => {
 		case "1":
 			placa1.hidden = false;
 			label1.hidden = false;
+			break;
+	}
+});
+
+pais.addEventListener("change", (e) => {
+	var valor = pais.value;
+	switch (valor) {
+		case "Costa Rica":
+			tituloProvincia.hidden = false;
+			provincia.hidden = false;
+			break;
+		default:
+			tituloProvincia.hidden = true;
+			provincia.hidden = true;
 			break;
 	}
 });
