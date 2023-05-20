@@ -88,8 +88,7 @@
     flex-direction: column;
     display: flex;
     justify-content: center;
-    align-items: center;
-    
+    align-items: center;    
 }
 
 .centrar1 {
@@ -100,6 +99,22 @@
     justify-content: center;
     align-items: center;
     max-width: 80%;
+}
+
+.contorno {
+    border: 1px solid #A2A2A2;
+    padding: 15px 50px 15px 50px;
+    border-radius: 10px;
+}
+
+.flex {
+    display: flex; 
+    justify-content: space-between;
+    align-items: center;
+}
+
+.gray {
+    background: #F5F5F5;
 }
 
 
