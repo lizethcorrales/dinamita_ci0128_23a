@@ -35,18 +35,18 @@
 
 
 
-            <h4>Campos Disponibles</h4>   
+            <h4 class="titulo"> Bienvenido a la sección de Campos Disponibles</h4>   
         
 
             <div id="camposDisponibles">
-            <label id="label_campos" for="label_campos">Campos casetilla:</label>
+            <label class="resultadoCampos "id="label_campos" for="label_campos">Campos casetilla:</label>
             @if (ViewBag.camposDisponibles != null && !string.IsNullOrEmpty(ViewBag.camposDisponibles) )
             {
-                <input type="text" id="campos" name="campos" value=@Html.Raw(ViewBag.camposDisponibles) readonly>
+                <input class="entradaDatos" type="text" id="campos" name="campos" value=@Html.Raw(ViewBag.camposDisponibles) readonly>
             }
             else
             {
-                <input type="text" id="campos" name="campos" readonly>
+                <input class="entradaDatos" type="text" id="campos" name="campos" readonly>
 
             }
 
