@@ -174,6 +174,7 @@ BEGIN
     FROM Reservacion AS r
     JOIN PrecioReservacion AS p ON r.IdentificadorReserva = p.IdentificadorReserva
     WHERE r.PrimerDia <= @fecha AND r.UltimoDia >= @fecha
+    if @espaciosOcupados is null set @espaciosOcupados = 0
 END;
 
 
