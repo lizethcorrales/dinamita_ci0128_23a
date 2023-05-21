@@ -117,6 +117,26 @@
     background: #F5F5F5;
 }
 
+.cuadrado {
+    width: 15px;
+    height: 15px;
+    margin:0px 5px 15px 15px;
+}
+.cuadro_ocupado {
+    background: #FFFFFF;
+    border: 1px solid #FFD4D4;
+}
+
+.cuadro_no_disponible {
+    background: #FFFFFF;
+    border: 1px solid #E5E3E3;
+}
+
+.cuadro_disponible {
+    background: #F1F1F1;
+    border: 1px solid #D2CFCF;
+}
+
 
 
 

@@ -33,7 +33,15 @@
     <div class="contorno gray">
         <form id="fechas" action="Reservaciones" method="POST">
             <div class="centrar">
-                <h3>Fechas de reservación</h3><br><br>
+                <h3>Fechas de reservación</h3>
+                <div class="flex">                     
+                    <div class="cuadrado cuadro_ocupado"></div>
+                    <p> ocupado </p>
+                    <div class="cuadrado cuadro_no_disponible"></div>
+                    <p> no disponible </p>
+                    <div class="cuadrado cuadro_disponible"></div>
+                    <p> disponible </p>
+                </div>
                 <div class="flex">
                     <div>
                         <label class="centrar" id="label-fecha-entrada" for="fecha-entrada">Fecha de entrada:</label><br><br>
