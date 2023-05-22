@@ -12,8 +12,10 @@ namespace JunquillalUserSystem.Controllers
     public class ReservacionController : Controller
     {
         private ReservacionHandler reservacionHandler = new ReservacionHandler();
+        private MetodosGeneralesModel metodosGenerales = new MetodosGeneralesModel();
         public IActionResult FormularioCantidadPersonas()
         {
+            ViewBag.TipoTurista = "reserva";
             ViewData["IsAdminArea"] = TempData["IsAdminArea"] ;
             TempData["IsAdminArea"] = TempData["IsAdminArea"];
             return View();
@@ -23,7 +25,7 @@ namespace JunquillalUserSystem.Controllers
         public IActionResult Calendario()
         {
             ReservacionModelo reservacion = new ReservacionModelo();
-            reservacion = reservacionHandler.LlenarCantidadPersonas(reservacion,Request.Form);
+            reservacion = reservacion.LlenarCantidadPersonas(reservacion,Request.Form);
             TempData["Reservacion"] = JsonSerializer.Serialize(reservacion);
 
             var reservedDates = reservacionHandler.BuscarDiasNoDisponibles(reservacion);
@@ -38,7 +40,7 @@ namespace JunquillalUserSystem.Controllers
         public IActionResult Reservaciones()
         {
             ReservacionModelo reservacion = JsonSerializer.Deserialize<ReservacionModelo>((string)TempData["Reservacion"]);
-            reservacion = reservacionHandler.LlenarFechas(reservacion,Request.Form);
+            reservacion = reservacion.LlenarFechas(reservacion,Request.Form);
             TempData["Reservacion"] = JsonSerializer.Serialize(reservacion);
             ViewData["IsAdminArea"] = TempData["IsAdminArea"];
             TempData["IsAdminArea"] = TempData["IsAdminArea"];
@@ -48,11 +50,12 @@ namespace JunquillalUserSystem.Controllers
         [HttpPost]
         public IActionResult FinalizarReserva()
         {
+            HospederoModelo hospedero = new HospederoModelo();
             ReservacionModelo reservacion = JsonSerializer.Deserialize<ReservacionModelo>((string)TempData["Reservacion"]);
-            reservacion = reservacionHandler.LlenarInformacionResarva(reservacion,Request.Form);
-            HospederoModelo hospedero = reservacionHandler.LlenarHospedero(Request.Form);
-            string confirmacion = reservacionHandler.CrearConfirmacionMensaje(reservacion,hospedero);
-            reservacionHandler.EnviarEmail(confirmacion,hospedero.Email);
+            reservacion = reservacion.LlenarInformacionResarva(reservacion,Request.Form);
+            hospedero = hospedero.LlenarHospedero(Request.Form);
+            string confirmacion = metodosGenerales.CrearConfirmacionMensaje(reservacion,hospedero);
+            metodosGenerales.EnviarEmail(confirmacion,hospedero.Email);
             ViewBag.mensaje = new HtmlString(confirmacion);
             reservacionHandler.InsertarEnBaseDatos(hospedero,reservacion);
             ViewBag.costoTotal = reservacionHandler.CostoTotal(reservacion.Identificador).ToString();
