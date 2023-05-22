@@ -13,16 +13,10 @@ html {
   min-height: 100%;
 }
 
-body {
-  margin-bottom: 60px;
-}
-
 .informacion {
-    padding:5px;
-    border:2px;
-    margin:20px;
-    background:#fff;
-    color:#000;
+    padding: 5px;
+    border: 2px;
+    margin: 20px;
 }
 
 .imagenSC {
@@ -38,10 +32,9 @@ li {
 }
 
 .container {
-    padding-right: 5px;
     display: flex;
     align-items: center;
-    justify-content: center
+    justify-content: center;
 }
 
 .image {
@@ -49,16 +42,13 @@ li {
     order: 2;
 }
 
-.text {
-    padding-left: 20px;
-}
-}
-
-.footer {
-    background: #2C9E4C
-}
-
 .barraMenu {
-    color: white;
     font-weight: bold;
 }
+
+body {
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    margin-bottom: 30px;
+    border: 1px;
+}
+
