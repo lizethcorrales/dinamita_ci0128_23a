@@ -25,7 +25,15 @@ los campos incluyen a los adultos y niños nacionales y adultos y niños extranj
 <body>
     <header>
         <div id="titulo">
-            <h2>Huéspedes para la reserva en la zona de camping</h2>
+            @if (ViewBag.TipoTurista == "reserva")
+            {
+                <h2>Huéspedes para la reserva en la zona de camping</h2>
+            }
+            else
+            {
+                <h2>Huéspedes para visita en la zona de Picnic</h2>
+            }
+            
              <div id="instruccion">Indique la cantidad de adultos y niños nacionales o extranjeros incluídos en la reserva</div>
              <br/>
         </div>
