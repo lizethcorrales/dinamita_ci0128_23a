@@ -19,8 +19,7 @@ CREATE PROCEDURE insertar_Hospedero (
 	@email_entrante AS VARCHAR(60),
 	@nombre_entrante AS VARCHAR(20),
 	@apellido1_entrante AS VARCHAR(20),
-	@apellido2_entrante AS VARCHAR(20),
-	@estado_entrante AS BIT
+	@apellido2_entrante AS VARCHAR(20)
 ) AS
 BEGIN 
 	SELECT Hospedero.Identificacion
@@ -30,7 +29,7 @@ BEGIN
 	IF @@ROWCOUNT = 0 
 		 INSERT INTO Hospedero
 		 VALUES (@identificacion_entrante, @email_entrante, @nombre_entrante, @apellido1_entrante,
-				 @apellido2_entrante, @estado_entrante);
+				 @apellido2_entrante);
 END;
 
 
@@ -50,55 +49,88 @@ END;
 
 
 -- Este procedimiento agrega a la tabla PrecioReservacion, el precio por cada tipo de población registrada en la reservación.
-CREATE PROCEDURE insertar_PrecioReservacion(
+ALTER PROCEDURE [dbo].[insertar_PrecioReservacion](
 	@identificador_Reserva AS VARCHAR(10),
 	@adulto_nacional AS SMALLINT,
-	@ninno_nacional AS SMALLINT,
+	@ninno_nacional_mayor6 AS SMALLINT,
+	@ninno_nacional_menor6 AS SMALLINT,
+	@adulto_mayor_nacional AS SMALLINT,
 	@adulto_extranjero AS SMALLINT,
-	@ninno_extranjero AS SMALLINT
+	@ninno_extranjero AS SMALLINT,
+	@adulto_mayor_extranjero AS SMALLINT
 ) AS
 BEGIN
 	DECLARE @precio AS DOUBLE PRECISION;
-	-- Por cada tipo de población se agrega nacionalidad y su correspondiente tarifa
-	IF (@adulto_nacional > 0)
 
+	IF (@adulto_nacional > 0)
+		BEGIN
 		SELECT @precio = Tarifa.precio
 		FROM Tarifa
 		WHERE Tarifa.Nacionalidad = 'Nacional' AND Tarifa.Poblacion = 'Adulto' AND Tarifa.Actividad = 'Camping';
 
-		IF @adulto_nacional > 0
 		INSERT INTO PrecioReservacion
 		VALUES (@identificador_Reserva, 'Nacional', 'Adulto', 'Camping', @adulto_nacional, @precio);
+		END;
 
-	IF (@ninno_nacional > 0) 
+	IF (@ninno_nacional_menor6 > 0) 
+		BEGIN
+		SELECT @precio = Tarifa.precio
+		FROM Tarifa
+		WHERE Tarifa.Nacionalidad = 'Nacional' AND Tarifa.Poblacion = 'Niño menor 6 años' AND Tarifa.Actividad = 'Camping';
+ 
+		INSERT INTO PrecioReservacion
+		VALUES (@identificador_Reserva, 'Nacional', 'Niño menor 6 años', 'Camping', @ninno_nacional_menor6, @precio);
+		END;
 
+	IF (@ninno_nacional_mayor6 > 0) 
+		BEGIN
 		SELECT @precio = Tarifa.precio
 		FROM Tarifa
 		WHERE Tarifa.Nacionalidad = 'Nacional' AND Tarifa.Poblacion = 'Niño' AND Tarifa.Actividad = 'Camping';
-
-		IF (@ninno_nacional > 0) 
+ 
 		INSERT INTO PrecioReservacion
-		VALUES (@identificador_Reserva, 'Nacional', 'Niño', 'Camping', @ninno_nacional, @precio);
+		VALUES (@identificador_Reserva, 'Nacional', 'Niño', 'Camping', @ninno_nacional_mayor6, @precio);
+		END;
+
+	IF (@adulto_mayor_nacional > 0)
+		BEGIN
+		SELECT @precio = Tarifa.precio
+		FROM Tarifa
+		WHERE Tarifa.Nacionalidad = 'Nacional' AND Tarifa.Poblacion = 'Adulto Mayor' AND Tarifa.Actividad = 'Camping';
+
+		INSERT INTO PrecioReservacion
+		VALUES (@identificador_Reserva, 'Nacional', 'Adulto Mayor', 'Camping', @adulto_mayor_nacional, @precio);
+		END;
 
 	IF (@adulto_extranjero > 0)
-
+		BEGIN
 		SELECT @precio = Tarifa.precio
 		FROM Tarifa
 		WHERE Tarifa.Nacionalidad = 'Extranjero' AND Tarifa.Poblacion = 'Adulto' AND Tarifa.Actividad = 'Camping';
 
-		IF (@adulto_extranjero > 0)
 		INSERT INTO PrecioReservacion
 		VALUES (@identificador_Reserva, 'Extranjero', 'Adulto', 'Camping', @adulto_extranjero, @precio);
+		END;
 
 	IF (@ninno_extranjero >0) 
-
+		BEGIN
 		SELECT @precio = Tarifa.precio
 		FROM Tarifa
 		WHERE Tarifa.Nacionalidad = 'Extranjero' AND Tarifa.Poblacion = 'Niño' AND Tarifa.Actividad = 'Camping';
 
-	IF (@ninno_extranjero >0) 
 		INSERT INTO PrecioReservacion
 		VALUES (@identificador_Reserva, 'Extranjero', 'Niño', 'Camping', @ninno_extranjero, @precio);
+		END;
+
+	IF (@adulto_mayor_extranjero > 0)
+		BEGIN
+		SELECT @precio = Tarifa.precio
+		FROM Tarifa
+		WHERE Tarifa.Nacionalidad = 'Nacional' AND Tarifa.Poblacion = 'Adulto Mayor' AND Tarifa.Actividad = 'Camping';
+
+		INSERT INTO PrecioReservacion
+		VALUES (@identificador_Reserva, 'Extranjero', 'Adulto Mayor', 'Camping', @adulto_mayor_extranjero, @precio);
+		END;
 
 END;
 

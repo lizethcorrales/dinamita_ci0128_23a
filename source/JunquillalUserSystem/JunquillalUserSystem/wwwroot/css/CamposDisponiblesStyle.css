@@ -13,17 +13,16 @@
     background: #F39800 !important;
     color: #fff !important;
     border-radius: 10px;
-    margin-top: 22% !important;
-    margin-left: 45%;
-}
+    margin-top: 5% !important;
+    margin-left: 21%;
 
-.button2 {
-    position: fixed;
-    background: #A2A2A2 !important;
-    color: #fff !important;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    color: white;
+    font-size: 25px;
+    border: none;
+
     border-radius: 10px;
-    margin-top: 22% !important;
-    margin-left: 35%;
+
 }
 
 .button {
@@ -46,6 +45,13 @@
     border: 2px solid #ff8577;
 }
 
+.fondo {
+    background-color: #A2A2A2;
+    margin: 1%;
+    padding: 18%;
+    border: none;
+    border-radius: 10px;
+}
 
 .ui-datepicker {
     opacity: 40;
@@ -55,30 +61,59 @@
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
 
+.titulo {
+    flex-flow: column;
+    height: 90%;
+    color: black;
+    margin: 0px;
+    padding: 50px;
+    text-align: center;
+    border-radius: 10px;
+    font-size: 40px
+}
+
 
 
 .ui-datepicker-calendar {
     width: 100%;
 }
 
+.resultadoCampos {
+    margin: 2%;
+    position: absolute;
+    top: 30%;
+    left: 67%;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 20px;
+}
+
+.entradaDatos {
+    margin: 2%;
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 35%;
+    left: 64%;
+    font-size: 20px;
+}
 
 #label-fecha-entrada {
     position: fixed;
-    top: 45%;
-    left: 35%;
+    top: 36%;
+    left: 25%;
     transform: translate(-50%, -50%);
     display: block;
     width: 100%;
     text-align: center;
-    font-size: 1.2rem;
-    font-weight: bold;
+    font-size: 20px;
     margin-bottom: 10px;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
 
 #fecha-entrada {
     position: fixed;
-    top: 50%;
-    left: 30%;
+    top: 40%;
+    left: 19%;
 }
 
 
@@ -98,14 +133,15 @@
         margin-right: 20px;
     }
 
-
     .button1 {
-        position: fixed;
+        
+        position: relative;
         background: #F39800 !important;
         color: #fff !important;
         border-radius: 10px;
-        margin-top: 40% !important;
-        margin-left: 55%;
+        margin-top: 70% !important;
+        margin-left: 0%;
+        
     }
 
     .button2 {
