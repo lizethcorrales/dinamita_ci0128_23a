@@ -20,18 +20,12 @@
 
   <ItemGroup>
     <PackageReference Include="jQuery.UI.Combined" Version="1.13.2" />
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.13" />
     <PackageReference Include="System.Data.SqlClient" Version="4.8.5" />
   </ItemGroup>
 
   <ItemGroup>
     <None Include="wwwroot\css\styleReservacion.css" />
     <None Include="wwwroot\js\ReservacionesScript.js" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Areas\Admin\Data\" />
-    <Folder Include="Areas\Admin\Models\" />
   </ItemGroup>
 
 </Project>
