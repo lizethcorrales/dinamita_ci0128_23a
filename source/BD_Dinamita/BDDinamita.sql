@@ -11,7 +11,7 @@ Email VARCHAR(60) NOT NULL,
 Nombre VARCHAR(20) NOT NULL,
 Apellido1 VARCHAR(20) NOT NULL,
 Apellido2 VARCHAR(20),
-Estado BIT, -- se borra en el sprint 2
+Estado BIT,
 NombrePais VARCHAR(30) NOT NULL, -- esto se borra en nuevas actualizaciones
 PRIMARY KEY (Identificacion),
 FOREIGN KEY(NombrePais) REFERENCES Pais (Nombre), -- esto se borra en nuevas actualizaciones
@@ -64,7 +64,7 @@ Nacionalidad VARCHAR(30) NOT NULL,
 Poblacion VARCHAR(30) NOT NULL,
 Actividad VARCHAR(30) NOT NULL,
 Precio DOUBLE PRECISION,
-ColorBrazalete VARCHAR(20), -- se borra en sprint 2
+ColorBrazalete VARCHAR(20),
 PRIMARY KEY (Nacionalidad, Poblacion, Actividad)
 );
 
@@ -325,14 +325,4 @@ VALUES ('8865933684', 'Costa Rica', '9'),
 		('9932098365', 'Inglaterra', '7')
 
 
--- Sprint 2
-
-CREATE TABLE NacionalidadVisita  (
-IdentificadorVisita CHAR(20) NOT NULL,
-FechaEntrada DATE NOT NULL,
-NombrePais VARCHAR(30) NOT NULL,
-Cantidad SMALLINT,
-PRIMARY KEY (IdentificadorVisita, FechaEntrada, NombrePais),
-FOREIGN KEY (IdentificadorVisita, FechaEntrada) REFERENCES Visita(Identificacion, FechaEntrada),
-FOREIGN KEY (NombrePais) REFERENCES Pais(Nombre)
-);
+--Falta agregar tabla de nacionalidad de las visitas parecida a TieneNacionalidad con Hospedero, para el sprint 2

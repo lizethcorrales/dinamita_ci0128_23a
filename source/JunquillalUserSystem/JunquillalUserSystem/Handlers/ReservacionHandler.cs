@@ -86,8 +86,7 @@ namespace JunquillalUserSystem.Handlers
          de cada población (adulto nacional o extranjero, niño nacional o extranjero)
         recibe el identificador de la reserva y la cantidad de personas de cada población*/
         public void insertar_PrecioReservacion(string indentificador, string adulto_nacional,
-            string ninno_nacional_mayor6, string ninno_nacional_menor6, string adulto_mayor_nacional,
-            string adulto_extranjero, string ninno_extranjero, string adulto_mayor_extranjero)
+            string ninno_nacional, string adulto_extranjero, string ninno_extranjero)
         {
             //se indica el procedimiento almacenado a ejecutarse
             string consulta = "insertar_PrecioReservacion";
@@ -96,13 +95,9 @@ namespace JunquillalUserSystem.Handlers
             //se agregan los parámetros que recibe el procedimiento
             comandoParaConsulta.Parameters.AddWithValue("@identificador_Reserva", indentificador);
             comandoParaConsulta.Parameters.AddWithValue("@adulto_nacional", adulto_nacional);
-            comandoParaConsulta.Parameters.AddWithValue("@ninno_nacional_mayor6", ninno_nacional_mayor6);
-            comandoParaConsulta.Parameters.AddWithValue("@ninno_nacional_menor6", ninno_nacional_menor6);
-            comandoParaConsulta.Parameters.AddWithValue("@adulto_mayor_nacional", adulto_mayor_nacional);
+            comandoParaConsulta.Parameters.AddWithValue("@ninno_nacional", ninno_nacional);
             comandoParaConsulta.Parameters.AddWithValue("@adulto_extranjero", adulto_extranjero);
             comandoParaConsulta.Parameters.AddWithValue("@ninno_extranjero", ninno_extranjero);
-            comandoParaConsulta.Parameters.AddWithValue("@adulto_mayor_extranjero", adulto_mayor_extranjero);
-
             //ejecución del query
             conexion.Open();
             comandoParaConsulta.ExecuteNonQuery();
@@ -135,7 +130,7 @@ namespace JunquillalUserSystem.Handlers
         /*método para insertar un hospedero a la base de datos
        recibe el identificador único del hospedero (cedula), el email, nombre, los dos apellidos y un estado*/
         public void insertarHospedero(string identificacion, string email, string nombre, string apellido1,
-            string apellido2)
+            string apellido2, bool estado)
         {
             //se indica el procedimiento almacenado a ejecutarse
             string consulta = "insertar_hospedero";
@@ -147,7 +142,7 @@ namespace JunquillalUserSystem.Handlers
             comandoParaConsulta.Parameters.AddWithValue("@nombre_entrante", nombre);
             comandoParaConsulta.Parameters.AddWithValue("@apellido1_entrante", apellido1);
             comandoParaConsulta.Parameters.AddWithValue("@apellido2_entrante", apellido2);
-
+            comandoParaConsulta.Parameters.AddWithValue("@estado_entrante", estado);
             //ejecución del query
             conexion.Open();
             comandoParaConsulta.ExecuteNonQuery();
@@ -257,7 +252,7 @@ namespace JunquillalUserSystem.Handlers
         {
             //llama al método para insertar un hospedero
             insertarHospedero(hospedero.Identificacion, hospedero.Email , hospedero.Nombre , hospedero.Apellido1
-                ,hospedero.Apellido2);
+                ,hospedero.Apellido2,false);
             //obtiene la cantidad total de personas en la reserva 
             int cantidadTotal = reservacion.cantTipoPersona[0] + reservacion.cantTipoPersona[1] +
                 reservacion.cantTipoPersona[2] + reservacion.cantTipoPersona[3];
@@ -291,8 +286,7 @@ namespace JunquillalUserSystem.Handlers
             //llama al método para insertar las tuplas de la cantidad de personas por población
             insertar_PrecioReservacion(reservacion.Identificador , reservacion.cantTipoPersona[0].ToString(),
             reservacion.cantTipoPersona[1].ToString(), reservacion.cantTipoPersona[2].ToString(), 
-            reservacion.cantTipoPersona[3].ToString(), reservacion.cantTipoPersona[4].ToString(), reservacion.cantTipoPersona[5].ToString(),
-            reservacion.cantTipoPersona[6].ToString());
+            reservacion.cantTipoPersona[3].ToString());
 
             //genera un identificador de pago
             string identificadorPago = crearIdentificador(6);
@@ -332,12 +326,10 @@ namespace JunquillalUserSystem.Handlers
         {
 
              reservacion.cantTipoPersona.Add(int.Parse(form["cantidad_Adultos_Nacional"]));
-             reservacion.cantTipoPersona.Add(int.Parse(form["cantidad_Ninnos_Nacional_mayor6"]));
-             reservacion.cantTipoPersona.Add(int.Parse(form["cantidad_Ninnos_Nacional_menor6"]));
-             reservacion.cantTipoPersona.Add(int.Parse(form["cantidad_adulto_mayor"]));
+             reservacion.cantTipoPersona.Add(int.Parse(form["cantidad_Ninnos_Nacional"]));
              reservacion.cantTipoPersona.Add(int.Parse(form["cantidad_Adultos_Extranjero"]));
              reservacion.cantTipoPersona.Add(int.Parse(form["cantidad_ninnos_extranjero"]));
-             reservacion.cantTipoPersona.Add(int.Parse(form["cantidad_adultoMayor_extranjero"]));
+          
 
 
             return reservacion;
