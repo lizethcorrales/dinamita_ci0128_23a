@@ -1,6 +1,8 @@
 ﻿@{
+    string currentArea = ViewContext.RouteData.DataTokens["area"] as string;
+    bool isInArea = !string.IsNullOrEmpty(currentArea);
 
-    if (ViewData["IsAdminArea"] != null)
+    if (isInArea)
     {
         Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
     }
@@ -8,6 +10,8 @@
     {
         Layout = "~/Views/Shared/_Layout.cshtml";
     }
+
+
 }
 
 <!DOCTYPE html>
@@ -48,11 +52,24 @@
                         <input type="datetime" id="fecha-entrada" name="fecha-entrada" readonly>
 
                     </div>
+                    @{
+                        if (ViewBag.Tipo == "Camping")
+                        {
+                            <div>
+                                <label class="centrar" for="fecha-salida" id="label-fecha-salida">Fecha de salida:</label><br><br>
+                                <input type="datetime" id="fecha-salida" name="fecha-salida" readonly>
+                            </div>
+                        } else
+                        {
+                            <div  hidden>
+                                <label class="centrar" for="fecha-salida" id="label-fecha-salida">Fecha de salida:</label><br><br>
+                                <input type="datetime" id="fecha-salida" name="fecha-salida" readonly value="2023-01-03">
+                            </div>
 
-                    <div>
-                        <label class="centrar" for="fecha-salida" id="label-fecha-salida">Fecha de salida:</label><br><br>
-                        <input type="datetime" id="fecha-salida" name="fecha-salida" readonly>
-                    </div>
+                            
+                        }
+                    }
+
                 </div>
                 <br>
                 <div id="error"></div>
@@ -118,6 +135,7 @@
                     }
                 });
 
+
                 $("<style>").text(".ui-datepicker.visible { display: inline-block; }").appendTo("head");
                 $("#fecha-salida").datepicker({
                     dateFormat: "yy-mm-dd",
@@ -157,7 +175,8 @@
                         }
                     }
                 });
-            });
+            
+        });
 
             var form = document.getElementById("fechas");
             var err = document.getElementById("error");
@@ -165,16 +184,11 @@
             btnSiguiente.addEventListener('click', function () {
                 const fechaEntrada = document.querySelector('#fecha-entrada').value;
                 const fechaSalida = document.querySelector('#fecha-salida').value;
-                if (fechaEntrada && fechaSalida) {
-
-                    form.submit(); 
-               
-                   
-                } else {    
-                      
-                        err.innerText = "Debes llenar las dos fechas";
-                        
-                }
+                    if (fechaEntrada && fechaSalida) {
+                        form.submit();                               
+                    } else {    
+                            err.innerText = "Debes llenar lo que se solicita";
+                    }
             });
 
         </script>
