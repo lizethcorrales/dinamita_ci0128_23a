@@ -5,7 +5,8 @@
     {
         private MetodosGeneralesModel metodosGenerales;
         public string PrimerDia { get; set; }
-        public string UltimoDia { get; set; }
+		public string Tipo { get; set; }
+		public string UltimoDia { get; set; }
 
         public string Identificador { get; set; }
 
@@ -26,10 +27,19 @@
 
         }
 
-        /*
+		public ReservacionModelo(string tipo)
+		{
+            this.Tipo = tipo;
+			cantTipoPersona = new List<int>();
+			placasVehiculos = new List<string>();
+			metodosGenerales = new MetodosGeneralesModel();
+
+		}
+
+		/*
         * Obtiene la informacion importante del form y la guarda en el modelo reserva
         */
-        public ReservacionModelo LlenarInformacionResarva(ReservacionModelo reservacion, IFormCollection form)
+		public ReservacionModelo LlenarInformacionResarva(ReservacionModelo reservacion, IFormCollection form)
         {
 
             if (form["placa1"] != "")
