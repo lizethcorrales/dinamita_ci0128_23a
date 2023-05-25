@@ -255,3 +255,32 @@ BEGIN
     SELECT @resultString = @resultString + CAST(fecha AS VARCHAR(10)) + ',' FROM @diasNoDisponibles;
     SET @result = LEFT(@resultString, LEN(@resultString) - 1);
 END;
+
+
+--Es procedimiento busca reservaciones por fecha , en donde las reservaciones retornadas van a ser las
+-- se encuentren entre la fecha pasada por parametro
+
+
+go
+CREATE FUNCTION ObtenerReservacionesPorFecha
+(
+    @Fecha VARCHAR(15)
+)
+RETURNS TABLE
+AS
+RETURN
+(
+    SELECT R.IdentificadorReserva ,PrimerDia, UltimoDia , Hospedero.Nombre,
+	        Hospedero.Apellido1 , Hospedero.Apellido2 , Hospedero.Email 
+    FROM Reservacion as R
+	join HospederoRealiza AS HR on R.IdentificadorReserva = HR.IdentificadorReserva
+	join Hospedero on HR.IdentificacionHospedero = Hospedero.Identificacion
+    WHERE PrimerDia <= @Fecha And @Fecha <= UltimoDia
+)
+go
+
+
+DECLARE @Fecha VARCHAR(10) = '2023-06-02' -- Fecha que deseas utilizar
+
+SELECT *
+FROM dbo.ObtenerReservacionesPorFecha(@Fecha)

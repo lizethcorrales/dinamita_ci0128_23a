@@ -15,6 +15,8 @@
             
             <tr>
                 <th>Código Reserva</th>
+                <th>Nombre completo del hospedero</th>
+                <th>Email</th>
                 <th>Fecha entrada</th>
                 <th>Fecha Salida</th>
                 <th>Cantidad Personas</th>
@@ -26,6 +28,8 @@
             {
                 <tr>
                     <td>@item.Identificador</td>
+                    <td>@item.hospedero.Nombre  @item.hospedero.Apellido1 @item.hospedero.Apellido2</td>
+                    <td>@item.hospedero.Email</td>
                     <td>@item.PrimerDia</td>
                     <td>@item.UltimoDia</td>
                     <td>@item.cantTipoPersona.LongCount()</td>

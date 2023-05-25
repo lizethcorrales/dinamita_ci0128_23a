@@ -1,117 +1,99 @@
-﻿@using JunquillalUserSystem.Controllers
-
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - JunquillalUserSystem</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/JunquillalUserSystem.styles.css" asp-append-version="true" />
     <link href="~/lib/jquery-ui-1.12.1.custom/jquery-ui.min.css" rel="stylesheet" />
-    <link rel="stylesheet" href="~/css/styleReservacion.css" asp-append-version="true" />
+
+
     <style>
-        /* Estilos del menú lateral */
-        .sidebar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            height: 100%;
-            width: 250px;
-            background-color: #f2f2f2;
+        body {
+            background-color: #f4f4f4;
+        }
+
+        header {
+            background-color: #8e44ad;
+            padding: 15px;
+            border-bottom: 3px solid #7d3c98;
+        }
+
+        nav ul li a:hover {
+            color: gray;
+        }
+
+        main {
+            background-color: #fff;
             padding: 20px;
-            border-right: 1px solid #000; /* Borde derecho */
-            border-bottom: 1px solid #000; /* Borde inferior */
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra */
+            margin-top: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
         }
 
-        .sidebar ul {
-            list-style-type: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        .sidebar li {
-            margin-bottom: 10px;
-        }
-
-        .sidebar a {
-            display: flex;
-            align-items: center;
-            text-decoration: none;
-            color: #888; /* Color del texto */
-            font-weight: bold;
-                color: #000;
-            transition: color 0.3s ease; /* Transición de color al hacer hover */
-            font-family: "Arial", sans-serif; /* Fuente */
-        }
-
-        .sidebar .icon {
-            margin-right: 10px;
-            color: #6a6a6a; /* Color del icono */
-        }
-
-
-            .sidebar a:hover {
-             color: #555; /* Color del texto al hacer hover */
-             background-color: #FFB6C1; /* Color de fondo al hacer hover */
-        }
-
-            .sidebar a.active {
-                color: #e74c3c; /* Color del texto de la opción activa */
-                background-color: #f2f2f2; /* Color de fondo de la opción activa */
-            }
-
-
-
-        .sidebar .menu-title {
-            font-size: 20px;
-            color: #000;
+        footer {
+            background-color: #8e44ad;
+            color: #fff;
+            padding: 8px;
+            margin-top: 10px;
             text-align: center;
-            margin-bottom: 20px;
         }
 
-        .content {
-            margin-left: 250px;
-            padding: 20px;
+        .navbar-brand,
+        .nav-link,
+        .footer a {
+            color: #fff;
         }
-
     </style>
-  
 </head>
 <body>
-    <div class="sidebar">
-        <ul>
-            <li class="menu-title"><a href="@Url.Action("Index","Home" , new { area = "Admin" })">
-                <i class="fas fa-home icon" style="color: #e74c3c;"></i>Inicio</a></li>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-purple border-bottom box-shadow mb-3">
+            <div class="container-fluid">                                       
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item">
+                            <a class="@(ViewContext.RouteData.Values["Action"].ToString() == "Index" ? "navbar-brand text-black " : "navbar-brand text-white")"
+                               href="@Url.Action("Index","Home" , new { area = "Admin" })"> Inicio </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="@(ViewContext.RouteData.Values["Controller"].ToString() == "Reservacion" ? "navbar-brand text-black " : "navbar-brand text-white")"
+                               href="@Url.Action("FormularioCantidadPersonas","Reservacion" , new { area = "" })">Hacer una reservación</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="@(ViewContext.RouteData.Values["Controller"].ToString() == "Visita" ? "navbar-brand text-black " : "navbar-brand text-white")"
+                               href="@Url.Action("FormularioCantidadPersonas","Visita" , new { area = "" })">Hacer una visita</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="@(ViewContext.RouteData.Values["Controller"].ToString() == "CamposDisponibles" ? "navbar-brand text-black " : "navbar-brand text-white")"
+                               href="@Url.Action("CamposDisponibles","CamposDisponibles" , new { area = "" })">Campos Disponibles</a>
+                        <li class="nav-item">
+                            <a class="@(ViewContext.RouteData.Values["Controller"].ToString() == "AdministrarReservas" ? "navbar-brand text-black " : "navbar-brand text-white")"
+                               href="@Url.Action("Reservas","AdministrarReservas" , new { area = "Admin" })">Administrar Reservas</a>
+                        </li>
 
-            <li><a href="@Url.Action("FormularioCantidadPersonas","Reservacion" , new { area = "" })" 
-                class="@(ViewContext.RouteData.Values["Action"].ToString() == "FormularioCantidadPersonas" ? "active" : "")">
-                <i class="fas fa-calendar-plus icon" style="color: #9b59b6;"></i>Hacer una reservación</a></li>
-
-
-            <li><a href="@Url.Action("CamposDisponibles", "CamposDisponibles" , new { area = "" })" 
-                class="@(ViewContext.RouteData.Values["Action"].ToString() == "CamposDisponibles" ? "active" : "")">
-                <i class="fas fa-map-marker-alt icon" style="color: #3498db;"></i>Campos Disponibles</a></li>
-
-
-            <li>
-                <a href="@Url.Action("Reservas", "AdministrarReservas" , new { area = "Admin" })"
-                   class="@(ViewContext.RouteData.Values["Controller"].ToString() == "AdministrarReservas" ? "active" : "")">
-                <i class="fas fa-cog icon" style="color: #f39c12;"></i>Administrar Reservas</a></li>
-
-
-            <li><a href="#"><i class="fas fa-users icon" style="color: #1abc9c;"></i>Opción 2</a></
-            <li><a href="#"><i class="fas fa-chart-bar icon" style="color: #e67e22;"></i>Opción 3</a></li>
-        </ul>
-    </div>
-    <div class="content">
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
     </div>
+
+    <footer class="border-top footer text-muted"  style=" color: #fff background-color: #8e44ad;">
+        <div class="container" style="color: #fff;">
+            &copy; 2023 - JunquillalUserSystem   
+        </div>
+    </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>

@@ -13,6 +13,8 @@
         public List<String> placasVehiculos { get; set; }
         public string actividadVisita { get; set; }
 
+        public HospederoModelo hospedero { get; set; }
+
 
 
         public ReservacionModelo()
@@ -20,6 +22,7 @@
             cantTipoPersona = new List<int>();
             placasVehiculos = new List<string>();
             metodosGenerales = new MetodosGeneralesModel();
+            hospedero = new HospederoModelo();
 
         }
 
