@@ -84,10 +84,25 @@
 <body>
     <div class="sidebar">
         <ul>
-            <li class="menu-title"><a href="@Url.Action("Index","Home" , new { area = "Admin" })"><i class="fas fa-home icon" style="color: #e74c3c;"></i>Inicio</a></li>
-            <li><a href="@Url.Action("FormularioCantidadPersonas","Reservacion" , new { area = "" })" class="@(ViewContext.RouteData.Values["Action"].ToString() == "FormularioCantidadPersonas" ? "active" : "")"><i class="fas fa-calendar-plus icon" style="color: #9b59b6;"></i>Hacer una reservación</a></li>
-            <li><a href="@Url.Action("CamposDisponibles", "CamposDisponibles" , new { area = "" })" class="@(ViewContext.RouteData.Values["Action"].ToString() == "CamposDisponibles" ? "active" : "")"><i class="fas fa-map-marker-alt icon" style="color: #3498db;"></i>Campos Disponibles</a></li>
-            <li><a href="#"><i class="fas fa-cog icon" style="color: #f39c12;"></i>Opción 1</a></li>
+            <li class="menu-title"><a href="@Url.Action("Index","Home" , new { area = "Admin" })">
+                <i class="fas fa-home icon" style="color: #e74c3c;"></i>Inicio</a></li>
+
+            <li><a href="@Url.Action("FormularioCantidadPersonas","Reservacion" , new { area = "" })" 
+                class="@(ViewContext.RouteData.Values["Action"].ToString() == "FormularioCantidadPersonas" ? "active" : "")">
+                <i class="fas fa-calendar-plus icon" style="color: #9b59b6;"></i>Hacer una reservación</a></li>
+
+
+            <li><a href="@Url.Action("CamposDisponibles", "CamposDisponibles" , new { area = "" })" 
+                class="@(ViewContext.RouteData.Values["Action"].ToString() == "CamposDisponibles" ? "active" : "")">
+                <i class="fas fa-map-marker-alt icon" style="color: #3498db;"></i>Campos Disponibles</a></li>
+
+
+            <li>
+                <a href="@Url.Action("Reservas", "AdministrarReservas" , new { area = "Admin" })"
+                   class="@(ViewContext.RouteData.Values["Controller"].ToString() == "AdministrarReservas" ? "active" : "")">
+                <i class="fas fa-cog icon" style="color: #f39c12;"></i>Administrar Reservas</a></li>
+
+
             <li><a href="#"><i class="fas fa-users icon" style="color: #1abc9c;"></i>Opción 2</a></
             <li><a href="#"><i class="fas fa-chart-bar icon" style="color: #e67e22;"></i>Opción 3</a></li>
         </ul>
