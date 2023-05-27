@@ -1,19 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using JunquillalUserSystem.Models;
 using System.Data;
 using System.Data.SqlClient;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.Configuration;
-using Microsoft.AspNetCore.Mvc;
-using System.Collections.Specialized;
-using System.Text;
-using Microsoft.Extensions.Primitives;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Mail;
-using System.Net;
-using Microsoft.AspNetCore.Builder;
 using System.Diagnostics;
 
 //esta clase se encarga de manejar las interacciones con la base de datos cuando se hace una nueva reserva 
@@ -24,6 +12,7 @@ namespace JunquillalUserSystem.Handlers
 {
     public class ReservacionHandler
     {
+        private MetodosGeneralesModel metodosGenerales = new MetodosGeneralesModel();
         private SqlConnection conexion;
         private string rutaConexion;
         private static readonly Random _random = new Random();
@@ -69,15 +58,8 @@ namespace JunquillalUserSystem.Handlers
             comandoParaConsulta.ExecuteNonQuery();
             conexion.Close();
 
-            //CONSULTA NORMAL
 
-            //System.Diagnostics.Debug.Write(costo.Value);
-            //string consulta = "SELECT * FROM Hospedero";
-            // DataTable tablaResultado = CrearTablaConsulta(consulta);
-            //foreach (DataRow columna in tablaResultado.Rows)
-            //{
-            //System.Diagnostics.Debug.Write(columna["Nombre"]);
-            //
+
             return (double)costo.Value;
         }
 
@@ -295,7 +277,7 @@ namespace JunquillalUserSystem.Handlers
             reservacion.cantTipoPersona[6].ToString());
 
             //genera un identificador de pago
-            string identificadorPago = crearIdentificador(6);
+            string identificadorPago = metodosGenerales.crearIdentificador(6);
             DateOnly date = new DateOnly();
 
             //llama al método para insertar un opago
@@ -322,191 +304,6 @@ namespace JunquillalUserSystem.Handlers
             conexion.Open();
             comandoParaConsulta.ExecuteNonQuery();
             conexion.Close();
-        }
-
-        /*
-         * Obtiene los datos de la cantidad de personas que se almacenaron
-         * en el form y se guardan en el modelo reservacion
-         */ 
-        public ReservacionModelo LlenarCantidadPersonas(ReservacionModelo reservacion, IFormCollection form)
-        {
-
-             reservacion.cantTipoPersona.Add(int.Parse(form["cantidad_Adultos_Nacional"]));
-             reservacion.cantTipoPersona.Add(int.Parse(form["cantidad_Ninnos_Nacional_mayor6"]));
-             reservacion.cantTipoPersona.Add(int.Parse(form["cantidad_Ninnos_Nacional_menor6"]));
-             reservacion.cantTipoPersona.Add(int.Parse(form["cantidad_adulto_mayor"]));
-             reservacion.cantTipoPersona.Add(int.Parse(form["cantidad_Adultos_Extranjero"]));
-             reservacion.cantTipoPersona.Add(int.Parse(form["cantidad_ninnos_extranjero"]));
-             reservacion.cantTipoPersona.Add(int.Parse(form["cantidad_adultoMayor_extranjero"]));
-
-
-            return reservacion;
-        }
-
-        /*
-         * Obtiene las fechas del form y las guarda en el modelo reservacion
-         */ 
-        public ReservacionModelo LlenarFechas(ReservacionModelo reservacion, IFormCollection form)
-        {
-
-            reservacion.PrimerDia = form["fecha-entrada"];
-            reservacion.UltimoDia = form["fecha-salida"];
-
-            return reservacion;
-        }
-
-        /*
-         * Obtiene la informacion importante del form y la guarda en el modelo reserva
-         */ 
-        public ReservacionModelo LlenarInformacionResarva(ReservacionModelo reservacion, IFormCollection form)
-        {
-
-            if (form["placa1"] != "")
-            {
-                reservacion.placasVehiculos.Add(form["placa1"]);
-
-            }
-
-            if (form["placa2"] != "")
-            {
-                reservacion.placasVehiculos.Add(form["placa2"]);
-
-            }
-
-            if (form["placa3"] != "")
-            {
-                reservacion.placasVehiculos.Add(form["placa1"]);
-
-            }
-
-            if (form["placa4"] != "")
-            {
-                reservacion.placasVehiculos.Add(form["placa1"]);
-
-            }
-
-            string identificador = crearIdentificador(10);
-            reservacion.Identificador = identificador;
-
-            return reservacion;
-        }
-
-        /*
-         * Crea un ID de tamaño "length"
-        */
-        public string crearIdentificador(int length)
-        {
-            const string allowedChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-            var result = new char[length];
-
-            for (int i = 0; i < length; i++)
-            {
-                result[i] = allowedChars[_random.Next(0, allowedChars.Length)];
-            }
-
-            return new string(result);
-        }
-
-        /*
-         * Llena el modelo hospedero con la informacion del form
-         */ 
-        public HospederoModelo LlenarHospedero(IFormCollection form)
-        {
-            HospederoModelo hospedero = new HospederoModelo();
-
-            hospedero.Nombre = form["nombre"];
-            hospedero.Apellido1 = form["primerApellido"];
-            hospedero.Apellido2 = form["segundoApellido"];
-            hospedero.Identificacion = form["identificacion"];
-            hospedero.Telefono = form["segundoApellido"];
-            hospedero.Email = form["email"];
-            hospedero.TipoIdentificacion = form["nacionalidad"];
-            hospedero.Nacionalidad = form["pais"];
-            hospedero.Motivo = form["motivo"];
-            hospedero.Estado = 0;
-
-            return hospedero;
-        }
-
-        /*
-         * Genera la descripcion de confirmacion de la reserva con la informacion
-         * del modelo de reservacion y hospedero
-         */ 
-        public string CrearConfirmacionMensaje(ReservacionModelo reservacion, HospederoModelo hospedero)
-        {
-            StringBuilder sb = new StringBuilder();
-
-            // Encabezado
-            sb.Append("<h2 style='text-align:center;'>Confirmación de Reserva</h2><br><br>");
-
-            sb.Append("<h3>Datos del hospedero: </h3><br>");
-            sb.Append("<h6>Identificación: " + hospedero.Identificacion + "</h6>");
-            sb.Append("<h6>Nacionalidad: " + hospedero.Nacionalidad + "</h6>");
-            sb.Append("<h6>Tipo de identificación: " + hospedero.TipoIdentificacion + "</h6>");
-            sb.Append("<br><h6>" + hospedero.Nombre + " " +
-                      hospedero.Apellido1 + " " + hospedero.Apellido2 + ", es un placer darles la bienvenida " +
-                      "a Junquillal. Le deseamos un disfrute de su estadia,\n a continuación adjuntamos informacion de " +
-                      "su reserva: </h6><br>");
-            sb.Append("<h6>" + "</h6><br>");
-            sb.Append("<h3> Detalles de la reserva: </h3><br>");
-            sb.Append("<h6>Tu código de reservación es: " + reservacion.Identificador + "</h6>");
-            sb.Append("<h6>Primer día: " + reservacion.PrimerDia + "</h6>");
-            sb.Append("<h6>Último día: " + reservacion.UltimoDia + "</h6>");
-            sb.Append("<h6>Cantidad de personas: " + reservacion.cantTipoPersona.Sum() + "</h6>");
-            sb.Append("<ul>");
-
-            if (reservacion.cantTipoPersona[0] != 0)
-            {
-                sb.Append("<li>Adultos nacionales: " + reservacion.cantTipoPersona[0] + "</li>");
-            }
-            if (reservacion.cantTipoPersona[1] != 0)
-            {
-                sb.Append("<li>Niños nacionales: " + reservacion.cantTipoPersona[1] + "</li>");
-            }
-            if (reservacion.cantTipoPersona[2] != 0)
-            {
-                sb.Append("<li>Adultos extranjeros: " + reservacion.cantTipoPersona[2] + "</li>");
-            }
-            if (reservacion.cantTipoPersona[3] != 0)
-            {
-                sb.Append("<li>Niños extranjeros: " + reservacion.cantTipoPersona[3] + "</li>");
-            }
-            sb.Append("</ul><br>");
-            sb.Append("<h6>Placas de vehículos:</h6>");
-            sb.Append("<ul>");
-            foreach (string placa in reservacion.placasVehiculos)
-            {
-                sb.Append("<li>Placa: " + placa + "</li>");
-            }
-            sb.Append("</ul><br>");
-            sb.Append("<h6>Motivo de la visita: " + hospedero.Motivo + "</h6>");
-
-            return sb.ToString();
-
-        }
-
-
-        /*
-         * Envia el mensaje de la descripcion al correo del hospedero
-         */ 
-        public void EnviarEmail(string mensaje , string correo)
-        {
-            SmtpClient smtp = new SmtpClient("smtp.office365.com", 587);
-            smtp.EnableSsl = true;
-            smtp.Credentials = new NetworkCredential("dinamita_PI@outlook.com", "PI_JUNQUILLAL");
-            smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
-            smtp.UseDefaultCredentials = false;
-
-            MailMessage mail = new MailMessage();
-            mail.From = new MailAddress("dinamita_PI@outlook.com", "Confirmacion de reserva");
-            mail.To.Add(new MailAddress(correo));
-            mail.Subject = "Un gusto saludarle por parte de Junquillal";
-            mail.IsBodyHtml = true;
-            mail.Body = mensaje;
-
-            smtp.Send(mail);
-
-
         }
     }
 
