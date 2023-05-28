@@ -24,7 +24,7 @@ namespace JunquillalUserSystem.Controllers
         [HttpPost]
         public IActionResult Calendario()
         {
-            ReservacionModelo reservacion = new ReservacionModelo();
+            ReservacionModelo reservacion = new ReservacionModelo("Camping");
             reservacion = reservacion.LlenarCantidadPersonas(reservacion,Request.Form);
             TempData["Reservacion"] = JsonSerializer.Serialize(reservacion);
 
@@ -32,6 +32,7 @@ namespace JunquillalUserSystem.Controllers
             ViewBag.reservedDates = reservedDates;
             ViewData["IsAdminArea"] = TempData["IsAdminArea"];
             TempData["IsAdminArea"] = TempData["IsAdminArea"];
+            ViewBag.Tipo = "Camping";
             return View();
         }
 

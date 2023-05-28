@@ -1,4 +1,4 @@
-﻿@{
+﻿﻿@{
 
 	if (ViewData["IsAdminArea"] != null)
 	{
@@ -19,6 +19,17 @@
 	<body>
 
 		<div class="contorno gray">
+		@{
+
+			if (ViewBag.Tipo == "Picnic")
+			{
+				<h3 class="centrar">Información para Picnic</h3>
+			}
+			else
+			{
+				<h3 class="centrar">Información para Camping</h3>
+			}
+		}
 			<div>
 				<h3 class="centrar">Reservaciones</h3>
 			</div>

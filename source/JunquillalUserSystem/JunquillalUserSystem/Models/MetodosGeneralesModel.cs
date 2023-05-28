@@ -63,7 +63,13 @@ namespace JunquillalUserSystem.Models
             StringBuilder sb = new StringBuilder();
 
             // Encabezado
-            sb.Append("<h2 style='text-align:center;'>Confirmación de Reserva</h2><br><br>");
+            if (reservacion.Tipo == "Picnic")
+            {
+                sb.Append("<h2 style='text-align:center;'>Confirmación de Reserva para picnic</h2><br><br>");
+            } else
+            {
+				sb.Append("<h2 style='text-align:center;'>Confirmación de Reserva para Camping</h2><br><br>");
+			}
 
             sb.Append("<h3>Datos del hospedero: </h3><br>");
             sb.Append("<h6>Identificación: " + hospedero.Identificacion + "</h6>");
@@ -76,8 +82,12 @@ namespace JunquillalUserSystem.Models
             sb.Append("<h6>" + "</h6><br>");
             sb.Append("<h3> Detalles de la reserva: </h3><br>");
             sb.Append("<h6>Tu código de reservación es: " + reservacion.Identificador + "</h6>");
-            sb.Append("<h6>Primer día: " + reservacion.PrimerDia + "</h6>");
-            sb.Append("<h6>Último día: " + reservacion.UltimoDia + "</h6>");
+            sb.Append("<h6>Fecha de ingreso: " + reservacion.PrimerDia + "</h6>");
+
+            if (reservacion.Tipo == "Camping")
+            {
+                sb.Append("<h6>Fecha de salida: " + reservacion.UltimoDia + "</h6>");
+            }
             sb.Append("<h6>Cantidad de personas: " + reservacion.cantTipoPersona.Sum() + "</h6>");
             sb.Append("<ul>");
 

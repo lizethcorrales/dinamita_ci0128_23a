@@ -1,0 +1,55 @@
+﻿@model List<JunquillalUserSystem.Models.ReservacionModelo>;
+
+@{
+    ViewData["Title"] = "Administrar Reservas";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+
+<h1>@ViewBag.MainTitle</h1>
+<div>
+    <a href="@Url.Action("FormularioCantidadPersonas","Reservacion" , new { area="" })"
+        class="btn btn-success">Crear Reservación</a>
+    <table class="table">
+        <thead>
+            
+            <tr>
+                <th>Código Reserva</th>
+                <th>Nombre completo del hospedero</th>
+                <th>Email</th>
+                <th>Fecha entrada</th>
+                <th>Fecha Salida</th>
+                <th>Cantidad Personas</th>
+                
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Identificador</td>
+                    <td>@item.hospedero.Nombre  @item.hospedero.Apellido1 @item.hospedero.Apellido2</td>
+                    <td>@item.hospedero.Email</td>
+                    <td>@item.PrimerDia</td>
+                    <td>@item.UltimoDia</td>
+                    <td>@item.cantTipoPersona.LongCount()</td>
+                   
+
+                    <td>
+                        @Html.ActionLink("Editar","EditarPelicula",
+                    new {identificador = item.Identificador},
+                    new {@class = "btn btn alert-info",
+                    @onclick = "return confirm('Desea editar esta pelicula?')"})
+                    </td>
+                    <td>
+                        @Html.ActionLink("Borrar","BorrarPelicula",
+                    new {identificador = item.Identificador},
+                    new {@class = "btn btn alert-danger",
+                    @onclick = "return confirm('Desea borrar esta pelicula?')"})
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
