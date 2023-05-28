@@ -241,11 +241,16 @@ namespace JunquillalUserSystem.Handlers
             insertarHospedero(hospedero.Identificacion, hospedero.Email , hospedero.Nombre , hospedero.Apellido1
                 ,hospedero.Apellido2);
             //obtiene la cantidad total de personas en la reserva 
-            int cantidadTotal = reservacion.cantTipoPersona[0] + reservacion.cantTipoPersona[1] +
-                reservacion.cantTipoPersona[2] + reservacion.cantTipoPersona[3];
+            int cantidadPersonas = 0;
+            for (int i = 0; i < reservacion.cantTipoPersona.Count(); i++)
+            {
+                cantidadPersonas += reservacion.cantTipoPersona[i];
+            }
+           // int cantidadTotal = reservacion.cantTipoPersona[0] + reservacion.cantTipoPersona[1] +
+                //reservacion.cantTipoPersona[2] + reservacion.cantTipoPersona[3];
             //llama al método para insertar una reserva
             insertarReserva(reservacion.Identificador,reservacion.PrimerDia,reservacion.UltimoDia,"0", 
-                cantidadTotal.ToString());
+                cantidadPersonas.ToString());
 
             //se encarga de llamar al método de insertar las placas de los vehículos dependiendo de la 
             //cantidad de placas que haya introducido el usuario

@@ -255,3 +255,130 @@ BEGIN
     SELECT @resultString = @resultString + CAST(fecha AS VARCHAR(10)) + ',' FROM @diasNoDisponibles;
     SET @result = LEFT(@resultString, LEN(@resultString) - 1);
 END;
+
+GO
+CREATE PROCEDURE insertarVisita(
+	@identificacion AS CHAR(20),
+	@fechaEntrada AS DATE
+)AS
+BEGIN
+	SELECT Visita.Identificacion, Visita.FechaEntrada
+	FROM Visita
+	WHERE Visita.Identificacion = @identificacion AND Visita.FechaEntrada = @fechaEntrada;
+
+	IF @@ROWCOUNT <= 0
+		BEGIN
+		INSERT INTO Visita
+		VALUES (@identificacion, @fechaEntrada)
+		END;
+
+END;
+
+GO
+CREATE PROCEDURE insertarNacionalidadVisita (
+	@identificacionVisita AS CHAR(20),
+	@fechaEntrada AS DATE,
+	@NombrePais AS VARCHAR(30),
+	@cantidad AS SMALLINT
+) AS 
+BEGIN 
+	SELECT Pais.Nombre
+	FROM Pais
+	WHERE Pais.Nombre = @NombrePais;
+
+	IF @@ROWCOUNT <= 0
+		BEGIN 
+		INSERT INTO Pais
+		VALUES(@NombrePais);
+		END;
+
+	INSERT INTO NacionalidadVisita
+	VALUES (@identificacionVisita, @fechaEntrada, @NombrePais, @cantidad);
+END;
+
+GO
+CREATE PROCEDURE insertar_PrecioVisita(
+	@identificador_Visita AS VARCHAR(20),
+	@fechaEntrada AS DATE,
+	@adulto_nacional AS SMALLINT,
+	@ninno_nacional_mayor6 AS SMALLINT,
+	@ninno_nacional_menor6 AS SMALLINT,
+	@adulto_mayor_nacional AS SMALLINT,
+	@adulto_extranjero AS SMALLINT,
+	@ninno_extranjero AS SMALLINT,
+	@adulto_mayor_extranjero AS SMALLINT
+) AS
+BEGIN
+	DECLARE @precio AS DOUBLE PRECISION;
+
+	IF (@adulto_nacional > 0)
+		BEGIN
+		SELECT @precio = Tarifa.precio
+		FROM Tarifa
+		WHERE Tarifa.Nacionalidad = 'Nacional' AND Tarifa.Poblacion = 'Adulto' AND Tarifa.Actividad = 'Picnic';
+
+		INSERT INTO PrecioVisita
+		VALUES (@identificador_Visita, @fechaEntrada, 'Nacional', 'Adulto', 'Picnic', @adulto_nacional, @precio);
+		END;
+
+	IF (@ninno_nacional_menor6 > 0) 
+		BEGIN
+		SELECT @precio = Tarifa.precio
+		FROM Tarifa
+		WHERE Tarifa.Nacionalidad = 'Nacional' AND Tarifa.Poblacion = 'Niño menor 6 años' AND Tarifa.Actividad = 'Picnic';
+ 
+		INSERT INTO PrecioVisita
+		VALUES (@identificador_Visita, @fechaEntrada, 'Nacional', 'Niño menor 6 años', 'Picnic', @ninno_nacional_menor6, @precio);
+		END;
+
+	IF (@ninno_nacional_mayor6 > 0) 
+		BEGIN
+		SELECT @precio = Tarifa.precio
+		FROM Tarifa
+		WHERE Tarifa.Nacionalidad = 'Nacional' AND Tarifa.Poblacion = 'Niño' AND Tarifa.Actividad = 'Picnic';
+ 
+		INSERT INTO PrecioVisita
+		VALUES (@identificador_Visita, @fechaEntrada, 'Nacional', 'Niño', 'Picnic', @ninno_nacional_mayor6, @precio);
+		END;
+
+	IF (@adulto_mayor_nacional > 0)
+		BEGIN
+		SELECT @precio = Tarifa.precio
+		FROM Tarifa
+		WHERE Tarifa.Nacionalidad = 'Nacional' AND Tarifa.Poblacion = 'Adulto Mayor' AND Tarifa.Actividad = 'Picnic';
+
+		INSERT INTO PrecioVisita
+		VALUES (@identificador_Visita, @fechaEntrada, 'Nacional', 'Adulto Mayor', 'Picnic', @adulto_mayor_nacional, @precio);
+		END;
+
+	IF (@adulto_extranjero > 0)
+		BEGIN
+		SELECT @precio = Tarifa.precio
+		FROM Tarifa
+		WHERE Tarifa.Nacionalidad = 'Extranjero' AND Tarifa.Poblacion = 'Adulto' AND Tarifa.Actividad = 'Picnic';
+
+		INSERT INTO PrecioVisita
+		VALUES (@identificador_Visita, @fechaEntrada, 'Extranjero', 'Adulto', 'Picnic', @adulto_extranjero, @precio);
+		END;
+
+	IF (@ninno_extranjero >0) 
+		BEGIN
+		SELECT @precio = Tarifa.precio
+		FROM Tarifa
+		WHERE Tarifa.Nacionalidad = 'Extranjero' AND Tarifa.Poblacion = 'Niño' AND Tarifa.Actividad = 'Picnic';
+
+		INSERT INTO PrecioVisita
+		VALUES (@identificador_Visita, @fechaEntrada, 'Extranjero', 'Niño', 'Picnic', @ninno_extranjero, @precio);
+		END;
+
+	IF (@adulto_mayor_extranjero > 0)
+		BEGIN
+		SELECT @precio = Tarifa.precio
+		FROM Tarifa
+		WHERE Tarifa.Nacionalidad = 'Nacional' AND Tarifa.Poblacion = 'Adulto Mayor' AND Tarifa.Actividad = 'Picnic';
+
+		INSERT INTO PrecioVisita
+		VALUES (@identificador_Visita, @fechaEntrada, 'Extranjero', 'Adulto Mayor', 'Picnic', @adulto_mayor_extranjero, @precio);
+		END;
+
+END;
