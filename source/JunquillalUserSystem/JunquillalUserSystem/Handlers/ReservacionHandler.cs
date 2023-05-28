@@ -10,33 +10,12 @@ using System.Diagnostics;
 
 namespace JunquillalUserSystem.Handlers
 {
-    public class ReservacionHandler
+    public class ReservacionHandler : HandlerBase
     {
         private MetodosGeneralesModel metodosGenerales = new MetodosGeneralesModel();
-        private SqlConnection conexion;
-        private string rutaConexion;
-        private static readonly Random _random = new Random();
         public ReservacionHandler()
         {
-            var builder = WebApplication.CreateBuilder();
-            rutaConexion =
-            builder.Configuration.GetConnectionString("ContextoJunquillal");
-            conexion = new SqlConnection(rutaConexion);
-        }
-
-        //método para llenar una tabla a partir de la información obtenida de una consulta a la base de datos
-        private DataTable CrearTablaConsulta(string consulta)
-        {
-            SqlCommand comandoParaConsulta = new SqlCommand(consulta,
-            conexion);
-            SqlDataAdapter adaptadorParaTabla = new
-            SqlDataAdapter(comandoParaConsulta);
-            DataTable consultaFormatoTabla = new DataTable();
-            conexion.Open();
-            adaptadorParaTabla.Fill(consultaFormatoTabla);
-            conexion.Close();
-            return consultaFormatoTabla;
-        }
+        }        
 
         // este método calcula el costo total de la reserva cuando se indica un indentificador de reserva válido
         public double CostoTotal(string identificadorReserva)

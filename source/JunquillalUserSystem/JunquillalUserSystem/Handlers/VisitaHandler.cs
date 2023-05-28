@@ -10,32 +10,11 @@ using System.Diagnostics;
 
 namespace JunquillalUserSystem.Handlers
 {
-    public class VisitaHandler
+    public class VisitaHandler : HandlerBase
     {
-        //private MetodosGeneralesModel metodosGenerales = new MetodosGeneralesModel();
-        private SqlConnection conexion;
-        private string rutaConexion;
-        private static readonly Random _random = new Random();
         public VisitaHandler()
         {
-            var builder = WebApplication.CreateBuilder();
-            rutaConexion =
-            builder.Configuration.GetConnectionString("ContextoJunquillal");
-            conexion = new SqlConnection(rutaConexion);
-        }
-
-        //método para llenar una tabla a partir de la información obtenida de una consulta a la base de datos
-        private DataTable CrearTablaConsulta(string consulta)
-        {
-            SqlCommand comandoParaConsulta = new SqlCommand(consulta,
-            conexion);
-            SqlDataAdapter adaptadorParaTabla = new
-            SqlDataAdapter(comandoParaConsulta);
-            DataTable consultaFormatoTabla = new DataTable();
-            conexion.Open();
-            adaptadorParaTabla.Fill(consultaFormatoTabla);
-            conexion.Close();
-            return consultaFormatoTabla;
+            
         }
 
         public void insertar_Visita(HospederoModelo hospedero, ReservacionModelo reservacion)
