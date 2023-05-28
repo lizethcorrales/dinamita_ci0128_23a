@@ -12,7 +12,7 @@ namespace JunquillalUserSystem.Areas.Admin.Controllers
         private AdministrarReservasHandler administrarHandler = new AdministrarReservasHandler();
         public IActionResult Reservas()
         {
-            List<ReservacionModelo> listaReservas = administrarHandler.ObtenerReservasPorFecha("2023-06-01");
+            List<ReservacionModelo> listaReservas = administrarHandler.ObtenerReservasPorFecha("2023-05-20");
             return View(listaReservas);
         }
     }

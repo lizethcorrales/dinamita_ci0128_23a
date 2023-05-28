@@ -4,15 +4,50 @@
     ViewData["Title"] = "Administrar Reservas";
     Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
 }
+<style>
+    .modal-apple {
+        max-width: 700px;
+        margin: 100px auto;
+        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    }
 
+    .modal-apple-content {
+        background-color: #f4f4f4;
+        color: black;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    }
 
+    .modal-apple-header {
+        background-color: #8e44ad;
+        color: #fff;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+    }
+
+    .modal-apple-footer {
+        background-color: #8e44ad;
+        border-bottom-left-radius: 10px;
+        border-bottom-right-radius: 10px;
+    }
+
+    .modal-body {
+        padding: 20px;
+    }
+
+    .modal-info {
+        color: black;
+        font-size: 16px;
+        margin-bottom: 10px;
+    }
+
+</style>
 <h1>@ViewBag.MainTitle</h1>
+
 <div>
-    <a href="@Url.Action("FormularioCantidadPersonas","Reservacion" , new { area="" })"
-        class="btn btn-success">Crear Reservación</a>
+    <a href="@Url.Action("FormularioCantidadPersonas", "Reservacion", new { area = "" })" class="btn btn-success">Crear Reservación</a>
     <table class="table">
         <thead>
-            
             <tr>
                 <th>Código Reserva</th>
                 <th>Nombre completo del hospedero</th>
@@ -20,7 +55,8 @@
                 <th>Fecha entrada</th>
                 <th>Fecha Salida</th>
                 <th>Cantidad Personas</th>
-                
+                <th>Detalles</th>
+                <th>Eliminar</th>
             </tr>
         </thead>
         <tbody>
@@ -31,25 +67,72 @@
                     <td>@item.hospedero.Nombre  @item.hospedero.Apellido1 @item.hospedero.Apellido2</td>
                     <td>@item.hospedero.Email</td>
                     <td>@item.PrimerDia</td>
-                    <td>@item.UltimoDia</td>
-                    <td>@item.cantTipoPersona.LongCount()</td>
-                   
-
+                    <td>@item.UltimoDia</td>                    
+                    <td> @item.tipoPersona.Sum(pair => pair.Value.Item1)</td>
                     <td>
-                        @Html.ActionLink("Editar","EditarPelicula",
-                    new {identificador = item.Identificador},
-                    new {@class = "btn btn alert-info",
-                    @onclick = "return confirm('Desea editar esta pelicula?')"})
+                        <button style="margin-top: 0px;" type="button" class="btn btn alert-info" data-toggle="modal" data-target="#mensajeModal_@item.Identificador">Ver</button>
                     </td>
-                    <td>
-                        @Html.ActionLink("Borrar","BorrarPelicula",
-                    new {identificador = item.Identificador},
-                    new {@class = "btn btn alert-danger",
-                    @onclick = "return confirm('Desea borrar esta pelicula?')"})
+                    <td >
+                          @Html.ActionLink("Borrar", "BorrarPelicula",
+                           new { identificador = item.Identificador },
+                           new { @class =  "btn btn alert-danger ", @onclick = "return confirm('Desea borrar esta pelicula?')" })
                     </td>
                 </tr>
+
+                <div class="modal fade" id="mensajeModal_@item.Identificador" tabindex="-1" role="dialog" aria-labelledby="mensajeModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-apple">
+                        <div class="modal-content modal-apple-content">
+                            <div class="modal-header modal-apple-header">
+                                <h5 class="modal-title" id="mensajeModalLabel">Detalles de la reservación</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <h3 class="modal-info">Datos del hospedero:</h3><br>
+                                <h6 class="modal-info">Identificación: @item.hospedero.Identificacion</h6>
+                                <h6 class="modal-info">Nacionalidad: @item.hospedero.Nacionalidad</h6>
+                                <h6 class="modal-info">Tipo de identificación: @item.hospedero.TipoIdentificacion</h6>
+                                <br>
+                                
+                                <h6 class="modal-info"></h6><br>
+                                <h3 class="modal-info">Detalles de la reserva:</h3><br>
+                                <h6 class="modal-info">Tu código de reservación es: @item.Identificador</h6>
+                                <h6 class="modal-info">Fecha de ingreso: @item.PrimerDia</h6>
+
+              
+                                <h6 class="modal-info">Fecha de salida: @item.UltimoDia</h6>
+                                
+
+                                <h6 class="modal-info">Cantidad de personas: @item.cantTipoPersona.Sum()</h6>
+                                <ul>
+ 
+                                </ul><br>
+                                <h6 class="modal-info">Placas de vehículos:</h6>
+                                <ul>
+                                    @foreach (string placa in item.placasVehiculos)
+                                    {
+                                        <li class="modal-info">Placa: @placa</li>
+                                    }
+                                </ul><br>
+                        
+
+                            </div>
+                            <div class="modal-footer modal-apple-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
             }
         </tbody>
     </table>
 </div>
 
+<!-- Referencia a jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- Referencia a los archivos de script de Bootstrap -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
