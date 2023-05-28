@@ -336,3 +336,9 @@ PRIMARY KEY (IdentificadorVisita, FechaEntrada, NombrePais),
 FOREIGN KEY (IdentificadorVisita, FechaEntrada) REFERENCES Visita(Identificacion, FechaEntrada),
 FOREIGN KEY (NombrePais) REFERENCES Pais(Nombre)
 );
+
+ALTER TABLE Hospedero
+ADD Telefono VARCHAR(20);
+
+ALTER TABLE Reservacion
+ADD Motivo VARCHAR(30);

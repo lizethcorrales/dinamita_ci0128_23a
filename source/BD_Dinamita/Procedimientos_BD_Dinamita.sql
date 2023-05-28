@@ -14,12 +14,14 @@ END;
 
 
 -- Este procedimiento agrega los datos del hospedero a la tabla Hospedero, según los datos recibidos por parámetro.
+GO
 CREATE PROCEDURE insertar_Hospedero (
 	@identificacion_entrante AS CHAR(20),
 	@email_entrante AS VARCHAR(60),
 	@nombre_entrante AS VARCHAR(20),
 	@apellido1_entrante AS VARCHAR(20),
-	@apellido2_entrante AS VARCHAR(20)
+	@apellido2_entrante AS VARCHAR(20),
+	@telefono_entrante AS VARCHAR(20)
 ) AS
 BEGIN 
 	SELECT Hospedero.Identificacion
@@ -29,27 +31,29 @@ BEGIN
 	IF @@ROWCOUNT = 0 
 		 INSERT INTO Hospedero
 		 VALUES (@identificacion_entrante, @email_entrante, @nombre_entrante, @apellido1_entrante,
-				 @apellido2_entrante);
+				 @apellido2_entrante, @telefono_entrante);
 END;
 
 
 
 -- Este procedimiento agrega la información de una reserva a la tabla Reservacion
+GO
 CREATE PROCEDURE insertar_Reservacion (
 	@identificacion_entrante AS VARCHAR(10),
 	@primerDia_entrante AS DATE,
 	@ultimoDia_entrante AS DATE,
 	@estado_entrante AS BIT,
-	@cantidad_entrante AS SMALLINT
+	@cantidad_entrante AS SMALLINT,
+	@motivo_entrante AS VARCHAR(30)
 ) AS
 BEGIN
 	INSERT INTO Reservacion
-		VALUES (@identificacion_entrante, @primerDia_entrante, @ultimoDia_entrante, @estado_entrante, @cantidad_entrante)
+		VALUES (@identificacion_entrante, @primerDia_entrante, @ultimoDia_entrante, 
+		@estado_entrante, @cantidad_entrante, @motivo_entrante);
 END;
 
-
 -- Este procedimiento agrega a la tabla PrecioReservacion, el precio por cada tipo de población registrada en la reservación.
-ALTER PROCEDURE [dbo].[insertar_PrecioReservacion](
+CREATE PROCEDURE insertar_PrecioReservacion(
 	@identificador_Reserva AS VARCHAR(10),
 	@adulto_nacional AS SMALLINT,
 	@ninno_nacional_mayor6 AS SMALLINT,

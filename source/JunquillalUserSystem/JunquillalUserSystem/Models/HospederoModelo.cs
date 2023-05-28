@@ -34,7 +34,7 @@
             hospedero.Apellido1 = form["primerApellido"];
             hospedero.Apellido2 = form["segundoApellido"];
             hospedero.Identificacion = form["identificacion"];
-            hospedero.Telefono = form["segundoApellido"];
+            hospedero.Telefono = form["telefono"];
             hospedero.Email = form["email"];
             hospedero.TipoIdentificacion = form["nacionalidad"];
             hospedero.Nacionalidad = form["pais"];

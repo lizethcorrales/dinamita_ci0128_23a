@@ -95,7 +95,7 @@ namespace JunquillalUserSystem.Handlers
         recibe el identificador único de la reserva, las fechas del primer día y último día, el estado
         de la reserva (activa, cancelada, en curso) y la cantidad de personas totales de la reserva*/
         public void insertarReserva(string identificador, string primerDia, string ultimoDia, string estado,
-            string cantidad)
+            string cantidad, string motivo)
         {
             //se indica el procedimiento almacenado a ejecutarse
             string consulta = "insertar_Reservacion";
@@ -107,6 +107,7 @@ namespace JunquillalUserSystem.Handlers
             comandoParaConsulta.Parameters.AddWithValue("@ultimoDia_entrante", ultimoDia);
             comandoParaConsulta.Parameters.AddWithValue("@estado_entrante", estado);
             comandoParaConsulta.Parameters.AddWithValue("@cantidad_entrante", cantidad);
+            comandoParaConsulta.Parameters.AddWithValue("@motivo_entrante", motivo);
             //ejecución del query
             conexion.Open();
             comandoParaConsulta.ExecuteNonQuery();
@@ -117,7 +118,7 @@ namespace JunquillalUserSystem.Handlers
         /*método para insertar un hospedero a la base de datos
        recibe el identificador único del hospedero (cedula), el email, nombre, los dos apellidos y un estado*/
         public void insertarHospedero(string identificacion, string email, string nombre, string apellido1,
-            string apellido2)
+            string apellido2, string telefono)
         {
             //se indica el procedimiento almacenado a ejecutarse
             string consulta = "insertar_hospedero";
@@ -129,7 +130,7 @@ namespace JunquillalUserSystem.Handlers
             comandoParaConsulta.Parameters.AddWithValue("@nombre_entrante", nombre);
             comandoParaConsulta.Parameters.AddWithValue("@apellido1_entrante", apellido1);
             comandoParaConsulta.Parameters.AddWithValue("@apellido2_entrante", apellido2);
-
+            comandoParaConsulta.Parameters.AddWithValue("@telefono_entrante", telefono);
             //ejecución del query
             conexion.Open();
             comandoParaConsulta.ExecuteNonQuery();
@@ -239,7 +240,7 @@ namespace JunquillalUserSystem.Handlers
         {
             //llama al método para insertar un hospedero
             insertarHospedero(hospedero.Identificacion, hospedero.Email , hospedero.Nombre , hospedero.Apellido1
-                ,hospedero.Apellido2);
+                ,hospedero.Apellido2, hospedero.Telefono);
             //obtiene la cantidad total de personas en la reserva 
             int cantidadPersonas = 0;
             for (int i = 0; i < reservacion.cantTipoPersona.Count(); i++)
@@ -250,7 +251,7 @@ namespace JunquillalUserSystem.Handlers
                 //reservacion.cantTipoPersona[2] + reservacion.cantTipoPersona[3];
             //llama al método para insertar una reserva
             insertarReserva(reservacion.Identificador,reservacion.PrimerDia,reservacion.UltimoDia,"0", 
-                cantidadPersonas.ToString());
+                cantidadPersonas.ToString(), hospedero.Motivo);
 
             //se encarga de llamar al método de insertar las placas de los vehículos dependiendo de la 
             //cantidad de placas que haya introducido el usuario
