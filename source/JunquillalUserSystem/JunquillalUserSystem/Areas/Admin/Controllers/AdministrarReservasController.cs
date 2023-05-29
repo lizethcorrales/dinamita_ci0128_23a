@@ -19,7 +19,13 @@ namespace JunquillalUserSystem.Areas.Admin.Controllers
 
         public IActionResult ReservasPorFecha(string fecha)
         {
-            List<ReservacionModelo> listaReservas = administrarHandler.ObtenerReservasPorFecha(fecha);
+            List<ReservacionModelo> listaReservas = administrarHandler.ObtenerReservas(fecha,"fecha");
+            return View("Reservas", listaReservas);
+        }
+
+        public IActionResult ReservasPorIdentificador(string identificador)
+        {
+            List<ReservacionModelo> listaReservas = administrarHandler.ObtenerReservas(identificador,"identificador");
             return View("Reservas", listaReservas);
         }
 

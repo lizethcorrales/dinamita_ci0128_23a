@@ -17,15 +17,32 @@ namespace JunquillalUserSystem.Areas.Admin.Controllers.Handlers
             conexion = new SqlConnection(rutaConexion);
         }
 
-		public List<ReservacionModelo> ObtenerReservasPorFecha(string fecha)
+		public List<ReservacionModelo> ObtenerReservas(string datoBusqueda,string tipoBusqueda)
 		{
 			List<ReservacionModelo> reservas = new List<ReservacionModelo>();
+			string query = "";
 
-			string query = "SELECT * FROM dbo.ObtenerReservacionesPorFecha(@Fecha)";
+            if (tipoBusqueda == "fecha")
+			{
+				query = "SELECT * FROM dbo.ObtenerReservacionesPorFecha(@Fecha)";
+            } else
+			{
+                query = "SELECT * FROM dbo.ObtenerReservacionesPorIdentificador(@Identificador)";
+            }
+			
 
 			using (SqlCommand command = new SqlCommand(query, conexion))
 			{
-				command.Parameters.AddWithValue("@Fecha", fecha); // Fecha que deseas utilizar
+                if (tipoBusqueda == "fecha")
+                {
+                    command.Parameters.AddWithValue("@Fecha", datoBusqueda); // Fecha que deseas utilizar para buscar
+                }
+                else
+                {
+                    command.Parameters.AddWithValue("@Identificador", datoBusqueda); //Codigo que deseas utilizar para buscar
+
+                }
+            
 				conexion.Open();
 
 				// Llamar al método para obtener los datos del reader

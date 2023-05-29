@@ -21,8 +21,8 @@
     <button class="purple-button" onclick="buscarReservacionesPorFecha()">Buscar por Fecha</button>
     <input type="text" id="fecha-input" placeholder="Fecha (yyyy-mm-dd)">
     <button class="purple-button" onclick="buscarReservacionesPorIdentificador()">Buscar por Identificador</button>
-    <input type="text" id="identificador-input" placeholder="Identificador">
-        <p id="errorMessage" style="color: red; display: none;"></p>
+     <input type="text" id="identificador-input" placeholder="Identificador" maxlength="10">
+     <p id="errorMessage" style="color: red; display: none;"></p>
 </div>
 
 
@@ -152,6 +152,24 @@
             // El formato de fecha es válido, redirigir a la página deseada
             errorMessage.style.display = "none";
             window.location.href = "/Admin/AdministrarReservas/ReservasPorFecha?fecha=" + fecha;
+        }
+    }
+
+    function buscarReservacionesPorIdentificador() {
+        var identificadorInput = document.getElementById("identificador-input");
+        var errorMessage = document.getElementById("errorMessage");
+        var identificador = identificadorInput.value;
+
+
+
+        if (identificador.trim() === "") {
+            //Input esta vacio
+            errorMessage.textContent = "Debes digitar el identificador de reserva";
+            errorMessage.style.display = "block";
+        } else {
+            // El formato de fecha es válido, redirigir a la página deseada
+            errorMessage.style.display = "none";
+            window.location.href = "/Admin/AdministrarReservas/ReservasPorIdentificador?identificador=" + identificador;
         }
     }
 
