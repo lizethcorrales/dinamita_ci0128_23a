@@ -3,9 +3,8 @@
     public class TarifaModelo
     {
         public string Nacionalidad { get; set; }
-        public string grupoPoblacion { get; set; }
-        public string actividad { get; set; }
-        public double precio { get; set; }
-
+        public string Poblacion { get; set; }        
+        public string Actividad { get; set; }
+        public double Precio { get; set; }
     }
 }

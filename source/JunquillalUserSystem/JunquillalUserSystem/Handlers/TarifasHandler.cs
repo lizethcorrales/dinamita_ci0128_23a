@@ -19,9 +19,9 @@ namespace JunquillalUserSystem.Handlers
                 new TarifaModelo
                 {
                     Nacionalidad = Convert.ToString(columna["Nacionalidad"]),
-                    grupoPoblacion = Convert.ToString(columna["Poblacion"]),
-                    actividad = Convert.ToString(columna["Actividad"]),
-                    precio = Convert.ToDouble(columna["Precio"])
+                    Poblacion = Convert.ToString(columna["Poblacion"]),
+                    Actividad = Convert.ToString(columna["Actividad"]),
+                    Precio = Convert.ToDouble(columna["Precio"])
                 });
             }
             return tarifas;
@@ -33,9 +33,9 @@ namespace JunquillalUserSystem.Handlers
             SqlCommand comandoParaConsulta = new SqlCommand(consulta, conexion);
             comandoParaConsulta.CommandType = CommandType.StoredProcedure;
             comandoParaConsulta.Parameters.AddWithValue("@Nacionalidad", tarifa.Nacionalidad);
-            comandoParaConsulta.Parameters.AddWithValue("@Poblacion", tarifa.grupoPoblacion);
-            comandoParaConsulta.Parameters.AddWithValue("@Actividad", tarifa.actividad);
-            comandoParaConsulta.Parameters.AddWithValue("@Precio", tarifa.precio);
+            comandoParaConsulta.Parameters.AddWithValue("@Poblacion", tarifa.Poblacion);
+            comandoParaConsulta.Parameters.AddWithValue("@Actividad", tarifa.Actividad);
+            comandoParaConsulta.Parameters.AddWithValue("@Precio", tarifa.Precio);
 
             conexion.Open();
             comandoParaConsulta.ExecuteNonQuery();
