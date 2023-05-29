@@ -4,45 +4,27 @@
     ViewData["Title"] = "Administrar Reservas";
     Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
 }
-<style>
-    .modal-apple {
-        max-width: 700px;
-        margin: 100px auto;
-        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    }
 
-    .modal-apple-content {
-        background-color: #f4f4f4;
-        color: black;
-        border-radius: 10px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-    }
+<!DOCTYPE html>
 
-    .modal-apple-header {
-        background-color: #8e44ad;
-        color: #fff;
-        border-top-left-radius: 10px;
-        border-top-right-radius: 10px;
-    }
-
-    .modal-apple-footer {
-        background-color: #8e44ad;
-        border-bottom-left-radius: 10px;
-        border-bottom-right-radius: 10px;
-    }
-
-    .modal-body {
-        padding: 20px;
-    }
-
-    .modal-info {
-        color: black;
-        font-size: 16px;
-        margin-bottom: 10px;
-    }
-
-</style>
+<html>
 <h1>@ViewBag.MainTitle</h1>
+<head>
+
+    <title>Administrar Reservaciones</title>
+    <link rel="stylesheet" href="~/css/AdministrarReservas.css">
+
+
+</head>
+<body>
+<div class="search-container">
+    <button class="purple-button" onclick="buscarReservacionesPorFecha()">Buscar por Fecha</button>
+    <input type="text" id="fecha-input" placeholder="Fecha (yyyy-mm-dd)">
+    <button class="purple-button" onclick="buscarReservacionesPorIdentificador()">Buscar por Identificador</button>
+    <input type="text" id="identificador-input" placeholder="Identificador">
+        <p id="errorMessage" style="color: red; display: none;"></p>
+</div>
+
 
 <div>
     <a href="@Url.Action("FormularioCantidadPersonas", "Reservacion", new { area = "" })" class="btn btn-success">Crear Reservación</a>
@@ -89,14 +71,14 @@
                                 </button>
                             </div>
                             <div class="modal-body">
-                                <h3 class="modal-info">Datos del hospedero:</h3><br>
+                                <h4>Datos del hospedero:</h4><br>
                                 <h6 class="modal-info">Identificación: @item.hospedero.Identificacion</h6>
                                 <h6 class="modal-info">Nacionalidad: @item.hospedero.Nacionalidad</h6>
                                 <h6 class="modal-info">Tipo de identificación: @item.hospedero.TipoIdentificacion</h6>
                                 <br>
                                 
-                                <h6 class="modal-info"></h6><br>
-                                <h3 class="modal-info">Detalles de la reserva:</h3><br>
+                                <h6 class="modal-info"></h6>
+                                <h4 >Detalles de la reserva:</h4><br>
                                 <h6 class="modal-info">Tu código de reservación es: @item.Identificador</h6>
                                 <h6 class="modal-info">Fecha de ingreso: @item.PrimerDia</h6>
 
@@ -104,11 +86,25 @@
                                 <h6 class="modal-info">Fecha de salida: @item.UltimoDia</h6>
                                 
 
-                                <h6 class="modal-info">Cantidad de personas: @item.cantTipoPersona.Sum()</h6>
+                                    <h6 class="modal-info">Cantidad de personas:@item.tipoPersona.Sum(pair => pair.Value.Item1)</h6>
+
+                                  
+                                    @foreach (var tipoCantidadPersona in item.tipoPersona)
+                                    {
+
+                                        <div>
+                                            <h5>@tipoCantidadPersona.Key</h5>
+                                            <span>  </span>
+                                            <span>Cantidad: @tipoCantidadPersona.Value.Item1   </span>
+                                            <span>Precio total: @tipoCantidadPersona.Value.Item2</span>
+                                        </div>
+                                      
+                                    }
+
                                 <ul>
  
                                 </ul><br>
-                                <h6 class="modal-info">Placas de vehículos:</h6>
+                                <h5 >Placas de vehículos:</h5>
                                 <ul>
                                     @foreach (string placa in item.placasVehiculos)
                                     {
@@ -130,9 +126,34 @@
         </tbody>
     </table>
 </div>
+</body>
+</html>
 
 <!-- Referencia a jQuery -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <!-- Referencia a los archivos de script de Bootstrap -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+    function buscarReservacionesPorFecha() {
+        var fechaInput = document.getElementById("fecha-input");
+        var errorMessage = document.getElementById("errorMessage");
+
+        var fecha = fechaInput.value;
+
+        // Expresión regular para validar el formato de fecha (yyyy-mm-dd)
+        var fechaRegex = /^\d{4}-\d{2}-\d{2}$/;
+
+        if (!fechaRegex.test(fecha)) {
+            // El formato de fecha es incorrecto
+            errorMessage.textContent = "Formato de fecha inválido. Utiliza el formato yyyy-mm-dd";
+            errorMessage.style.display = "block";
+        } else {
+            // El formato de fecha es válido, redirigir a la página deseada
+            errorMessage.style.display = "none";
+            window.location.href = "/Admin/AdministrarReservas/ReservasPorFecha?fecha=" + fecha;
+        }
+    }
+
+
+</script>

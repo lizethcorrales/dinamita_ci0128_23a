@@ -62,7 +62,7 @@ namespace JunquillalUserSystem.Areas.Admin.Controllers.Handlers
 				reservacion.hospedero.Apellido2 = reader.GetString(reader.GetOrdinal("Apellido2"));
 				reservacion.hospedero.Email = reader.GetString(reader.GetOrdinal("Email"));
                 reservacion.hospedero.Identificacion = reader.GetString(reader.GetOrdinal("Identificacion"));
-                reservacion.hospedero.Nacionalidad = reader.GetString(reader.GetOrdinal("NombrePais"));
+                //reservacion.hospedero.Nacionalidad = reader.GetString(reader.GetOrdinal("NombrePais"));
 
 
 
