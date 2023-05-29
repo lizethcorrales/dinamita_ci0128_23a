@@ -4,9 +4,8 @@
     {
         public string Nacionalidad { get; set; }
         public string grupoPoblacion { get; set; }
-        
-        public float precio { get; set; }
-        public string colorBrazalete { get; set; }
+        public string actividad { get; set; }
+        public double precio { get; set; }
 
     }
 }

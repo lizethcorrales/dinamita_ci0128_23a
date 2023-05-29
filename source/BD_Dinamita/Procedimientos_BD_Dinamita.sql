@@ -386,3 +386,23 @@ BEGIN
 		END;
 
 END;
+
+GO
+CREATE PROCEDURE actualizarPrecioTarifa (
+	@Nacionalidad AS VARCHAR(30),
+	@Poblacion AS VARCHAR(30),
+	@Actividad AS VARCHAR(30),
+	@Precio AS FLOAT
+) AS
+BEGIN 
+	SELECT *
+	FROM Tarifa
+	WHERE Tarifa.Nacionalidad = @Nacionalidad AND Tarifa.Poblacion = @Poblacion AND Tarifa.Actividad = @Actividad;
+
+	IF @@ROWCOUNT = 1
+		BEGIN 
+		UPDATE Tarifa
+		SET Precio = @Precio
+		WHERE Tarifa.Nacionalidad = @Nacionalidad AND Tarifa.Poblacion = @Poblacion AND Tarifa.Actividad = @Actividad;
+		END;
+END;

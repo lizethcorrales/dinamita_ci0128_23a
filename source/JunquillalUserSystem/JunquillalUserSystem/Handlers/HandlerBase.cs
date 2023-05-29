@@ -16,7 +16,7 @@ namespace JunquillalUserSystem.Handlers
         }
 
         //método para llenar una tabla a partir de la información obtenida de una consulta a la base de datos
-        private DataTable CrearTablaConsulta(string consulta)
+        protected DataTable CrearTablaConsulta(string consulta)
         {
             SqlCommand comandoParaConsulta = new SqlCommand(consulta,
             conexion);
