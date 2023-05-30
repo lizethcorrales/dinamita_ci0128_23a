@@ -1,8 +1,6 @@
-﻿@{
-    string currentArea = ViewContext.RouteData.DataTokens["area"] as string;
-    bool isInArea = !string.IsNullOrEmpty(currentArea);
+﻿﻿@{
 
-    if (isInArea)
+    if (ViewData["IsAdminArea"] != null)
     {
         Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
     }
@@ -10,8 +8,6 @@
     {
         Layout = "~/Views/Shared/_Layout.cshtml";
     }
-
-
 }
 
 <!DOCTYPE html>

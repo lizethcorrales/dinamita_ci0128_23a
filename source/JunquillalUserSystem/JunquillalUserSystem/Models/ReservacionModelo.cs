@@ -14,13 +14,18 @@
         public List<String> placasVehiculos { get; set; }
         public string actividad { get; set; }
 
+        public Dictionary<string, Tuple<int, String>> tipoPersona;
+		public HospederoModelo hospedero { get; set; }
+
 
 
         public ReservacionModelo()
         {
-            cantTipoPersona = new List<int>();
+			tipoPersona = new Dictionary<string, Tuple<int,String>>();
+			cantTipoPersona = new List<int>();
             placasVehiculos = new List<string>();
             metodosGenerales = new MetodosGeneralesModel();
+            hospedero = new HospederoModelo();
 
         }
 
@@ -53,13 +58,13 @@
 
             if (form["placa3"] != "")
             {
-                reservacion.placasVehiculos.Add(form["placa1"]);
+                reservacion.placasVehiculos.Add(form["placa3"]);
 
             }
 
             if (form["placa4"] != "")
             {
-                reservacion.placasVehiculos.Add(form["placa1"]);
+                reservacion.placasVehiculos.Add(form["placa4"]);
 
             }
 
