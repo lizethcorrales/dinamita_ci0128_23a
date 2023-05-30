@@ -78,6 +78,10 @@
                             <a class="@(ViewContext.RouteData.Values["Controller"].ToString() == "AdministrarReservas" ? "navbar-brand text-black " : "navbar-brand text-white")"
                                href="@Url.Action("Reservas","AdministrarReservas" , new { area = "Admin" })">Administrar Reservas</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="@(ViewContext.RouteData.Values["Controller"].ToString() == "Reportes" ? "navbar-brand text-black " : "navbar-brand text-white")"
+                               href="@Url.Action("Reportes","Reportes" , new { area = "Admin" })">Reportes</a>
+                        </li>
 
                     </ul>
                 </div>
