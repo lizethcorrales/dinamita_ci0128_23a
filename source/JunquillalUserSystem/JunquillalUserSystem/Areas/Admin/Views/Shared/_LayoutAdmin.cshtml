@@ -64,6 +64,10 @@
                                href="@Url.Action("Index","Home" , new { area = "Admin" })"> Inicio </a>
                         </li>
                         <li class="nav-item">
+                            <a class="@(ViewContext.RouteData.Values["Controller"].ToString() == "Login" ? "navbar-brand text-black " : "navbar-brand text-white")"
+                               href="@Url.Action("Login","Login" , new { area = "Admin" })">Pagina Login</a>
+                        </li>
+                        <li class="nav-item">
                             <a class="@(ViewContext.RouteData.Values["Controller"].ToString() == "Reservacion" ? "navbar-brand text-black " : "navbar-brand text-white")"
                                href="@Url.Action("FormularioCantidadPersonas","Reservacion" , new { area = "" })">Hacer una reservación</a>
                         </li>

@@ -1,0 +1,54 @@
+﻿html {
+    font-size: 14px;
+}
+
+@media (min-width: 768px) {
+    html {
+        font-size: 16px;
+    }
+}
+
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+.contenido {
+    margin: auto;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background-image: url('../img/GBHJunquillal.jpg');
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    padding: 150px 250px 150px 250px;
+}
+
+    .contenido div {
+        margin: 10px;
+    }
+
+.botonAtras {
+    color: black;
+    font-size: 15px;
+    border: none;
+    margin: 10px;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.botonContinuar {
+    background-color: #F39800;
+    color: white;
+    font-size: 15px;
+    border: none;
+    margin: 10px;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.datoError {
+    color: red;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 22px;
+}
