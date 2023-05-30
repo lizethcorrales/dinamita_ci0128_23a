@@ -12,7 +12,7 @@
 
         public List<int> cantTipoPersona { get; set; }
         public List<String> placasVehiculos { get; set; }
-        public string actividadVisita { get; set; }
+        public string actividad { get; set; }
 
 
 
