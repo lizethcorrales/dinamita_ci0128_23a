@@ -277,9 +277,10 @@ RETURN
 	join HospederoRealiza AS HR on R.IdentificadorReserva = HR.IdentificadorReserva
 	join Hospedero on HR.IdentificacionHospedero = Hospedero.Identificacion
 	left join TieneNacionalidad as TN on  R.IdentificadorReserva  = TN.IdentificadorReserva
-    WHERE PrimerDia <= @Fecha And @Fecha <= UltimoDia
+    WHERE PrimerDia <= @Fecha And @Fecha <= UltimoDia AND R.Estado != 2
 )
 go
+
 
 
 --Procedimiento que busca las reservaciones por identificador de reserva
@@ -299,10 +300,9 @@ RETURN
 	join HospederoRealiza AS HR on R.IdentificadorReserva = HR.IdentificadorReserva
 	join Hospedero on HR.IdentificacionHospedero = Hospedero.Identificacion
 	left join TieneNacionalidad as TN on  R.IdentificadorReserva  = TN.IdentificadorReserva
-    WHERE R.IdentificadorReserva = @Identificador
+    WHERE R.IdentificadorReserva = @Identificador AND R.Estado != 2
 )
 go
-
 
 
 --Procedimiento que retorna una lista de placas de acuerdo al identificador de

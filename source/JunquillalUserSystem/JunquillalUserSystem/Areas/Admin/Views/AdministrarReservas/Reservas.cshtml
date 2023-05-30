@@ -55,9 +55,9 @@
                         <button style="margin-top: 0px;" type="button" class="btn btn alert-info" data-toggle="modal" data-target="#mensajeModal_@item.Identificador">Ver</button>
                     </td>
                     <td >
-                          @Html.ActionLink("Borrar", "BorrarPelicula",
-                           new { identificador = item.Identificador },
-                           new { @class =  "btn btn alert-danger ", @onclick = "return confirm('Desea borrar esta pelicula?')" })
+                            @Html.ActionLink("Borrar", "EliminarReserva",
+                        new { identificador = item.Identificador },
+                           new { @class =  "btn btn alert-danger ", @onclick = "return confirm('Desea borrar esta reservación?')" })
                     </td>
                 </tr>
 
@@ -73,8 +73,8 @@
                             <div class="modal-body">
                                 <h4>Datos del hospedero:</h4><br>
                                 <h6 class="modal-info">Identificación: @item.hospedero.Identificacion</h6>
-                                <h6 class="modal-info">Nacionalidad: @item.hospedero.Nacionalidad</h6>
-                                <h6 class="modal-info">Tipo de identificación: @item.hospedero.TipoIdentificacion</h6>
+                                <h6 class="modal-info">País: @item.hospedero.Nacionalidad</h6>
+                                <h6 class="modal-info">Email: @item.hospedero.Email</h6>
                                 <br>
                                 
                                 <h6 class="modal-info"></h6>

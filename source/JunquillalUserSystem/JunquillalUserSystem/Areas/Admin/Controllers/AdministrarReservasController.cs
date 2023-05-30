@@ -29,5 +29,12 @@ namespace JunquillalUserSystem.Areas.Admin.Controllers
             return View("Reservas", listaReservas);
         }
 
+        public IActionResult EliminarReserva(string identificador)
+        {
+            administrarHandler.EliminarReservacion(identificador);
+            return RedirectToAction("Reservas");
+
+        }
+
     }
 }

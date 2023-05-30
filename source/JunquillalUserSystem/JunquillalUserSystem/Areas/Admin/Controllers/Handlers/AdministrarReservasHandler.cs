@@ -4,45 +4,46 @@ using NuGet.Protocol.Plugins;
 
 namespace JunquillalUserSystem.Areas.Admin.Controllers.Handlers
 {
-    public class AdministrarReservasHandler
-    {
-        private SqlConnection conexion;
-        private string rutaConexion;
+	public class AdministrarReservasHandler
+	{
+		private SqlConnection conexion;
+		private string rutaConexion;
 
-        public AdministrarReservasHandler()
-        {
-            var builder = WebApplication.CreateBuilder();
-            rutaConexion =
-            builder.Configuration.GetConnectionString("ContextoJunquillal");
-            conexion = new SqlConnection(rutaConexion);
-        }
+		public AdministrarReservasHandler()
+		{
+			var builder = WebApplication.CreateBuilder();
+			rutaConexion =
+			builder.Configuration.GetConnectionString("ContextoJunquillal");
+			conexion = new SqlConnection(rutaConexion);
+		}
 
-		public List<ReservacionModelo> ObtenerReservas(string datoBusqueda,string tipoBusqueda)
+		public List<ReservacionModelo> ObtenerReservas(string datoBusqueda, string tipoBusqueda)
 		{
 			List<ReservacionModelo> reservas = new List<ReservacionModelo>();
 			string query = "";
 
-            if (tipoBusqueda == "fecha")
+			if (tipoBusqueda == "fecha")
 			{
 				query = "SELECT * FROM dbo.ObtenerReservacionesPorFecha(@Fecha)";
-            } else
+			}
+			else
 			{
-                query = "SELECT * FROM dbo.ObtenerReservacionesPorIdentificador(@Identificador)";
-            }
-			
+				query = "SELECT * FROM dbo.ObtenerReservacionesPorIdentificador(@Identificador)";
+			}
+
 
 			using (SqlCommand command = new SqlCommand(query, conexion))
 			{
-                if (tipoBusqueda == "fecha")
-                {
-                    command.Parameters.AddWithValue("@Fecha", datoBusqueda); // Fecha que deseas utilizar para buscar
-                }
-                else
-                {
-                    command.Parameters.AddWithValue("@Identificador", datoBusqueda); //Codigo que deseas utilizar para buscar
+				if (tipoBusqueda == "fecha")
+				{
+					command.Parameters.AddWithValue("@Fecha", datoBusqueda); // Fecha que deseas utilizar para buscar
+				}
+				else
+				{
+					command.Parameters.AddWithValue("@Identificador", datoBusqueda); //Codigo que deseas utilizar para buscar
 
-                }
-            
+				}
+
 				conexion.Open();
 
 				// Llamar al método para obtener los datos del reader
@@ -78,13 +79,13 @@ namespace JunquillalUserSystem.Areas.Admin.Controllers.Handlers
 				reservacion.hospedero.Apellido1 = reader.GetString(reader.GetOrdinal("Apellido1"));
 				reservacion.hospedero.Apellido2 = reader.GetString(reader.GetOrdinal("Apellido2"));
 				reservacion.hospedero.Email = reader.GetString(reader.GetOrdinal("Email"));
-                reservacion.hospedero.Identificacion = reader.GetString(reader.GetOrdinal("Identificacion"));
-                //reservacion.hospedero.Nacionalidad = reader.GetString(reader.GetOrdinal("NombrePais"));
+				reservacion.hospedero.Identificacion = reader.GetString(reader.GetOrdinal("Identificacion"));
+				//reservacion.hospedero.Nacionalidad = reader.GetString(reader.GetOrdinal("NombrePais"));
 
 
 
 
-                reservas.Add(reservacion);
+				reservas.Add(reservacion);
 			}
 
 			return reservas;
@@ -97,7 +98,7 @@ namespace JunquillalUserSystem.Areas.Admin.Controllers.Handlers
 
 			string query = "SELECT * FROM dbo.ObtenerPlacasReservacion(@Identificador)";
 
-			
+
 
 			using (SqlCommand command = new SqlCommand(query, conexion))
 			{
@@ -155,7 +156,23 @@ namespace JunquillalUserSystem.Areas.Admin.Controllers.Handlers
 			return cantidadTipoPersona;
 		}
 
-	}
+		public void EliminarReservacion(string identificadorReserva)
+		{
+			string query = "Delete from Reservacion where IdentificadorReserva = @IdentificadorReserva";
 
+
+
+			using (SqlCommand command = new SqlCommand(query, conexion))
+			{
+
+				command.Parameters.AddWithValue("@IdentificadorReserva", identificadorReserva); // Identificador de reserva a eliminar
+
+				conexion.Open();
+				command.ExecuteNonQuery();
+				conexion.Close();
+			}
+		}
+	}
 }
+		
 
