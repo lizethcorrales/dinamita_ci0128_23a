@@ -46,25 +46,22 @@ namespace JunquillalUserSystem.Handlers
         /*método para insertar a la base de datos las tuplas correspondientes a la cantidad de personas 
          de cada población (adulto nacional o extranjero, niño nacional o extranjero)
         recibe el identificador de la reserva y la cantidad de personas de cada población*/
-        public void insertar_PrecioReservacion(string indentificador, string adulto_nacional,
-            string ninno_nacional_mayor6, string ninno_nacional_menor6, string adulto_mayor_nacional,
-            string adulto_extranjero, string ninno_extranjero, string adulto_mayor_extranjero)
+        public void insertar_PrecioReservacion(ReservacionModelo reservacion)
         {
             //se indica el procedimiento almacenado a ejecutarse
             string consulta = "insertar_PrecioReservacion";
             SqlCommand comandoParaConsulta = new SqlCommand(consulta, conexion);
             comandoParaConsulta.CommandType = CommandType.StoredProcedure;
             //se agregan los parámetros que recibe el procedimiento
-            comandoParaConsulta.Parameters.AddWithValue("@identificador_Reserva", indentificador);
-            comandoParaConsulta.Parameters.AddWithValue("@adulto_nacional", adulto_nacional);
-            comandoParaConsulta.Parameters.AddWithValue("@ninno_nacional_mayor6", ninno_nacional_mayor6);
-            comandoParaConsulta.Parameters.AddWithValue("@ninno_nacional_menor6", ninno_nacional_menor6);
-            comandoParaConsulta.Parameters.AddWithValue("@adulto_mayor_nacional", adulto_mayor_nacional);
-            comandoParaConsulta.Parameters.AddWithValue("@adulto_extranjero", adulto_extranjero);
-            comandoParaConsulta.Parameters.AddWithValue("@ninno_extranjero", ninno_extranjero);
-            comandoParaConsulta.Parameters.AddWithValue("@adulto_mayor_extranjero", adulto_mayor_extranjero);
+            comandoParaConsulta.Parameters.AddWithValue("@identificador_Reserva", reservacion.Identificador);
+            comandoParaConsulta.Parameters.AddWithValue("@adulto_nacional", reservacion.cantTipoPersona[0]);
+            comandoParaConsulta.Parameters.AddWithValue("@ninno_nacional_mayor6", reservacion.cantTipoPersona[1]);
+            comandoParaConsulta.Parameters.AddWithValue("@ninno_nacional_menor6", reservacion.cantTipoPersona[2]);
+            comandoParaConsulta.Parameters.AddWithValue("@adulto_mayor_nacional", reservacion.cantTipoPersona[3]);
+            comandoParaConsulta.Parameters.AddWithValue("@adulto_extranjero", reservacion.cantTipoPersona[4]);
+            comandoParaConsulta.Parameters.AddWithValue("@ninno_extranjero", reservacion.cantTipoPersona[5]);
+            comandoParaConsulta.Parameters.AddWithValue("@adulto_mayor_extranjero", reservacion.cantTipoPersona[6]);
 
-            //ejecución del query
             conexion.Open();
             comandoParaConsulta.ExecuteNonQuery();
             conexion.Close();
@@ -73,20 +70,19 @@ namespace JunquillalUserSystem.Handlers
         /*método para insertar una nueva reserva a la base de datos
         recibe el identificador único de la reserva, las fechas del primer día y último día, el estado
         de la reserva (activa, cancelada, en curso) y la cantidad de personas totales de la reserva*/
-        public void insertarReserva(string identificador, string primerDia, string ultimoDia, string estado,
-            string cantidad, string motivo)
+        public void insertarReserva(ReservacionModelo reservacion, HospederoModelo hospedero, string estado)
         {
             //se indica el procedimiento almacenado a ejecutarse
             string consulta = "insertar_Reservacion";
             SqlCommand comandoParaConsulta = new SqlCommand(consulta, conexion);
             comandoParaConsulta.CommandType = CommandType.StoredProcedure;
             //se agregan los parámetros que recibe el procedimiento
-            comandoParaConsulta.Parameters.AddWithValue("@identificacion_entrante", identificador);
-            comandoParaConsulta.Parameters.AddWithValue("@primerDia_entrante", primerDia);
-            comandoParaConsulta.Parameters.AddWithValue("@ultimoDia_entrante", ultimoDia);
+            comandoParaConsulta.Parameters.AddWithValue("@identificacion_entrante", reservacion.Identificador);
+            comandoParaConsulta.Parameters.AddWithValue("@primerDia_entrante", reservacion.PrimerDia);
+            comandoParaConsulta.Parameters.AddWithValue("@ultimoDia_entrante", reservacion.UltimoDia);
             comandoParaConsulta.Parameters.AddWithValue("@estado_entrante", estado);
-            comandoParaConsulta.Parameters.AddWithValue("@cantidad_entrante", cantidad);
-            comandoParaConsulta.Parameters.AddWithValue("@motivo_entrante", motivo);
+            comandoParaConsulta.Parameters.AddWithValue("@cantidad_entrante", sacarCantidadPersonasTotal(reservacion));
+            comandoParaConsulta.Parameters.AddWithValue("@motivo_entrante", hospedero.Motivo);
             //ejecución del query
             conexion.Open();
             comandoParaConsulta.ExecuteNonQuery();
@@ -96,25 +92,51 @@ namespace JunquillalUserSystem.Handlers
 
         /*método para insertar un hospedero a la base de datos
        recibe el identificador único del hospedero (cedula), el email, nombre, los dos apellidos y un estado*/
-        public void insertarHospedero(string identificacion, string email, string nombre, string apellido1,
-            string apellido2, string telefono)
+        public void insertarHospedero(HospederoModelo hospedero)
         {
             //se indica el procedimiento almacenado a ejecutarse
             string consulta = "insertar_hospedero";
             SqlCommand comandoParaConsulta = new SqlCommand(consulta, conexion);
             comandoParaConsulta.CommandType = CommandType.StoredProcedure;
             //se agregan los parámetros que recibe el procedimiento
-            comandoParaConsulta.Parameters.AddWithValue("@identificacion_entrante", identificacion);
-            comandoParaConsulta.Parameters.AddWithValue("@email_entrante", email);
-            comandoParaConsulta.Parameters.AddWithValue("@nombre_entrante", nombre);
-            comandoParaConsulta.Parameters.AddWithValue("@apellido1_entrante", apellido1);
-            comandoParaConsulta.Parameters.AddWithValue("@apellido2_entrante", apellido2);
-            comandoParaConsulta.Parameters.AddWithValue("@telefono_entrante", telefono);
+            comandoParaConsulta.Parameters.AddWithValue("@identificacion_entrante", hospedero.Identificacion);
+            comandoParaConsulta.Parameters.AddWithValue("@email_entrante", hospedero.Email);
+            comandoParaConsulta.Parameters.AddWithValue("@nombre_entrante", hospedero.Nombre);
+            comandoParaConsulta.Parameters.AddWithValue("@apellido1_entrante", hospedero.Apellido1);
+            comandoParaConsulta.Parameters.AddWithValue("@apellido2_entrante", hospedero.Apellido2);
+            comandoParaConsulta.Parameters.AddWithValue("@telefono_entrante", hospedero.Telefono);
             //ejecución del query
             conexion.Open();
             comandoParaConsulta.ExecuteNonQuery();
             conexion.Close();
         }
+
+        public void insertarTieneNacionalidad(HospederoModelo hospedero, ReservacionModelo reservacion)
+        {
+            //se indica el procedimiento almacenado a ejecutarse
+            string consulta = "insertarTieneNacionalidad";
+            SqlCommand comandoParaConsulta = new SqlCommand(consulta, conexion);
+            comandoParaConsulta.CommandType = CommandType.StoredProcedure;
+            //se agregan los parámetros que recibe el procedimiento
+            comandoParaConsulta.Parameters.AddWithValue("@IdentificadorReserva", reservacion.Identificador);
+            comandoParaConsulta.Parameters.AddWithValue("@NombrePais", hospedero.Nacionalidad);
+            comandoParaConsulta.Parameters.AddWithValue("@cantidad", sacarCantidadPersonasTotal(reservacion));
+            //ejecución del query
+            conexion.Open();
+            comandoParaConsulta.ExecuteNonQuery();
+            conexion.Close();
+        }
+
+        public int sacarCantidadPersonasTotal(ReservacionModelo reservacion)
+        {
+            int cantidadPersonas = 0;
+            for (int i = 0; i < reservacion.cantTipoPersona.Count(); i++)
+            {
+                cantidadPersonas += reservacion.cantTipoPersona[i];
+            }
+            return cantidadPersonas;
+        }
+
 
         /*método para insertar las placas de los vehículos que van a llevar el día de la reserva
        recibe el identificador único de la reserva y las 4 placas que se pueden tener por ahora, las placas 
@@ -212,28 +234,21 @@ namespace JunquillalUserSystem.Handlers
             conexion.Close();
         }
 
-        /*método para insertar todos los detalles de una reservación, usa los demás métodos de 
-         insertar en base de datos, recibe dos modelos hospedero y reservación que cuentan con todos 
-        los detalles que se necesitan meter a la base de datos*/
-        public void InsertarEnBaseDatos(HospederoModelo hospedero , ReservacionModelo reservacion)
+        public void insertarProvincia(ReservacionModelo reservacion, HospederoModelo hospedero)
         {
-            //llama al método para insertar un hospedero
-            insertarHospedero(hospedero.Identificacion, hospedero.Email , hospedero.Nombre , hospedero.Apellido1
-                ,hospedero.Apellido2, hospedero.Telefono);
-            //obtiene la cantidad total de personas en la reserva 
-            int cantidadPersonas = 0;
-            for (int i = 0; i < reservacion.cantTipoPersona.Count(); i++)
-            {
-                cantidadPersonas += reservacion.cantTipoPersona[i];
-            }
-           // int cantidadTotal = reservacion.cantTipoPersona[0] + reservacion.cantTipoPersona[1] +
-                //reservacion.cantTipoPersona[2] + reservacion.cantTipoPersona[3];
-            //llama al método para insertar una reserva
-            insertarReserva(reservacion.Identificador,reservacion.PrimerDia,reservacion.UltimoDia,"0", 
-                cantidadPersonas.ToString(), hospedero.Motivo);
+            string consulta = "InsertarProvincia";
+            SqlCommand comandoParaConsulta = new SqlCommand(consulta, conexion);
+            comandoParaConsulta.CommandType = CommandType.StoredProcedure;
+            comandoParaConsulta.Parameters.AddWithValue("@identificadorReserva", reservacion.Identificador);
+            comandoParaConsulta.Parameters.AddWithValue("@nombreProvincia", hospedero.Provincia);
+            comandoParaConsulta.Parameters.AddWithValue("@cantidad", sacarCantidadPersonasTotal(reservacion));
+            conexion.Open();
+            comandoParaConsulta.ExecuteNonQuery();
+            conexion.Close();
+        }
 
-            //se encarga de llamar al método de insertar las placas de los vehículos dependiendo de la 
-            //cantidad de placas que haya introducido el usuario
+        public void insertarPlacasDelFormulario(ReservacionModelo reservacion)
+        {
             switch (reservacion.placasVehiculos.Count)
             {
                 case 0:
@@ -255,11 +270,47 @@ namespace JunquillalUserSystem.Handlers
                     break;
 
             }
+        }
+
+        /*método para insertar una relación entre una reserva, un hopedero y un pago en la base de datos
+         recibe el identificador único del hospedero y la reservación y el comprobante de pago*/
+        public void insertarHospederoRealiza(HospederoModelo hospedero, ReservacionModelo reservacion,
+            string identificador_pago)
+        {
+            string consulta = "insertar_HospederoRealiza";
+            SqlCommand comandoParaConsulta = new SqlCommand(consulta, conexion);
+            comandoParaConsulta.CommandType = CommandType.StoredProcedure;
+            comandoParaConsulta.Parameters.AddWithValue("@identificador_hospedero", hospedero.Identificacion);
+            comandoParaConsulta.Parameters.AddWithValue("@identificador_reserva", reservacion.Identificador);
+            comandoParaConsulta.Parameters.AddWithValue("@identificador_pago", identificador_pago);
+            conexion.Open();
+            comandoParaConsulta.ExecuteNonQuery();
+            conexion.Close();
+        }
+
+        /*método para insertar todos los detalles de una reservación, usa los demás métodos de 
+         insertar en base de datos, recibe dos modelos hospedero y reservación que cuentan con todos 
+        los detalles que se necesitan meter a la base de datos*/
+        public void InsertarEnBaseDatos(HospederoModelo hospedero , ReservacionModelo reservacion)
+        {
+            //llama al método para insertar un hospedero
+            insertarHospedero(hospedero);
+            //obtiene la cantidad total de personas en la reserva 
+            int cantidadPersonas = sacarCantidadPersonasTotal(reservacion);
+           // int cantidadTotal = reservacion.cantTipoPersona[0] + reservacion.cantTipoPersona[1] +
+                //reservacion.cantTipoPersona[2] + reservacion.cantTipoPersona[3];
+            //llama al método para insertar una reserva
+            insertarReserva(reservacion, hospedero, "0");
+
+            insertarTieneNacionalidad(hospedero, reservacion);
+            System.Diagnostics.Debug.WriteLine(hospedero.Provincia);
+            insertarProvincia(reservacion, hospedero);
+
+            //se encarga de llamar al método de insertar las placas de los vehículos dependiendo de la 
+            //cantidad de placas que haya introducido el usuario
+            insertarPlacasDelFormulario(reservacion);
             //llama al método para insertar las tuplas de la cantidad de personas por población
-            insertar_PrecioReservacion(reservacion.Identificador , reservacion.cantTipoPersona[0].ToString(),
-            reservacion.cantTipoPersona[1].ToString(), reservacion.cantTipoPersona[2].ToString(), 
-            reservacion.cantTipoPersona[3].ToString(), reservacion.cantTipoPersona[4].ToString(), reservacion.cantTipoPersona[5].ToString(),
-            reservacion.cantTipoPersona[6].ToString());
+            insertar_PrecioReservacion(reservacion);
 
             //genera un identificador de pago
             string identificadorPago = metodosGenerales.crearIdentificador(6);
@@ -269,27 +320,10 @@ namespace JunquillalUserSystem.Handlers
             insertarPago(identificadorPago, date.ToString());
 
             //llama al método que crea la relación entre una reserva, un hospedero y un pago en la base de datos
-            insertarHospederoRealiza(hospedero.Identificacion, reservacion.Identificador,
-            identificadorPago);
-
+            insertarHospederoRealiza(hospedero, reservacion, identificadorPago);
 
         }
 
-        /*método para insertar una relación entre una reserva, un hopedero y un pago en la base de datos
-         recibe el identificador único del hospedero y la reservación y el comprobante de pago*/
-        public void insertarHospederoRealiza(string identificador_hospedero, string identificador_Reserva, 
-            string identificador_pago)
-        {
-            string consulta = "insertar_HospederoRealiza";
-            SqlCommand comandoParaConsulta = new SqlCommand(consulta, conexion);
-            comandoParaConsulta.CommandType = CommandType.StoredProcedure;
-            comandoParaConsulta.Parameters.AddWithValue("@identificador_hospedero", identificador_hospedero);
-            comandoParaConsulta.Parameters.AddWithValue("@identificador_reserva", identificador_Reserva);
-            comandoParaConsulta.Parameters.AddWithValue("@identificador_pago", identificador_pago);
-            conexion.Open();
-            comandoParaConsulta.ExecuteNonQuery();
-            conexion.Close();
-        }
     }
 
 }

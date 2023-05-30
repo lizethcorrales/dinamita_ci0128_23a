@@ -8,6 +8,7 @@
         public string Apellido2 { get; set; }
         public string Identificacion { get; set; }
         public string Nacionalidad { get; set; }
+        public string Provincia { get; set; }
         public int Estado { get; set; }
         public string Telefono { get; set; }
         public string Email { get; set; }
@@ -39,6 +40,7 @@
             hospedero.TipoIdentificacion = form["nacionalidad"];
             hospedero.Nacionalidad = form["pais"];
             hospedero.Motivo = form["motivo"];
+            hospedero.Provincia = form["provincia"];
             hospedero.Estado = 0;
 
             return hospedero;

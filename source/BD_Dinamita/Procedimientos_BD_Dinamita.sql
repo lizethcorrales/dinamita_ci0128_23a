@@ -406,3 +406,51 @@ BEGIN
 		WHERE Tarifa.Nacionalidad = @Nacionalidad AND Tarifa.Poblacion = @Poblacion AND Tarifa.Actividad = @Actividad;
 		END;
 END;
+
+
+GO
+CREATE PROCEDURE insertarTieneNacionalidad(
+	@IdentificadorReserva AS VARCHAR(10),
+	@NombrePais AS VARCHAR(30),
+	@cantidad AS SMALLINT
+)
+AS 
+BEGIN 
+SELECT Pais.Nombre
+	FROM Pais
+	WHERE Pais.Nombre = @NombrePais;
+
+	IF @@ROWCOUNT <= 0
+		BEGIN 
+		INSERT INTO Pais
+		VALUES(@NombrePais);
+		END;
+
+	INSERT INTO TieneNacionalidad
+	VALUES (@IdentificadorReserva, @NombrePais, @cantidad);
+END
+
+GO
+CREATE PROCEDURE InsertarProvincia(
+@identificadorReserva AS VARCHAR(10),
+@nombreProvincia AS VARCHAR(20),
+@cantidad AS SMALLINT
+) AS 
+BEGIN 
+	SELECT *
+	FROM Reservacion
+	WHERE Reservacion.IdentificadorReserva = @identificadorReserva;
+
+	IF @@ROWCOUNT > 0 
+		BEGIN
+		SELECT *
+		FROM Provincia
+		WHERE Provincia.NombreProvincia = @nombreProvincia;
+
+		IF @@ROWCOUNT > 0 
+			BEGIN 
+			INSERT INTO ProvinciaReserva
+			VALUES(@identificadorReserva, @nombreProvincia, @cantidad)
+			END;
+		END;
+END;
