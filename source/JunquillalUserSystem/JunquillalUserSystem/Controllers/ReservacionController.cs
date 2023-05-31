@@ -28,7 +28,7 @@ namespace JunquillalUserSystem.Controllers
             reservacion = reservacion.LlenarCantidadPersonas(reservacion,Request.Form);
             TempData["Reservacion"] = JsonSerializer.Serialize(reservacion);
 
-            var reservedDates = reservacionHandler.BuscarDiasNoDisponibles(reservacion);
+            var reservedDates = reservacionHandler.BuscarDiasNoDisponiblesReserva(reservacion);
             ViewBag.reservedDates = reservedDates;
             ViewData["IsAdminArea"] = TempData["IsAdminArea"];
             TempData["IsAdminArea"] = TempData["IsAdminArea"];

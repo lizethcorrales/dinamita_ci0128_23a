@@ -9,6 +9,7 @@ namespace JunquillalUserSystem.Controllers
     public class VisitaController : Controller
     {
         private MetodosGeneralesModel metodosGenerales = new MetodosGeneralesModel();
+        private VisitaHandler visitaHandler = new VisitaHandler();
         public IActionResult FormularioCantidadPersonas()
         {
          
@@ -24,8 +25,8 @@ namespace JunquillalUserSystem.Controllers
             reservacion = reservacion.LlenarCantidadPersonas(reservacion, Request.Form);
             TempData["Reservacion"] = JsonSerializer.Serialize(reservacion);
 
-            //var reservedDates = reservacionHandler.BuscarDiasNoDisponibles(reservacion);
-            //ViewBag.reservedDates = reservedDates;
+            var reservedDates = visitaHandler.BuscarDiasNoDisponiblesVisita(reservacion);
+            ViewBag.reservedDates = reservedDates;
             ViewData["IsAdminArea"] = TempData["IsAdminArea"];
             TempData["IsAdminArea"] = TempData["IsAdminArea"];
             
@@ -54,8 +55,8 @@ namespace JunquillalUserSystem.Controllers
             string confirmacion = metodosGenerales.CrearConfirmacionMensaje(reservacion, hospedero);
             metodosGenerales.EnviarEmail(confirmacion, hospedero.Email);
             ViewBag.mensaje = new HtmlString(confirmacion);
-            //reservacionHandler.InsertarEnBaseDatos(hospedero, reservacion);
-            //ViewBag.costoTotal = reservacionHandler.CostoTotal(reservacion.Identificador).ToString();
+            visitaHandler.InsertarEnBaseDatosVisita(hospedero, reservacion);
+            ViewBag.costoTotal = visitaHandler.CostoTotal(reservacion.Identificador).ToString();
 
 
 

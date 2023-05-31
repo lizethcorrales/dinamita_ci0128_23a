@@ -63,7 +63,7 @@ namespace JunquillalUserSystem.Models
             StringBuilder sb = new StringBuilder();
 
             // Encabezado
-            if (reservacion.Tipo == "Picnic")
+            if (reservacion.TipoActividad == "Picnic")
             {
                 sb.Append("<h2 style='text-align:center;'>Confirmación de Reserva para picnic</h2><br><br>");
             } else
@@ -84,7 +84,7 @@ namespace JunquillalUserSystem.Models
             sb.Append("<h6>Tu código de reservación es: " + reservacion.Identificador + "</h6>");
             sb.Append("<h6>Fecha de ingreso: " + reservacion.PrimerDia + "</h6>");
 
-            if (reservacion.Tipo == "Camping")
+            if (reservacion.TipoActividad == "Camping")
             {
                 sb.Append("<h6>Fecha de salida: " + reservacion.UltimoDia + "</h6>");
             }

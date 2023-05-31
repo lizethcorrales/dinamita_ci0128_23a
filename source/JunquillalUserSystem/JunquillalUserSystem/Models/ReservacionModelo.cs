@@ -5,7 +5,7 @@
     {
         private MetodosGeneralesModel metodosGenerales;
         public string PrimerDia { get; set; }
-		public string Tipo { get; set; }
+		public string TipoActividad { get; set; }
 		public string UltimoDia { get; set; }
 
         public string Identificador { get; set; }
@@ -31,7 +31,7 @@
 
 		public ReservacionModelo(string tipo)
 		{
-            this.Tipo = tipo;
+            this.TipoActividad = tipo;
 			cantTipoPersona = new List<int>();
 			placasVehiculos = new List<string>();
 			metodosGenerales = new MetodosGeneralesModel();
