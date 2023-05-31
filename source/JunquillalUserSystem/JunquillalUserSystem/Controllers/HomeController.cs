@@ -29,7 +29,7 @@ namespace JunquillalUserSystem.Controllers
             return View();
         }
 
-        public IActionResult terminos_Condiciones()
+        public IActionResult TerminosCondiciones()
         {
             return View();
         }
