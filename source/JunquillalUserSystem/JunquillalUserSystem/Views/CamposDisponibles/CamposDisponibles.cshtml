@@ -27,25 +27,20 @@
     
     <body>
         <h4 class="titulo"> Bienvenido a la sección de Campos Disponibles</h4>
-        <div class="fondo">
+        <div class="fondo" style=" position:relative; align-items:center; align-content:center">
             <form action="Edit" method="post" id="CamposDisponiblesForm">
 
-                <label id="label-fecha-entrada" for="fecha-entrada">Fecha de entrada:</label>
-                <input type="text" id="fecha-entrada" name="fecha-entrada" readonly>
+            <label style="position:absolute" id="label-fecha-entrada" for="fecha-entrada">Fecha de entrada:</label>
+                <input style="position:absolute" type="text" id="fecha-entrada" name="fecha-entrada" readonly>
            <!-- <button class="button2" id="btn-atras" onclick="location.href='../Home/Index'"> Atrás </button> -->
-                <button class="button1" type="button" id="buscar"> Buscar </button>
+            <button style="position:absolute" class="button1" type="button" id="buscar"> Buscar </button>
                 <div id="error"></div>
 
-
-
-              
-        
-
-                <div id="camposDisponibles">
-                <label class="resultadoCampos "id="label_campos" for="label_campos">Campos casetilla:</label>
+                <di  id="camposDisponibles">
+                <labe style="position:absolute" class="resultadoCampos " id="label_campos" for="label_campos">Campos casetilla:</labe>
                 @if (ViewBag.camposDisponibles != null && !string.IsNullOrEmpty(ViewBag.camposDisponibles) )
                 {
-                    <input class="entradaDatos" type="text" id="campos" name="campos" value=@Html.Raw(ViewBag.camposDisponibles) readonly>
+                    <input   class="entradaDatos" type="text" id="campos" name="campos" value=@Html.Raw(ViewBag.camposDisponibles) readonly>
                 }
                 else
                 {
@@ -56,7 +51,7 @@
         
             
                  <p style="color:red"></p>
-                </div>
+                </di>
             </form>
 
             <script>

@@ -1,10 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using JunquillalUserSystem.Handlers;
 using JunquillalUserSystem.Models;
-using System.Collections.Generic;
+
 
 namespace JunquillalUserSystem.Controllers
 {
+    [Area("Admin")]
     public class TarifasController : Controller
     {
         public IActionResult Tarifas()
