@@ -44,15 +44,17 @@ CREATE PROCEDURE insertar_Reservacion (
 	@ultimoDia_entrante AS DATE,
 	@estado_entrante AS BIT,
 	@cantidad_entrante AS SMALLINT,
-	@motivo_entrante AS VARCHAR(30)
+	@motivo_entrante AS VARCHAR(30),
+	@tipoActividad AS VARCHAR(10)
 ) AS
 BEGIN
 	INSERT INTO Reservacion
 		VALUES (@identificacion_entrante, @primerDia_entrante, @ultimoDia_entrante, 
-		@estado_entrante, @cantidad_entrante, @motivo_entrante);
+		@estado_entrante, @cantidad_entrante, @motivo_entrante, @tipoActividad);
 END;
 
 -- Este procedimiento agrega a la tabla PrecioReservacion, el precio por cada tipo de población registrada en la reservación.
+GO
 CREATE PROCEDURE insertar_PrecioReservacion(
 	@identificador_Reserva AS VARCHAR(10),
 	@adulto_nacional AS SMALLINT,
@@ -61,7 +63,8 @@ CREATE PROCEDURE insertar_PrecioReservacion(
 	@adulto_mayor_nacional AS SMALLINT,
 	@adulto_extranjero AS SMALLINT,
 	@ninno_extranjero AS SMALLINT,
-	@adulto_mayor_extranjero AS SMALLINT
+	@adulto_mayor_extranjero AS SMALLINT,
+	@tipoActividad AS VARCHAR(10)
 ) AS
 BEGIN
 	DECLARE @precio AS DOUBLE PRECISION;
@@ -70,74 +73,73 @@ BEGIN
 		BEGIN
 		SELECT @precio = Tarifa.precio
 		FROM Tarifa
-		WHERE Tarifa.Nacionalidad = 'Nacional' AND Tarifa.Poblacion = 'Adulto' AND Tarifa.Actividad = 'Camping';
+		WHERE Tarifa.Nacionalidad = 'Nacional' AND Tarifa.Poblacion = 'Adulto' AND Tarifa.Actividad = @tipoActividad;
 
 		INSERT INTO PrecioReservacion
-		VALUES (@identificador_Reserva, 'Nacional', 'Adulto', 'Camping', @adulto_nacional, @precio);
+		VALUES (@identificador_Reserva, 'Nacional', 'Adulto',@tipoActividad, @adulto_nacional, @precio);
 		END;
 
 	IF (@ninno_nacional_menor6 > 0) 
 		BEGIN
 		SELECT @precio = Tarifa.precio
 		FROM Tarifa
-		WHERE Tarifa.Nacionalidad = 'Nacional' AND Tarifa.Poblacion = 'Niño menor 6 años' AND Tarifa.Actividad = 'Camping';
+		WHERE Tarifa.Nacionalidad = 'Nacional' AND Tarifa.Poblacion = 'Niño menor 6 años' AND Tarifa.Actividad = @tipoActividad;
  
 		INSERT INTO PrecioReservacion
-		VALUES (@identificador_Reserva, 'Nacional', 'Niño menor 6 años', 'Camping', @ninno_nacional_menor6, @precio);
+		VALUES (@identificador_Reserva, 'Nacional', 'Niño menor 6 años', @tipoActividad, @ninno_nacional_menor6, @precio);
 		END;
 
 	IF (@ninno_nacional_mayor6 > 0) 
 		BEGIN
 		SELECT @precio = Tarifa.precio
 		FROM Tarifa
-		WHERE Tarifa.Nacionalidad = 'Nacional' AND Tarifa.Poblacion = 'Niño' AND Tarifa.Actividad = 'Camping';
+		WHERE Tarifa.Nacionalidad = 'Nacional' AND Tarifa.Poblacion = 'Niño' AND Tarifa.Actividad = @tipoActividad;
  
 		INSERT INTO PrecioReservacion
-		VALUES (@identificador_Reserva, 'Nacional', 'Niño', 'Camping', @ninno_nacional_mayor6, @precio);
+		VALUES (@identificador_Reserva, 'Nacional', 'Niño', @tipoActividad, @ninno_nacional_mayor6, @precio);
 		END;
 
 	IF (@adulto_mayor_nacional > 0)
 		BEGIN
 		SELECT @precio = Tarifa.precio
 		FROM Tarifa
-		WHERE Tarifa.Nacionalidad = 'Nacional' AND Tarifa.Poblacion = 'Adulto Mayor' AND Tarifa.Actividad = 'Camping';
+		WHERE Tarifa.Nacionalidad = 'Nacional' AND Tarifa.Poblacion = 'Adulto Mayor' AND Tarifa.Actividad = @tipoActividad;
 
 		INSERT INTO PrecioReservacion
-		VALUES (@identificador_Reserva, 'Nacional', 'Adulto Mayor', 'Camping', @adulto_mayor_nacional, @precio);
+		VALUES (@identificador_Reserva, 'Nacional', 'Adulto Mayor', @tipoActividad, @adulto_mayor_nacional, @precio);
 		END;
 
 	IF (@adulto_extranjero > 0)
 		BEGIN
 		SELECT @precio = Tarifa.precio
 		FROM Tarifa
-		WHERE Tarifa.Nacionalidad = 'Extranjero' AND Tarifa.Poblacion = 'Adulto' AND Tarifa.Actividad = 'Camping';
+		WHERE Tarifa.Nacionalidad = 'Extranjero' AND Tarifa.Poblacion = 'Adulto' AND Tarifa.Actividad = @tipoActividad;
 
 		INSERT INTO PrecioReservacion
-		VALUES (@identificador_Reserva, 'Extranjero', 'Adulto', 'Camping', @adulto_extranjero, @precio);
+		VALUES (@identificador_Reserva, 'Extranjero', 'Adulto', @tipoActividad, @adulto_extranjero, @precio);
 		END;
 
 	IF (@ninno_extranjero >0) 
 		BEGIN
 		SELECT @precio = Tarifa.precio
 		FROM Tarifa
-		WHERE Tarifa.Nacionalidad = 'Extranjero' AND Tarifa.Poblacion = 'Niño' AND Tarifa.Actividad = 'Camping';
+		WHERE Tarifa.Nacionalidad = 'Extranjero' AND Tarifa.Poblacion = 'Niño' AND Tarifa.Actividad = @tipoActividad;
 
 		INSERT INTO PrecioReservacion
-		VALUES (@identificador_Reserva, 'Extranjero', 'Niño', 'Camping', @ninno_extranjero, @precio);
+		VALUES (@identificador_Reserva, 'Extranjero', 'Niño', @tipoActividad, @ninno_extranjero, @precio);
 		END;
 
 	IF (@adulto_mayor_extranjero > 0)
 		BEGIN
 		SELECT @precio = Tarifa.precio
 		FROM Tarifa
-		WHERE Tarifa.Nacionalidad = 'Nacional' AND Tarifa.Poblacion = 'Adulto Mayor' AND Tarifa.Actividad = 'Camping';
+		WHERE Tarifa.Nacionalidad = 'Nacional' AND Tarifa.Poblacion = 'Adulto Mayor' AND Tarifa.Actividad = @tipoActividad;
 
 		INSERT INTO PrecioReservacion
-		VALUES (@identificador_Reserva, 'Extranjero', 'Adulto Mayor', 'Camping', @adulto_mayor_extranjero, @precio);
+		VALUES (@identificador_Reserva, 'Extranjero', 'Adulto Mayor', @tipoActividad, @adulto_mayor_extranjero, @precio);
 		END;
 
 END;
-
 
 -- Este procedimiento agrega las placas ingresadas por el reservante a la tabla Placa
 CREATE PROCEDURE insertar_Placas (
@@ -259,91 +261,6 @@ BEGIN
     SELECT @resultString = @resultString + CAST(fecha AS VARCHAR(10)) + ',' FROM @diasNoDisponibles;
     SET @result = LEFT(@resultString, LEN(@resultString) - 1);
 END;
-
-
---Es procedimiento busca reservaciones por fecha , en donde las reservaciones retornadas van a ser las
--- se encuentren entre la fecha pasada por parametro
-
-
-go
-CREATE FUNCTION ObtenerReservacionesPorFecha
-(
-    @Fecha Date
-)
-RETURNS TABLE
-AS
-RETURN
-(
-    SELECT R.IdentificadorReserva ,PrimerDia, UltimoDia , Hospedero.Nombre,
-	        Hospedero.Apellido1 , Hospedero.Apellido2 , Hospedero.Email , 
-			Hospedero.Identificacion , TN.NombrePais
-    FROM Reservacion as R 
-	join HospederoRealiza AS HR on R.IdentificadorReserva = HR.IdentificadorReserva
-	join Hospedero on HR.IdentificacionHospedero = Hospedero.Identificacion
-	left join TieneNacionalidad as TN on  R.IdentificadorReserva  = TN.IdentificadorReserva
-    WHERE PrimerDia <= @Fecha And @Fecha <= UltimoDia AND R.Estado != 2
-)
-go
-
-
-
---Procedimiento que busca las reservaciones por identificador de reserva
-go
-CREATE FUNCTION ObtenerReservacionesPorIdentificador
-(
-    @Identificador Varchar(10)
-)
-RETURNS TABLE
-AS
-RETURN
-(
-    SELECT R.IdentificadorReserva ,PrimerDia, UltimoDia , Hospedero.Nombre,
-	        Hospedero.Apellido1 , Hospedero.Apellido2 , Hospedero.Email , 
-			Hospedero.Identificacion , TN.NombrePais
-    FROM Reservacion as R 
-	join HospederoRealiza AS HR on R.IdentificadorReserva = HR.IdentificadorReserva
-	join Hospedero on HR.IdentificacionHospedero = Hospedero.Identificacion
-	left join TieneNacionalidad as TN on  R.IdentificadorReserva  = TN.IdentificadorReserva
-    WHERE R.IdentificadorReserva = @Identificador AND R.Estado != 2
-)
-go
-
-
---Procedimiento que retorna una lista de placas de acuerdo al identificador de
--- reservacion que se pasa por parametro
-go
-CREATE FUNCTION ObtenerPlacasReservacion
-(
-    @Identificador VARCHAR(10)
-)
-RETURNS TABLE
-AS
-RETURN
-(
-    SELECT Placa.Placa
-    FROM Placa 
-    WHERE Placa.IdentificadorReserva = @Identificador 
-)
-go
-
---Funcion almacenda que devuelve el tipo de poblacion , la cantidad 
--- y el total que se pago en la reservacion que coincida con el identificador por parametro
-go
-CREATE FUNCTION ObtenerCantidaTipoPersona
-(
-    @Identificador VARCHAR(10)
-)
-RETURNS TABLE
-AS
-RETURN
-(
-    SELECT  Poblacion , Nacionalidad , Cantidad , PrecioAlHacerReserva 
-    FROM  PrecioReservacion
-    WHERE PrecioReservacion.IdentificadorReserva = @Identificador 
-)
-go
-
-
 
 GO
 CREATE PROCEDURE insertarVisita(
@@ -539,3 +456,91 @@ BEGIN
 			END;
 		END;
 END;
+
+
+--Es procedimiento busca reservaciones por fecha , en donde las reservaciones retornadas van a ser las
+-- se encuentren entre la fecha pasada por parametro
+
+
+go
+CREATE FUNCTION ObtenerReservacionesPorFecha
+(
+    @Fecha Date
+)
+RETURNS TABLE
+AS
+RETURN
+(
+    SELECT R.IdentificadorReserva ,PrimerDia, UltimoDia , Hospedero.Nombre,
+	        Hospedero.Apellido1 , Hospedero.Apellido2 , Hospedero.Email , 
+			Hospedero.Identificacion , TN.NombrePais
+    FROM Reservacion as R 
+	join HospederoRealiza AS HR on R.IdentificadorReserva = HR.IdentificadorReserva
+	join Hospedero on HR.IdentificacionHospedero = Hospedero.Identificacion
+	left join TieneNacionalidad as TN on  R.IdentificadorReserva  = TN.IdentificadorReserva
+    WHERE PrimerDia <= @Fecha And @Fecha <= UltimoDia AND R.Estado != 2
+)
+go
+
+
+
+--Procedimiento que busca las reservaciones por identificador de reserva
+go
+CREATE FUNCTION ObtenerReservacionesPorIdentificador
+(
+    @Identificador Varchar(10)
+)
+RETURNS TABLE
+AS
+RETURN
+(
+    SELECT R.IdentificadorReserva ,PrimerDia, UltimoDia , Hospedero.Nombre,
+	        Hospedero.Apellido1 , Hospedero.Apellido2 , Hospedero.Email , 
+			Hospedero.Identificacion , TN.NombrePais
+    FROM Reservacion as R 
+	join HospederoRealiza AS HR on R.IdentificadorReserva = HR.IdentificadorReserva
+	join Hospedero on HR.IdentificacionHospedero = Hospedero.Identificacion
+	left join TieneNacionalidad as TN on  R.IdentificadorReserva  = TN.IdentificadorReserva
+    WHERE R.IdentificadorReserva = @Identificador AND R.Estado != 2
+)
+go
+
+
+--Procedimiento que retorna una lista de placas de acuerdo al identificador de
+-- reservacion que se pasa por parametro
+go
+CREATE FUNCTION ObtenerPlacasReservacion
+(
+    @Identificador VARCHAR(10)
+)
+RETURNS TABLE
+AS
+RETURN
+(
+    SELECT Placa.Placa
+    FROM Placa 
+    WHERE Placa.IdentificadorReserva = @Identificador 
+)
+go
+
+--Funcion almacenda que devuelve el tipo de poblacion , la cantidad 
+-- y el total que se pago en la reservacion que coincida con el identificador por parametro
+go
+CREATE FUNCTION ObtenerCantidaTipoPersona
+(
+    @Identificador VARCHAR(10)
+)
+RETURNS TABLE
+AS
+RETURN
+(
+    SELECT  Poblacion , Nacionalidad , Cantidad , PrecioAlHacerReserva 
+    FROM  PrecioReservacion
+    WHERE PrecioReservacion.IdentificadorReserva = @Identificador 
+)
+go
+
+
+>>>>>>>>> Temporary merge branch 2
+>>>>>>>>> Temporary merge branch 2
+>>>>>>>>> Temporary merge branch 2

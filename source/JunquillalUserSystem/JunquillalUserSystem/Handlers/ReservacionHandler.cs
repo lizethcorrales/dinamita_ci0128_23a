@@ -61,7 +61,7 @@ namespace JunquillalUserSystem.Handlers
             comandoParaConsulta.Parameters.AddWithValue("@adulto_extranjero", reservacion.cantTipoPersona[4]);
             comandoParaConsulta.Parameters.AddWithValue("@ninno_extranjero", reservacion.cantTipoPersona[5]);
             comandoParaConsulta.Parameters.AddWithValue("@adulto_mayor_extranjero", reservacion.cantTipoPersona[6]);
-
+            comandoParaConsulta.Parameters.AddWithValue("@tipoActividad", reservacion.actividad);
             conexion.Open();
             comandoParaConsulta.ExecuteNonQuery();
             conexion.Close();
@@ -83,6 +83,7 @@ namespace JunquillalUserSystem.Handlers
             comandoParaConsulta.Parameters.AddWithValue("@estado_entrante", estado);
             comandoParaConsulta.Parameters.AddWithValue("@cantidad_entrante", sacarCantidadPersonasTotal(reservacion));
             comandoParaConsulta.Parameters.AddWithValue("@motivo_entrante", hospedero.Motivo);
+            comandoParaConsulta.Parameters.AddWithValue("@tipoActividad", reservacion.actividad);
             //ejecución del query
             conexion.Open();
             comandoParaConsulta.ExecuteNonQuery();
