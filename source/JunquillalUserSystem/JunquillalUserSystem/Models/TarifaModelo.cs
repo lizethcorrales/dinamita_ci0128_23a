@@ -2,7 +2,7 @@
 {
     public class TarifaModelo
     {
-        public string Nacionalidad { get; set; }
+        public string nacionalidad { get; set; }
         public string grupoPoblacion { get; set; }
         
         public float precio { get; set; }

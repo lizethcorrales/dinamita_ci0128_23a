@@ -21,7 +21,7 @@
 		<div class="contorno gray">
 		@{
 
-			if (ViewBag.Tipo == "Picnic")
+			if (ViewBag.tipo == "Picnic")
 			{
 				<h3 class="centrar">Información para Picnic</h3>
 			}
@@ -38,7 +38,7 @@
 				<h4 class="centrar">Solicitante de Reserva</h4>
 			<form id="datosImportantes" action="FinalizarReserva" method="POST">
 					<div class="formInput" id="divNombre">
-						<label for="nombre">Nombre:</label><br>
+						<label for="nombre">nombre:</label><br>
 						<input type="text" id="nombre" name="nombre" placeholder="Ingrese su nombre" size="50">
 						<p class="mensajeError" id="mensajeErrorNombre"></p>
 					</div>
@@ -75,7 +75,7 @@
 					<br>
 
 					<div class="centrar">
-						<h5>Tipo de identificación</h5>
+						<h5>tipo de identificación</h5>
 						<input type="radio" id="Nacional"  name="nacionalidad" value="Nacional">
 						<label for="Nacional">Nacional</label>
 						<input type="radio" id="Extranjero" name="nacionalidad" value="Extranjero">
@@ -112,7 +112,7 @@
 					<br>
 
 					<div class="centrar">
-						<h5>Motivo de Visita</h5>
+						<h5>motivo de Visita</h5>
 
 						<input type="radio" id="Ocio" name="motivo" value="Ocio">
 						<label for="Ocio">Ocio</label>

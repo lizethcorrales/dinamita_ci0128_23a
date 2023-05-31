@@ -3,18 +3,18 @@
 
     public class HospederoModelo
     {
-        public string Nombre { get; set; }
-        public string Apellido1 { get; set; }
-        public string Apellido2 { get; set; }
-        public string Identificacion { get; set; }
-        public string Nacionalidad { get; set; }
-        public int Estado { get; set; }
-        public string Telefono { get; set; }
-        public string Email { get; set; }
+        public string nombre { get; set; }
+        public string apellido1 { get; set; }
+        public string apellido2 { get; set; }
+        public string identificacion { get; set; }
+        public string nacionalidad { get; set; }
+        public int estado { get; set; }
+        public string telefono { get; set; }
+        public string email { get; set; }
 
-        public string TipoIdentificacion { get; set; }
+        public string tipoIdentificacion { get; set; }
 
-        public string Motivo { get; set; }
+        public string motivo { get; set; }
 
         public HospederoModelo()
         {
@@ -30,16 +30,16 @@
         {
             HospederoModelo hospedero = new HospederoModelo();
 
-            hospedero.Nombre = form["nombre"];
-            hospedero.Apellido1 = form["primerApellido"];
-            hospedero.Apellido2 = form["segundoApellido"];
-            hospedero.Identificacion = form["identificacion"];
-            hospedero.Telefono = form["segundoApellido"];
-            hospedero.Email = form["email"];
-            hospedero.TipoIdentificacion = form["nacionalidad"];
-            hospedero.Nacionalidad = form["pais"];
-            hospedero.Motivo = form["motivo"];
-            hospedero.Estado = 0;
+            hospedero.nombre = form["nombre"];
+            hospedero.apellido1 = form["primerApellido"];
+            hospedero.apellido2 = form["segundoApellido"];
+            hospedero.identificacion = form["identificacion"];
+            hospedero.telefono = form["segundoApellido"];
+            hospedero.email = form["email"];
+            hospedero.tipoIdentificacion = form["nacionalidad"];
+            hospedero.nacionalidad = form["pais"];
+            hospedero.motivo = form["motivo"];
+            hospedero.estado = 0;
 
             return hospedero;
         }

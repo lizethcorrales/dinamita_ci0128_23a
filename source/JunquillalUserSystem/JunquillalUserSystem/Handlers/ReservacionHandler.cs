@@ -15,7 +15,7 @@ namespace JunquillalUserSystem.Handlers
         private MetodosGeneralesModel metodosGenerales = new MetodosGeneralesModel();
         private SqlConnection conexion;
         private string rutaConexion;
-        private static readonly Random _random = new Random();
+        private static readonly Random random = new Random();
         public ReservacionHandler()
         {
             var builder = WebApplication.CreateBuilder();
@@ -67,12 +67,12 @@ namespace JunquillalUserSystem.Handlers
         /*método para insertar a la base de datos las tuplas correspondientes a la cantidad de personas 
          de cada población (adulto nacional o extranjero, niño nacional o extranjero)
         recibe el identificador de la reserva y la cantidad de personas de cada población*/
-        public void insertar_PrecioReservacion(string indentificador, string adulto_nacional,
+        public void InsertarPrecioReservacion(string indentificador, string adulto_nacional,
             string ninno_nacional_mayor6, string ninno_nacional_menor6, string adulto_mayor_nacional,
             string adulto_extranjero, string ninno_extranjero, string adulto_mayor_extranjero)
         {
             //se indica el procedimiento almacenado a ejecutarse
-            string consulta = "insertar_PrecioReservacion";
+            string consulta = "InsertarPrecioReservacion";
             SqlCommand comandoParaConsulta = new SqlCommand(consulta, conexion);
             comandoParaConsulta.CommandType = CommandType.StoredProcedure;
             //se agregan los parámetros que recibe el procedimiento
@@ -94,7 +94,7 @@ namespace JunquillalUserSystem.Handlers
         /*método para insertar una nueva reserva a la base de datos
         recibe el identificador único de la reserva, las fechas del primer día y último día, el estado
         de la reserva (activa, cancelada, en curso) y la cantidad de personas totales de la reserva*/
-        public void insertarReserva(string identificador, string primerDia, string ultimoDia, string estado,
+        public void InsertarReserva(string identificador, string primerDia, string ultimoDia, string estado,
             string cantidad)
         {
             //se indica el procedimiento almacenado a ejecutarse
@@ -116,7 +116,7 @@ namespace JunquillalUserSystem.Handlers
 
         /*método para insertar un hospedero a la base de datos
        recibe el identificador único del hospedero (cedula), el email, nombre, los dos apellidos y un estado*/
-        public void insertarHospedero(string identificacion, string email, string nombre, string apellido1,
+        public void InsertarHospedero(string identificacion, string email, string nombre, string apellido1,
             string apellido2)
         {
             //se indica el procedimiento almacenado a ejecutarse
@@ -139,7 +139,7 @@ namespace JunquillalUserSystem.Handlers
         /*método para insertar las placas de los vehículos que van a llevar el día de la reserva
        recibe el identificador único de la reserva y las 4 placas que se pueden tener por ahora, las placas 
         pueden estar vacías en cuyo caso solo se insertan cuando la variable trae algo diferente a un vacío*/
-        public void insertarPlacas(string identificador, string placa1, string placa2, string placa3, string placa4)
+        public void InsertarPlacas(string identificador, string placa1, string placa2, string placa3, string placa4)
         {
             //se indica el procedimiento almacenado a ejecutarse
             string consulta = "insertar_Placas";
@@ -217,7 +217,7 @@ namespace JunquillalUserSystem.Handlers
 
         /*método para insertar un pago realizado cuando se confirma la reserva 
          rescibe el comprobante único del pago y la fecha en que se hizo*/
-        public void insertarPago(string comprobante, string fechaPago)
+        public void InsertarPago(string comprobante, string fechaPago)
         {
             //se indica el procedimiento almacenado a ejecutarse
             string consulta = "insertar_Pago";
@@ -238,13 +238,13 @@ namespace JunquillalUserSystem.Handlers
         public void InsertarEnBaseDatos(HospederoModelo hospedero , ReservacionModelo reservacion)
         {
             //llama al método para insertar un hospedero
-            insertarHospedero(hospedero.Identificacion, hospedero.Email , hospedero.Nombre , hospedero.Apellido1
-                ,hospedero.Apellido2);
+            InsertarHospedero(hospedero.identificacion, hospedero.email , hospedero.nombre , hospedero.apellido1
+                ,hospedero.apellido2);
             //obtiene la cantidad total de personas en la reserva 
             int cantidadTotal = reservacion.cantTipoPersona[0] + reservacion.cantTipoPersona[1] +
                 reservacion.cantTipoPersona[2] + reservacion.cantTipoPersona[3];
             //llama al método para insertar una reserva
-            insertarReserva(reservacion.Identificador,reservacion.PrimerDia,reservacion.UltimoDia,"0", 
+            InsertarReserva(reservacion.identificador,reservacion.primerDia,reservacion.ultimoDia,"0", 
                 cantidadTotal.ToString());
 
             //se encarga de llamar al método de insertar las placas de los vehículos dependiendo de la 
@@ -252,26 +252,26 @@ namespace JunquillalUserSystem.Handlers
             switch (reservacion.placasVehiculos.Count)
             {
                 case 0:
-                    insertarPlacas(reservacion.Identificador, "", "", "", "");
+                    InsertarPlacas(reservacion.identificador, "", "", "", "");
                     break;
                 case 1:
-                    insertarPlacas(reservacion.Identificador, reservacion.placasVehiculos[0], "", "", "");
+                    InsertarPlacas(reservacion.identificador, reservacion.placasVehiculos[0], "", "", "");
                     break;
                 case 2:
-                    insertarPlacas(reservacion.Identificador, reservacion.placasVehiculos[0], reservacion.placasVehiculos[1], "", "");
+                    InsertarPlacas(reservacion.identificador, reservacion.placasVehiculos[0], reservacion.placasVehiculos[1], "", "");
                     break;
                 case 3:
-                    insertarPlacas(reservacion.Identificador, reservacion.placasVehiculos[0], reservacion.placasVehiculos[1],
+                    InsertarPlacas(reservacion.identificador, reservacion.placasVehiculos[0], reservacion.placasVehiculos[1],
                         reservacion.placasVehiculos[2], "");
                     break;
                 case 4:
-                    insertarPlacas(reservacion.Identificador, reservacion.placasVehiculos[0], reservacion.placasVehiculos[1],
+                    InsertarPlacas(reservacion.identificador, reservacion.placasVehiculos[0], reservacion.placasVehiculos[1],
                        reservacion.placasVehiculos[2], reservacion.placasVehiculos[3]);
                     break;
 
             }
             //llama al método para insertar las tuplas de la cantidad de personas por población
-            insertar_PrecioReservacion(reservacion.Identificador , reservacion.cantTipoPersona[0].ToString(),
+            InsertarPrecioReservacion(reservacion.identificador , reservacion.cantTipoPersona[0].ToString(),
             reservacion.cantTipoPersona[1].ToString(), reservacion.cantTipoPersona[2].ToString(), 
             reservacion.cantTipoPersona[3].ToString(), reservacion.cantTipoPersona[4].ToString(), reservacion.cantTipoPersona[5].ToString(),
             reservacion.cantTipoPersona[6].ToString());
@@ -281,10 +281,10 @@ namespace JunquillalUserSystem.Handlers
             DateOnly date = new DateOnly();
 
             //llama al método para insertar un opago
-            insertarPago(identificadorPago, date.ToString());
+            InsertarPago(identificadorPago, date.ToString());
 
             //llama al método que crea la relación entre una reserva, un hospedero y un pago en la base de datos
-            insertarHospederoRealiza(hospedero.Identificacion, reservacion.Identificador,
+            InsertarHospederoRealiza(hospedero.identificacion, reservacion.identificador,
             identificadorPago);
 
 
@@ -292,7 +292,7 @@ namespace JunquillalUserSystem.Handlers
 
         /*método para insertar una relación entre una reserva, un hopedero y un pago en la base de datos
          recibe el identificador único del hospedero y la reservación y el comprobante de pago*/
-        public void insertarHospederoRealiza(string identificador_hospedero, string identificador_Reserva, 
+        public void InsertarHospederoRealiza(string identificador_hospedero, string identificador_Reserva, 
             string identificador_pago)
         {
             string consulta = "insertar_HospederoRealiza";

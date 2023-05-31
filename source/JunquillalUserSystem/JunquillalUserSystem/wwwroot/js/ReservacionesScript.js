@@ -31,7 +31,7 @@ var tituloProvincia = document.getElementById("tituloProvincia");
 continuar.addEventListener("click", (e) => {
 	var pasar = 1;
 	if (nombre.value.length < 1) {
-		divNombre.lastElementChild.textContent = "Nombre NO válido";
+		divNombre.lastElementChild.textContent = "nombre NO válido";
 		pasar = 0;
 	} else {
 		divNombre.lastElementChild.textContent = "";

@@ -20,8 +20,8 @@
 <div class="search-container">
     <button class="purple-button" onclick="buscarReservacionesPorFecha()">Buscar por Fecha</button>
     <input type="text" id="fecha-input" placeholder="Fecha (yyyy-mm-dd)">
-    <button class="purple-button" onclick="buscarReservacionesPorIdentificador()">Buscar por Identificador</button>
-     <input type="text" id="identificador-input" placeholder="Identificador" maxlength="10">
+    <button class="purple-button" onclick="buscarReservacionesPorIdentificador()">Buscar por identificador</button>
+     <input type="text" id="identificador-input" placeholder="identificador" maxlength="10">
      <p id="errorMessage" style="color: red; display: none;"></p>
 </div>
 
@@ -32,8 +32,8 @@
         <thead>
             <tr>
                 <th>Código Reserva</th>
-                <th>Nombre completo del hospedero</th>
-                <th>Email</th>
+                <th>nombre completo del hospedero</th>
+                <th>email</th>
                 <th>Fecha entrada</th>
                 <th>Fecha Salida</th>
                 <th>Cantidad Personas</th>
@@ -45,23 +45,23 @@
             @foreach (var item in Model)
             {
                 <tr>
-                    <td>@item.Identificador</td>
-                    <td>@item.hospedero.Nombre  @item.hospedero.Apellido1 @item.hospedero.Apellido2</td>
-                    <td>@item.hospedero.Email</td>
-                    <td>@item.PrimerDia</td>
-                    <td>@item.UltimoDia</td>                    
+                    <td>@item.identificador</td>
+                    <td>@item.hospedero.nombre  @item.hospedero.apellido1 @item.hospedero.apellido2</td>
+                    <td>@item.hospedero.email</td>
+                    <td>@item.primerDia</td>
+                    <td>@item.ultimoDia</td>                    
                     <td> @item.tipoPersona.Sum(pair => pair.Value.Item1)</td>
                     <td>
-                        <button style="margin-top: 0px;" type="button" class="btn btn alert-info" data-toggle="modal" data-target="#mensajeModal_@item.Identificador">Ver</button>
+                        <button style="margin-top: 0px;" type="button" class="btn btn alert-info" data-toggle="modal" data-target="#mensajeModal_@item.identificador">Ver</button>
                     </td>
                     <td >
                             @Html.ActionLink("Borrar", "EliminarReserva",
-                        new { identificador = item.Identificador },
+                        new { identificador = item.identificador },
                            new { @class =  "btn btn alert-danger ", @onclick = "return confirm('Desea borrar esta reservación?')" })
                     </td>
                 </tr>
 
-                <div class="modal fade" id="mensajeModal_@item.Identificador" tabindex="-1" role="dialog" aria-labelledby="mensajeModalLabel" aria-hidden="true">
+                <div class="modal fade" id="mensajeModal_@item.identificador" tabindex="-1" role="dialog" aria-labelledby="mensajeModalLabel" aria-hidden="true">
                     <div class="modal-dialog modal-apple">
                         <div class="modal-content modal-apple-content">
                             <div class="modal-header modal-apple-header">
@@ -72,18 +72,18 @@
                             </div>
                             <div class="modal-body">
                                 <h4>Datos del hospedero:</h4><br>
-                                <h6 class="modal-info">Identificación: @item.hospedero.Identificacion</h6>
-                                <h6 class="modal-info">País: @item.hospedero.Nacionalidad</h6>
-                                <h6 class="modal-info">Email: @item.hospedero.Email</h6>
+                                <h6 class="modal-info">Identificación: @item.hospedero.identificacion</h6>
+                                <h6 class="modal-info">País: @item.hospedero.nacionalidad</h6>
+                                <h6 class="modal-info">email: @item.hospedero.email</h6>
                                 <br>
                                 
                                 <h6 class="modal-info"></h6>
                                 <h4 >Detalles de la reserva:</h4><br>
-                                <h6 class="modal-info">Tu código de reservación es: @item.Identificador</h6>
-                                <h6 class="modal-info">Fecha de ingreso: @item.PrimerDia</h6>
+                                <h6 class="modal-info">Tu código de reservación es: @item.identificador</h6>
+                                <h6 class="modal-info">Fecha de ingreso: @item.primerDia</h6>
 
               
-                                <h6 class="modal-info">Fecha de salida: @item.UltimoDia</h6>
+                                <h6 class="modal-info">Fecha de salida: @item.ultimoDia</h6>
                                 
 
                                     <h6 class="modal-info">Cantidad de personas:@item.tipoPersona.Sum(pair => pair.Value.Item1)</h6>

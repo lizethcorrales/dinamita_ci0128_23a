@@ -4,11 +4,11 @@
     public class ReservacionModelo
     {
         private MetodosGeneralesModel metodosGenerales;
-        public string PrimerDia { get; set; }
-		public string Tipo { get; set; }
-		public string UltimoDia { get; set; }
+        public string primerDia { get; set; }
+		public string tipo { get; set; }
+		public string ultimoDia { get; set; }
 
-        public string Identificador { get; set; }
+        public string identificador { get; set; }
 
         public List<int> cantTipoPersona { get; set; }
         public List<String> placasVehiculos { get; set; }
@@ -31,7 +31,7 @@
 
 		public ReservacionModelo(string tipo)
 		{
-            this.Tipo = tipo;
+            this.tipo = tipo;
 			cantTipoPersona = new List<int>();
 			placasVehiculos = new List<string>();
 			metodosGenerales = new MetodosGeneralesModel();
@@ -69,7 +69,7 @@
             }
 
             string identificador = metodosGenerales.crearIdentificador(10);
-            reservacion.Identificador = identificador;
+            reservacion.identificador = identificador;
 
             return reservacion;
         }
@@ -100,8 +100,8 @@
         public ReservacionModelo LlenarFechas(ReservacionModelo reservacion, IFormCollection form)
         {
 
-            reservacion.PrimerDia = form["fecha-entrada"];
-            reservacion.UltimoDia = form["fecha-salida"];
+            reservacion.primerDia = form["fecha-entrada"];
+            reservacion.ultimoDia = form["fecha-salida"];
 
             return reservacion;
         }

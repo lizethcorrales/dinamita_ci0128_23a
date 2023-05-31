@@ -7,7 +7,7 @@ namespace JunquillalUserSystem.Models
 {
     public class MetodosGeneralesModel
     {
-         private static readonly Random _random = new Random();
+         private static readonly Random random = new Random();
 
 
         public MetodosGeneralesModel()
@@ -25,7 +25,7 @@ namespace JunquillalUserSystem.Models
 
             for (int i = 0; i < length; i++)
             {
-                result[i] = allowedChars[_random.Next(0, allowedChars.Length)];
+                result[i] = allowedChars[random.Next(0, allowedChars.Length)];
             }
 
             return new string(result);
@@ -63,7 +63,7 @@ namespace JunquillalUserSystem.Models
             StringBuilder sb = new StringBuilder();
 
             // Encabezado
-            if (reservacion.Tipo == "Picnic")
+            if (reservacion.tipo == "Picnic")
             {
                 sb.Append("<h2 style='text-align:center;'>Confirmación de Reserva para picnic</h2><br><br>");
             } else
@@ -72,21 +72,21 @@ namespace JunquillalUserSystem.Models
 			}
 
             sb.Append("<h3>Datos del hospedero: </h3><br>");
-            sb.Append("<h6>Identificación: " + hospedero.Identificacion + "</h6>");
-            sb.Append("<h6>Nacionalidad: " + hospedero.Nacionalidad + "</h6>");
-            sb.Append("<h6>Tipo de identificación: " + hospedero.TipoIdentificacion + "</h6>");
-            sb.Append("<br><h6>" + hospedero.Nombre + " " +
-                      hospedero.Apellido1 + " " + hospedero.Apellido2 + ", es un placer darles la bienvenida " +
+            sb.Append("<h6>Identificación: " + hospedero.identificacion + "</h6>");
+            sb.Append("<h6>nacionalidad: " + hospedero.nacionalidad + "</h6>");
+            sb.Append("<h6>tipo de identificación: " + hospedero.tipoIdentificacion + "</h6>");
+            sb.Append("<br><h6>" + hospedero.nombre + " " +
+                      hospedero.apellido1 + " " + hospedero.apellido2 + ", es un placer darles la bienvenida " +
                       "a Junquillal. Le deseamos un disfrute de su estadia,\n a continuación adjuntamos informacion de " +
                       "su reserva: </h6><br>");
             sb.Append("<h6>" + "</h6><br>");
             sb.Append("<h3> Detalles de la reserva: </h3><br>");
-            sb.Append("<h6>Tu código de reservación es: " + reservacion.Identificador + "</h6>");
-            sb.Append("<h6>Fecha de ingreso: " + reservacion.PrimerDia + "</h6>");
+            sb.Append("<h6>Tu código de reservación es: " + reservacion.identificador + "</h6>");
+            sb.Append("<h6>Fecha de ingreso: " + reservacion.primerDia + "</h6>");
 
-            if (reservacion.Tipo == "Camping")
+            if (reservacion.tipo == "Camping")
             {
-                sb.Append("<h6>Fecha de salida: " + reservacion.UltimoDia + "</h6>");
+                sb.Append("<h6>Fecha de salida: " + reservacion.ultimoDia + "</h6>");
             }
             sb.Append("<h6>Cantidad de personas: " + reservacion.cantTipoPersona.Sum() + "</h6>");
             sb.Append("<ul>");
@@ -115,7 +115,7 @@ namespace JunquillalUserSystem.Models
                 sb.Append("<li>Placa: " + placa + "</li>");
             }
             sb.Append("</ul><br>");
-            sb.Append("<h6>Motivo de la visita: " + hospedero.Motivo + "</h6>");
+            sb.Append("<h6>motivo de la visita: " + hospedero.motivo + "</h6>");
 
             return sb.ToString();
 

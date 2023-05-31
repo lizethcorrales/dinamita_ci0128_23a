@@ -32,7 +32,7 @@ namespace JunquillalUserSystem.Controllers
             ViewBag.reservedDates = reservedDates;
             ViewData["IsAdminArea"] = TempData["IsAdminArea"];
             TempData["IsAdminArea"] = TempData["IsAdminArea"];
-            ViewBag.Tipo = "Camping";
+            ViewBag.tipo = "Camping";
             return View();
         }
 
@@ -56,10 +56,10 @@ namespace JunquillalUserSystem.Controllers
             reservacion = reservacion.LlenarInformacionResarva(reservacion,Request.Form);
             hospedero = hospedero.LlenarHospedero(Request.Form);
             string confirmacion = metodosGenerales.CrearConfirmacionMensaje(reservacion,hospedero);
-           // metodosGenerales.EnviarEmail(confirmacion,hospedero.Email);
+           // metodosGenerales.EnviarEmail(confirmacion,hospedero.email);
             ViewBag.mensaje = new HtmlString(confirmacion);
             reservacionHandler.InsertarEnBaseDatos(hospedero,reservacion);
-            ViewBag.costoTotal = reservacionHandler.CostoTotal(reservacion.Identificador).ToString();
+            ViewBag.costoTotal = reservacionHandler.CostoTotal(reservacion.identificador).ToString();
 
 
 
