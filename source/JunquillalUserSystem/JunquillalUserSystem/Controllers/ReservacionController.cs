@@ -6,13 +6,26 @@ using System.Text.Json;
 using JunquillalUserSystem.Handlers;
 using System.Reflection.Metadata;
 using Microsoft.AspNetCore.Html;
+using JunquillalUserSystem.Models.Dependency_Injection;
 
 namespace JunquillalUserSystem.Controllers
 {
     public class ReservacionController : Controller
     {
-        private ReservacionHandler reservacionHandler = new ReservacionHandler();
+        private CampingHandler reservacionHandler = new CampingHandler();
         private MetodosGeneralesModel metodosGenerales = new MetodosGeneralesModel();
+
+        // Dependency Injection de servio email
+        private readonly IEmailService _emailService;
+
+        /*
+         *  el constructor con parámetro en el controlador se utiliza para permitir la 
+         *  inyección de dependencias del servicio requerido. 
+         */
+        public ReservacionController(IEmailService emailService)
+        {
+            _emailService = emailService;
+        }
         public IActionResult FormularioCantidadPersonas()
         {
             ViewBag.TipoTurista = "reserva";
@@ -56,7 +69,7 @@ namespace JunquillalUserSystem.Controllers
             reservacion = reservacion.LlenarInformacionResarva(reservacion,Request.Form);
             hospedero = hospedero.LlenarHospedero(Request.Form);
             string confirmacion = metodosGenerales.CrearConfirmacionMensaje(reservacion,hospedero);
-           // metodosGenerales.EnviarEmail(confirmacion,hospedero.Email);
+            _emailService.EnviarEmail(confirmacion,hospedero.Email);
             ViewBag.mensaje = new HtmlString(confirmacion);
             reservacionHandler.InsertarEnBaseDatos(hospedero,reservacion);
             ViewBag.costoTotal = reservacionHandler.CostoTotal(reservacion.Identificador).ToString();

@@ -10,10 +10,10 @@ using System.Diagnostics;
 
 namespace JunquillalUserSystem.Handlers
 {
-    public class ReservacionHandler : ReservacionesHandlerBase
+    public class CampingHandler : ReservacionesHandlerBase
     {
         private MetodosGeneralesModel metodosGenerales = new MetodosGeneralesModel();
-        public ReservacionHandler()
+        public CampingHandler()
         {
         }        
 
