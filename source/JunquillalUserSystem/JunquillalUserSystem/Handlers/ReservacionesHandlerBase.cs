@@ -231,6 +231,28 @@ namespace JunquillalUserSystem.Handlers
             conexion.Close();
         }
 
+        public List<PrecioReservacionDesglose> obtenerDesgloseReservaciones(string identificadorReserva)
+        {
+            List<PrecioReservacionDesglose> desglose = new List<PrecioReservacionDesglose>();
+            string consultaBaseDatos = "SELECT * FROM PrecioReservacion WHERE PrecioReservacion.IdentificadorReserva = '"+identificadorReserva+"';";
+            System.Diagnostics.Debug.WriteLine(consultaBaseDatos);
+            DataTable tablaDeDesglose = CrearTablaConsulta(consultaBaseDatos);
+            foreach (DataRow columna in tablaDeDesglose.Rows)
+            {
+                desglose.Add(
+                new PrecioReservacionDesglose
+                {
+                    identificadorReserva = Convert.ToString(columna["IdentificadorReserva"]),
+                    nacionalidad = Convert.ToString(columna["Nacionalidad"]),
+                    poblacion = Convert.ToString(columna["Poblacion"]),
+                    actividad = Convert.ToString(columna["Actividad"]),
+                    cantidad = Convert.ToInt32(columna["Cantidad"]),
+                    precioAlHacerReserva = Convert.ToDouble(columna["PrecioAlHacerReserva"])
+                });
+            }
+            return desglose;
+        }
+
     }
 
 }

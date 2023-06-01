@@ -2,13 +2,14 @@
 using System.Net.Mail;
 using System.Net;
 using System.Text;
+using JunquillalUserSystem.Handlers;
+using Microsoft.CodeAnalysis.VisualBasic.Syntax;
 
 namespace JunquillalUserSystem.Models
 {
     public class MetodosGeneralesModel
     {
          private static readonly Random _random = new Random();
-
 
         public MetodosGeneralesModel()
         {
@@ -58,7 +59,7 @@ namespace JunquillalUserSystem.Models
          * Genera la descripcion de confirmacion de la reserva con la informacion
          * del modelo de reservacion y hospedero
          */
-        public string CrearConfirmacionMensaje(ReservacionModelo reservacion, HospederoModelo hospedero)
+        public string CrearConfirmacionMensaje(ReservacionModelo reservacion, HospederoModelo hospedero, List<PrecioReservacionDesglose> desglose)
         {
             StringBuilder sb = new StringBuilder();
 
@@ -91,22 +92,44 @@ namespace JunquillalUserSystem.Models
             sb.Append("<h6>Cantidad de personas: " + reservacion.cantTipoPersona.Sum() + "</h6>");
             sb.Append("<ul>");
 
-            if (reservacion.cantTipoPersona[0] != 0)
+            for (int i = 0; i < desglose.Count; i++)
             {
-                sb.Append("<li>Adultos nacionales: " + reservacion.cantTipoPersona[0] + "</li>");
+                if (desglose[i].poblacion == "Niño menor 6 años")
+                {
+                    sb.Append("<li> Niño menor de 6 años " + desglose[i].nacionalidad + ": " + desglose[i].cantidad + " Precio por persona: "
+                   + desglose[i].precioAlHacerReserva + "</li>");
+                }
+                else
+                {
+                    if (desglose[i].poblacion == "Niño")
+                    {
+                        sb.Append("<li> Niño mayor de 6 años " + desglose[i].nacionalidad + ": " + desglose[i].cantidad + " Precio por persona: "
+                      + desglose[i].precioAlHacerReserva + "</li>");
+                    }
+                    else
+                    {
+                        sb.Append("<li>" + desglose[i].poblacion + " " + desglose[i].nacionalidad + ": " + desglose[i].cantidad + " Precio por persona: "
+                        + desglose[i].precioAlHacerReserva + "</li>");
+                    }
+                }
+               
             }
-            if (reservacion.cantTipoPersona[1] != 0)
-            {
-                sb.Append("<li>Niños nacionales: " + reservacion.cantTipoPersona[1] + "</li>");
-            }
-            if (reservacion.cantTipoPersona[2] != 0)
-            {
-                sb.Append("<li>Adultos extranjeros: " + reservacion.cantTipoPersona[2] + "</li>");
-            }
-            if (reservacion.cantTipoPersona[3] != 0)
-            {
-                sb.Append("<li>Niños extranjeros: " + reservacion.cantTipoPersona[3] + "</li>");
-            }
+            //if (reservacion.cantTipoPersona[0] != 0)
+            //{
+            //    sb.Append("<li>Adultos nacionales: " + reservacion.cantTipoPersona[0] + "</li>");
+            //}
+            //if (reservacion.cantTipoPersona[1] != 0)
+            //{
+            //    sb.Append("<li>Niños nacionales: " + reservacion.cantTipoPersona[1] + "</li>");
+            //}
+            //if (reservacion.cantTipoPersona[2] != 0)
+            //{
+            //    sb.Append("<li>Adultos extranjeros: " + reservacion.cantTipoPersona[2] + "</li>");
+            //}
+            //if (reservacion.cantTipoPersona[3] != 0)
+            //{
+            //    sb.Append("<li>Niños extranjeros: " + reservacion.cantTipoPersona[3] + "</li>");
+            //}
             sb.Append("</ul><br>");
             sb.Append("<h6>Placas de vehículos:</h6>");
             sb.Append("<ul>");
