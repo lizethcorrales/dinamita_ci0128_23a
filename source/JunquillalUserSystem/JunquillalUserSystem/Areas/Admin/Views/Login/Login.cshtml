@@ -1,6 +1,5 @@
 ﻿@{
     ViewData["Title"] = "Login";
-    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
 }
 
 <head>
@@ -12,44 +11,52 @@
 </head>
 <body>
     <div class="contenido">
-        <div>
-            <h2> Bienvenido a la seccion de inicio de sesion </h2>
-            <h3>Por favor introduzca sus credenciales de usuario</h3>
+        <div style="background-color: #65B852">
+            <div>
+                <h2> Bienvenido a la seccion de inicio de sesion </h2>
+                <h3>Por favor introduzca sus credenciales de usuario</h3>
 
-        </div>
-        <br>
-        <div class="login">
-            <form id="infoUsuario" action="iniciarSesion" method="POST">
-                <div class="Usuario" id="divUsuario">
-
-                    <label for="Usuario"> ID: </label>
-
-                    <input placeholder="Introduzca su ID" type="text" id="usuario" name="Usuario" />
-                    <p class="datoError" id="usuarioError"></p>
-                </div>
-
-
-                <div class="contra" id="divContrasena">
-
-                    <label for=»contrasena»> Contraseña: </label>
-
-                    <input type="password" id="contrasena" name="contrasena">
-                    <p class="datoError" id="contraError"></p>
-                </div>
-
-                <br>
-                <h4>Seleccione su puesto</h4>
-                <select name="Puesto" id="Puesto">
-                    <option value="Administrador">Administrador</option>
-                    <option value="Operativo">Operativo</option>
-                </select>
-
-
-            </form>
+            </div>
             <br>
-            <button id="atras" class="botonAtras" type="button" onclick="location.href='../Home/Index'">Regresar a Página principal</button>
-            <button id="botonContinuar" class="botonContinuar" type="button">Continuar</button>
-        </div>
+            <div class="login">
+                <form id="infoUsuario" @Url.Action("Login","Login") method="POST">
+                    <div class="Usuario" id="divUsuario">
 
+                        <label for="Usuario"> ID: </label>
+
+                        <input placeholder="Introduzca su ID" type="text" id="usuario" name="ID" maxlength="9" />
+                        <p class="datoError" id="usuarioError"></p>
+                    </div>
+
+
+                    <div class="contra" id="divContrasena">
+
+                        <label for=»contrasena»> Contraseña: </label>
+
+                        <input type="password" id="contrasena" name="Contrasena">
+                        <p class="datoError" id="contraError"></p>
+                    </div>
+
+                    <br>
+                    <h4>Seleccione su puesto</h4>
+                    <select name="Puesto" id="Puesto">
+                        <option value="Administrador">Administrador</option>
+                        <option value="Operativo">Operativo</option>
+                    </select>
+
+
+                </form>
+                <br>
+                <button id="atras" class="botonAtras" type="button" onclick="location.href='../Home/Index'">Regresar a Página principal</button>
+                <button id="botonContinuar" class="botonContinuar" type="button">Continuar</button>
+            </div>
+
+            @if (ViewData["Mensaje"] != null)
+            {
+                <div class="advertencia">
+                    @ViewData["Mensaje"]
+                </div>
+            }
+        </div>
     </div>
 </body>
