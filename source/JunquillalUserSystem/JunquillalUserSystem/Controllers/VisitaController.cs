@@ -65,11 +65,11 @@ namespace JunquillalUserSystem.Controllers
             ReservacionModelo reservacion = JsonSerializer.Deserialize<ReservacionModelo>((string)TempData["Reservacion"]);
             reservacion = reservacion.LlenarInformacionResarva(reservacion, Request.Form);
             hospedero = hospedero.LlenarHospedero(Request.Form);
-            _emailService.EnviarEmail(confirmacion, hospedero.Email);
             visitaHandler.InsertarEnBaseDatosVisita(hospedero, reservacion);
             ViewBag.costoTotal = visitaHandler.CostoTotal(reservacion.Identificador).ToString();
             List<PrecioReservacionDesglose> desglose = visitaHandler.obtenerDesgloseReservaciones(reservacion.Identificador);
             string confirmacion = metodosGenerales.CrearConfirmacionMensaje(reservacion, hospedero, desglose);
+            _emailService.EnviarEmail(confirmacion, hospedero.Email);
             ViewBag.mensaje = new HtmlString(confirmacion);
            
 
