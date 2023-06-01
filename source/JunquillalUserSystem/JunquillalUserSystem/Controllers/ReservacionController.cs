@@ -6,13 +6,26 @@ using System.Text.Json;
 using JunquillalUserSystem.Handlers;
 using System.Reflection.Metadata;
 using Microsoft.AspNetCore.Html;
+using JunquillalUserSystem.Models.Dependency_Injection;
 
 namespace JunquillalUserSystem.Controllers
 {
     public class ReservacionController : Controller
     {
-        private ReservacionHandler reservacionHandler = new ReservacionHandler();
+        private CampingHandler reservacionHandler = new CampingHandler();
         private MetodosGeneralesModel metodosGenerales = new MetodosGeneralesModel();
+
+        // Dependency Injection de servio email
+        private readonly IEmailService _emailService;
+
+        /*
+         *  el constructor con parámetro en el controlador se utiliza para permitir la 
+         *  inyección de dependencias del servicio requerido. 
+         */
+        public ReservacionController(IEmailService emailService)
+        {
+            _emailService = emailService;
+        }
         public IActionResult FormularioCantidadPersonas()
         {
             ViewBag.TipoTurista = "reserva";
@@ -55,10 +68,10 @@ namespace JunquillalUserSystem.Controllers
             ReservacionModelo reservacion = JsonSerializer.Deserialize<ReservacionModelo>((string)TempData["Reservacion"]);
             reservacion = reservacion.LlenarInformacionResarva(reservacion,Request.Form);
             hospedero = hospedero.LlenarHospedero(Request.Form);
+            _emailService.EnviarEmail(confirmacion,hospedero.Email);
             reservacionHandler.InsertarEnBaseDatos(hospedero, reservacion);
             List<PrecioReservacionDesglose> desglose = reservacionHandler.obtenerDesgloseReservaciones(reservacion.Identificador);
             string confirmacion = metodosGenerales.CrearConfirmacionMensaje(reservacion, hospedero, desglose);
-         // metodosGenerales.EnviarEmail(confirmacion,hospedero.Email);
             ViewBag.mensaje = new HtmlString(confirmacion);
             
             ViewBag.costoTotal = reservacionHandler.CostoTotal(reservacion.Identificador).ToString();

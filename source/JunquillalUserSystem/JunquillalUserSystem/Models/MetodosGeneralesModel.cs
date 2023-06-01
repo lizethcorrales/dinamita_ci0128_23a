@@ -32,28 +32,6 @@ namespace JunquillalUserSystem.Models
             return new string(result);
         }
 
-        /*
-         * Envia el mensaje de la descripcion al correo del hospedero
-         */
-        public void EnviarEmail(string mensaje, string correo)
-        {
-            SmtpClient smtp = new SmtpClient("smtp.office365.com", 587);
-            smtp.EnableSsl = true;
-            smtp.Credentials = new NetworkCredential("dinamita_PI@outlook.com", "PI_JUNQUILLAL");
-            smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
-            smtp.UseDefaultCredentials = false;
-
-            MailMessage mail = new MailMessage();
-            mail.From = new MailAddress("dinamita_PI@outlook.com", "Confirmacion de reserva");
-            mail.To.Add(new MailAddress(correo));
-            mail.Subject = "Un gusto saludarle por parte de Junquillal";
-            mail.IsBodyHtml = true;
-            mail.Body = mensaje;
-
-            smtp.Send(mail);
-
-
-        }
 
         /*
          * Genera la descripcion de confirmacion de la reserva con la informacion

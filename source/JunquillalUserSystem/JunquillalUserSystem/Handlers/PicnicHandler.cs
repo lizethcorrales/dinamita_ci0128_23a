@@ -10,9 +10,9 @@ using System.Diagnostics;
 
 namespace JunquillalUserSystem.Handlers
 {
-    public class VisitaHandler : ReservacionesHandlerBase
+    public class PicnicHandler : ReservacionesHandlerBase
     {
-        public VisitaHandler()
+        public PicnicHandler()
         {
             
         }
