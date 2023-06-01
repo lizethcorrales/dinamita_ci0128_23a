@@ -1,6 +1,7 @@
 ﻿using JunquillalUserSystem.Handlers;
 using JunquillalUserSystem.Models;
 using JunquillalUserSystem.Models.Dependency_Injection;
+using JunquillalUserSystem.Models.Patron_Bridge;
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
@@ -15,13 +16,17 @@ namespace JunquillalUserSystem.Controllers
         // Dependency Inyection de servio email
         private readonly IEmailService _emailService;
 
+        // Dependency Injection de servicio mensaje htm
+        private readonly MensajeConfirmacionImplementacionHTML _mensajeConfirmacionImplementacion;
+
         /*
          *  el constructor con parámetro en el controlador se utiliza para permitir la 
          *  inyección de dependencias del servicio requerido. 
          */
-        public VisitaController(IEmailService emailService)
+        public VisitaController(IEmailService emailService, IMensajeConfirmacionImplementacion mensajeConfirmacionImplementacion)
         {
             _emailService = emailService;
+            _mensajeConfirmacionImplementacion = mensajeConfirmacionImplementacion as MensajeConfirmacionImplementacionHTML;
         }
         public IActionResult FormularioCantidadPersonas()
         {
@@ -68,7 +73,7 @@ namespace JunquillalUserSystem.Controllers
             visitaHandler.InsertarEnBaseDatosVisita(hospedero, reservacion);
             ViewBag.costoTotal = visitaHandler.CostoTotal(reservacion.Identificador).ToString();
             List<PrecioReservacionDesglose> desglose = visitaHandler.obtenerDesgloseReservaciones(reservacion.Identificador);
-            string confirmacion = metodosGenerales.CrearConfirmacionMensaje(reservacion, hospedero, desglose);
+            string confirmacion = _mensajeConfirmacionImplementacion.CrearConfirmacionMensaje(reservacion, hospedero, desglose);
             _emailService.EnviarEmail(confirmacion, hospedero.Email);
             ViewBag.mensaje = new HtmlString(confirmacion);
            

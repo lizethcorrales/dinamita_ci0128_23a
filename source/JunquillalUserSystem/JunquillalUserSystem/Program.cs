@@ -1,11 +1,13 @@
 using JunquillalUserSystem.Models.Dependency_Injection;
+using JunquillalUserSystem.Models.Patron_Bridge;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Agregar servicios al contenedor.
+
+// Registrar las dependencias y la inyección de dependencias
 builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<IEmailService, SmtpEmailService>();
-
+builder.Services.AddScoped<IMensajeConfirmacionImplementacion,MensajeConfirmacionImplementacionHTML>(); 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

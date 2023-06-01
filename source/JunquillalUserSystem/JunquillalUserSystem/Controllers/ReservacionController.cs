@@ -7,6 +7,7 @@ using JunquillalUserSystem.Handlers;
 using System.Reflection.Metadata;
 using Microsoft.AspNetCore.Html;
 using JunquillalUserSystem.Models.Dependency_Injection;
+using JunquillalUserSystem.Models.Patron_Bridge;
 
 namespace JunquillalUserSystem.Controllers
 {
@@ -15,16 +16,21 @@ namespace JunquillalUserSystem.Controllers
         private CampingHandler reservacionHandler = new CampingHandler();
         private MetodosGeneralesModel metodosGenerales = new MetodosGeneralesModel();
 
-        // Dependency Injection de servio email
+        // Dependency Injection de servicio email
         private readonly IEmailService _emailService;
+
+        // Dependency Injection de servicio mensaje htm
+        private readonly MensajeConfirmacionImplementacionHTML _mensajeConfirmacionImplementacion;
+
 
         /*
          *  el constructor con parámetro en el controlador se utiliza para permitir la 
          *  inyección de dependencias del servicio requerido. 
          */
-        public ReservacionController(IEmailService emailService)
+        public ReservacionController(IEmailService emailService , IMensajeConfirmacionImplementacion mensajeConfirmacionImplementacion )
         {
             _emailService = emailService;
+            _mensajeConfirmacionImplementacion = mensajeConfirmacionImplementacion as MensajeConfirmacionImplementacionHTML;
         }
         public IActionResult FormularioCantidadPersonas()
         {
@@ -70,7 +76,7 @@ namespace JunquillalUserSystem.Controllers
             hospedero = hospedero.LlenarHospedero(Request.Form);
             reservacionHandler.InsertarEnBaseDatos(hospedero, reservacion);
             List<PrecioReservacionDesglose> desglose = reservacionHandler.obtenerDesgloseReservaciones(reservacion.Identificador);
-            string confirmacion = metodosGenerales.CrearConfirmacionMensaje(reservacion, hospedero, desglose);
+            string confirmacion = _mensajeConfirmacionImplementacion.CrearConfirmacionMensaje(reservacion, hospedero, desglose);
             ViewBag.mensaje = new HtmlString(confirmacion);
             _emailService.EnviarEmail(confirmacion, hospedero.Email);
             ViewBag.costoTotal = reservacionHandler.CostoTotal(reservacion.Identificador).ToString();
