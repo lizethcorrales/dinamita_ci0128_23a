@@ -10,9 +10,12 @@ using System.Diagnostics;
 
 namespace JunquillalUserSystem.Handlers
 {
+    
     public class ReservacionesHandlerBase : HandlerBase
     {
-        protected MetodosGeneralesModel metodosGenerales = new MetodosGeneralesModel();
+        private static readonly Random _random = new Random();
+
+
         public ReservacionesHandlerBase()
         {
         }
@@ -251,6 +254,23 @@ namespace JunquillalUserSystem.Handlers
                 });
             }
             return desglose;
+        }
+
+        /*
+         * Crea un ID de tamaño "length"
+         */
+        public string crearIdentificador(int length)
+        {
+
+            const string allowedChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            var result = new char[length];
+
+            for (int i = 0; i < length; i++)
+            {
+                result[i] = allowedChars[_random.Next(0, allowedChars.Length)];
+            }
+
+            return new string(result);
         }
 
     }

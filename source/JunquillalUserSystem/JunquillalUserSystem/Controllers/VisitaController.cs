@@ -10,7 +10,7 @@ namespace JunquillalUserSystem.Controllers
 {
     public class VisitaController : Controller
     {
-        private MetodosGeneralesModel metodosGenerales = new MetodosGeneralesModel();
+        
         private PicnicHandler visitaHandler = new PicnicHandler();
 
         // Dependency Inyection de servio email
@@ -68,6 +68,7 @@ namespace JunquillalUserSystem.Controllers
         {
             HospederoModelo hospedero = new HospederoModelo();
             ReservacionModelo reservacion = JsonSerializer.Deserialize<ReservacionModelo>((string)TempData["Reservacion"]);
+            reservacion.Identificador = visitaHandler.crearIdentificador(10);
             reservacion = reservacion.LlenarInformacionResarva(reservacion, Request.Form);
             hospedero = hospedero.LlenarHospedero(Request.Form);
             visitaHandler.InsertarEnBaseDatosVisita(hospedero, reservacion);

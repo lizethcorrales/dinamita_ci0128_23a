@@ -3,7 +3,7 @@
 {
     public class ReservacionModelo
     {
-        private MetodosGeneralesModel metodosGenerales;
+        
         public string PrimerDia { get; set; }
 		public string TipoActividad { get; set; }
 		public string UltimoDia { get; set; }
@@ -24,7 +24,6 @@
 			tipoPersona = new Dictionary<string, Tuple<int,String>>();
 			cantTipoPersona = new List<int>();
             placasVehiculos = new List<string>();
-            metodosGenerales = new MetodosGeneralesModel();
             hospedero = new HospederoModelo();
 
         }
@@ -34,7 +33,6 @@
             this.TipoActividad = tipo;
 			cantTipoPersona = new List<int>();
 			placasVehiculos = new List<string>();
-			metodosGenerales = new MetodosGeneralesModel();
 
 		}
 
@@ -67,9 +65,6 @@
                 reservacion.placasVehiculos.Add(form["placa4"]);
 
             }
-
-            string identificador = metodosGenerales.crearIdentificador(10);
-            reservacion.Identificador = identificador;
 
             return reservacion;
         }

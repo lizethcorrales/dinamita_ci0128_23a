@@ -12,7 +12,7 @@ namespace JunquillalUserSystem.Handlers
 {
     public class CampingHandler : ReservacionesHandlerBase
     {
-        private MetodosGeneralesModel metodosGenerales = new MetodosGeneralesModel();
+      
         public CampingHandler()
         {
         }        
@@ -101,7 +101,7 @@ namespace JunquillalUserSystem.Handlers
             insertar_PrecioReservacion(reservacion);
 
             //genera un identificador de pago
-            string identificadorPago = metodosGenerales.crearIdentificador(6);
+            string identificadorPago = crearIdentificador(6);
             DateOnly date = new DateOnly();
 
             //llama al método para insertar un opago

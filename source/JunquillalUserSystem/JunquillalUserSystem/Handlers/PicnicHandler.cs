@@ -97,7 +97,7 @@ namespace JunquillalUserSystem.Handlers
             insertar_PrecioReservacion(reservacion);
 
             //genera un identificador de pago
-            string identificadorPago = metodosGenerales.crearIdentificador(6);
+            string identificadorPago = crearIdentificador(6);
             DateOnly date = new DateOnly();
 
             //llama al método para insertar un opago

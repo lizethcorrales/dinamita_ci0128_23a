@@ -1,7 +1,5 @@
 ﻿using JunquillalUserSystem.Models;
 using Microsoft.AspNetCore.Mvc;
-using System.Diagnostics;
-using System.Numerics;
 using System.Text.Json;
 using JunquillalUserSystem.Handlers;
 using System.Reflection.Metadata;
@@ -14,7 +12,7 @@ namespace JunquillalUserSystem.Controllers
     public class ReservacionController : Controller
     {
         private CampingHandler reservacionHandler = new CampingHandler();
-        private MetodosGeneralesModel metodosGenerales = new MetodosGeneralesModel();
+        
 
         // Dependency Injection de servicio email
         private readonly IEmailService _emailService;
@@ -72,6 +70,7 @@ namespace JunquillalUserSystem.Controllers
         {
             HospederoModelo hospedero = new HospederoModelo();
             ReservacionModelo reservacion = JsonSerializer.Deserialize<ReservacionModelo>((string)TempData["Reservacion"]);
+            reservacion.Identificador = reservacionHandler.crearIdentificador(10);
             reservacion = reservacion.LlenarInformacionResarva(reservacion,Request.Form);
             hospedero = hospedero.LlenarHospedero(Request.Form);
             reservacionHandler.InsertarEnBaseDatos(hospedero, reservacion);
