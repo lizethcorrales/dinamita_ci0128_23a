@@ -57,7 +57,7 @@ namespace JunquillalUserSystem.Areas.Admin.Controllers.Handlers
 
 			foreach (ReservacionModelo reserva in reservas)
 			{
-				reserva.PlacasVehiculos = ObtenerPlacasReservacion(reserva.Identificador);
+				reserva.placasVehiculos = ObtenerPlacasReservacion(reserva.Identificador);
 				reserva.tipoPersona = ObtenerPersonasReservacion(reserva.Identificador);
 			}
 

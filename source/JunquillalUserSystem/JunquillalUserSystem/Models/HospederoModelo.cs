@@ -25,8 +25,8 @@
         private string identificacion;
         public string Identificacion
         {
-            get { return Identificacion; }
-            set { Identificacion = value; }
+            get { return identificacion; }
+            set { identificacion = value; }
         }
         private string nacionalidad;
         public string Nacionalidad

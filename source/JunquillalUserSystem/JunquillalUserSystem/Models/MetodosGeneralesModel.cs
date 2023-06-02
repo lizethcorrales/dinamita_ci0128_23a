@@ -88,29 +88,29 @@ namespace JunquillalUserSystem.Models
             {
                 sb.Append("<h6>Fecha de salida: " + reservacion.UltimoDia + "</h6>");
             }
-            sb.Append("<h6>Cantidad de personas: " + reservacion.CantTipoPersona.Sum() + "</h6>");
+            sb.Append("<h6>Cantidad de personas: " + reservacion.cantTipoPersona.Sum() + "</h6>");
             sb.Append("<ul>");
 
-            if (reservacion.CantTipoPersona[0] != 0)
+            if (reservacion.cantTipoPersona[0] != 0)
             {
-                sb.Append("<li>Adultos nacionales: " + reservacion.CantTipoPersona[0] + "</li>");
+                sb.Append("<li>Adultos nacionales: " + reservacion.cantTipoPersona[0] + "</li>");
             }
-            if (reservacion.CantTipoPersona[1] != 0)
+            if (reservacion.cantTipoPersona[1] != 0)
             {
-                sb.Append("<li>Niños nacionales: " + reservacion.CantTipoPersona[1] + "</li>");
+                sb.Append("<li>Niños nacionales: " + reservacion.cantTipoPersona[1] + "</li>");
             }
-            if (reservacion.CantTipoPersona[2] != 0)
+            if (reservacion.cantTipoPersona[2] != 0)
             {
-                sb.Append("<li>Adultos extranjeros: " + reservacion.CantTipoPersona[2] + "</li>");
+                sb.Append("<li>Adultos extranjeros: " + reservacion.cantTipoPersona[2] + "</li>");
             }
-            if (reservacion.CantTipoPersona[3] != 0)
+            if (reservacion.cantTipoPersona[3] != 0)
             {
-                sb.Append("<li>Niños extranjeros: " + reservacion.CantTipoPersona[3] + "</li>");
+                sb.Append("<li>Niños extranjeros: " + reservacion.cantTipoPersona[3] + "</li>");
             }
             sb.Append("</ul><br>");
             sb.Append("<h6>Placas de vehículos:</h6>");
             sb.Append("<ul>");
-            foreach (string placa in reservacion.PlacasVehiculos)
+            foreach (string placa in reservacion.placasVehiculos)
             {
                 sb.Append("<li>Placa: " + placa + "</li>");
             }

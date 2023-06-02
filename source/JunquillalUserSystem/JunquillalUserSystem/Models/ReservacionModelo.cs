@@ -33,19 +33,9 @@
             set { identificador = value; }
         }
 
-        private List<int> cantTipoPersona;
-        public List<int> CantTipoPersona
-        {
-            get { return cantTipoPersona; }
-            set { cantTipoPersona = value; }
-        }
+        public List<int> cantTipoPersona { get; set; }
 
-        private List<String> placasVehiculos;
-        public List<String> PlacasVehiculos
-        {
-            get { return placasVehiculos; }
-            set { placasVehiculos = value; }
-        }
+        public List<String> placasVehiculos { get; set; }
 
         private string actividadVisita;
         public string ActividadVisita
@@ -92,25 +82,25 @@
 
             if (form["placa1"] != "")
             {
-                reservacion.PlacasVehiculos.Add(form["placa1"]);
+                reservacion.placasVehiculos.Add(form["placa1"]);
 
             }
 
             if (form["placa2"] != "")
             {
-                reservacion.PlacasVehiculos.Add(form["placa2"]);
+                reservacion.placasVehiculos.Add(form["placa2"]);
 
             }
 
             if (form["placa3"] != "")
             {
-                reservacion.PlacasVehiculos.Add(form["placa3"]);
+                reservacion.placasVehiculos.Add(form["placa3"]);
 
             }
 
             if (form["placa4"] != "")
             {
-                reservacion.PlacasVehiculos.Add(form["placa4"]);
+                reservacion.placasVehiculos.Add(form["placa4"]);
 
             }
 
