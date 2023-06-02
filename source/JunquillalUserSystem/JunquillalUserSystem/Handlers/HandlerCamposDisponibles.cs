@@ -49,7 +49,7 @@ namespace JunquillalUserSystem.Handlers
         }
         public CamposDisponiblesModel LlenarFecha(CamposDisponiblesModel campos, IFormCollection form)
         {
-            campos.fecha = form["fecha-entrada"];
+            campos.Fecha = form["fecha-entrada"];
             return campos;
         }
 

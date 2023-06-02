@@ -4,18 +4,64 @@
     public class ReservacionModelo
     {
         private MetodosGeneralesModel metodosGenerales;
-        public string primerDia { get; set; }
-		public string tipo { get; set; }
-		public string ultimoDia { get; set; }
 
-        public string identificador { get; set; }
+        private string primerDia;
+        public string PrimerDia
+        {
+            get { return primerDia; }
+            set { primerDia = value; }
+        }
 
-        public List<int> cantTipoPersona { get; set; }
-        public List<String> placasVehiculos { get; set; }
-        public string actividadVisita { get; set; }
+        private string tipo;
+        public string Tipo
+        {
+            get { return tipo; }
+            set { tipo = value; }
+        }
+
+        private string ultimoDia;
+        public string UltimoDia
+        {
+            get { return ultimoDia; }
+            set { ultimoDia = value; }
+        }
+
+        private string identificador;
+        public string Identificador
+        {
+            get { return identificador; }
+            set { identificador = value; }
+        }
+
+        private List<int> cantTipoPersona;
+        public List<int> CantTipoPersona
+        {
+            get { return cantTipoPersona; }
+            set { cantTipoPersona = value; }
+        }
+
+        private List<String> placasVehiculos;
+        public List<String> PlacasVehiculos
+        {
+            get { return placasVehiculos; }
+            set { placasVehiculos = value; }
+        }
+
+        private string actividadVisita;
+        public string ActividadVisita
+        {
+            get { return actividadVisita; }
+            set { actividadVisita = value; }
+        }
 
         public Dictionary<string, Tuple<int, String>> tipoPersona;
-		public HospederoModelo hospedero { get; set; }
+
+        private HospederoModelo hospedero;
+        public HospederoModelo Hospedero
+        {
+            get { return hospedero; }
+            set { hospedero = value; }
+        }
 
 
 
@@ -46,30 +92,30 @@
 
             if (form["placa1"] != "")
             {
-                reservacion.placasVehiculos.Add(form["placa1"]);
+                reservacion.PlacasVehiculos.Add(form["placa1"]);
 
             }
 
             if (form["placa2"] != "")
             {
-                reservacion.placasVehiculos.Add(form["placa2"]);
+                reservacion.PlacasVehiculos.Add(form["placa2"]);
 
             }
 
             if (form["placa3"] != "")
             {
-                reservacion.placasVehiculos.Add(form["placa3"]);
+                reservacion.PlacasVehiculos.Add(form["placa3"]);
 
             }
 
             if (form["placa4"] != "")
             {
-                reservacion.placasVehiculos.Add(form["placa4"]);
+                reservacion.PlacasVehiculos.Add(form["placa4"]);
 
             }
 
             string identificador = metodosGenerales.crearIdentificador(10);
-            reservacion.identificador = identificador;
+            reservacion.Identificador = identificador;
 
             return reservacion;
         }
@@ -100,8 +146,8 @@
         public ReservacionModelo LlenarFechas(ReservacionModelo reservacion, IFormCollection form)
         {
 
-            reservacion.primerDia = form["fecha-entrada"];
-            reservacion.ultimoDia = form["fecha-salida"];
+            reservacion.PrimerDia = form["fecha-entrada"];
+            reservacion.UltimoDia = form["fecha-salida"];
 
             return reservacion;
         }

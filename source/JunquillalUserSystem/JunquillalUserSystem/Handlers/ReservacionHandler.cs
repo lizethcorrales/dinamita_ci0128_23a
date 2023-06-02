@@ -162,7 +162,7 @@ namespace JunquillalUserSystem.Handlers
         //cantidad de personas que el usuario indica
         public string [] BuscarDiasNoDisponibles(ReservacionModelo reservacion)
         {
-            int cantidadPersonas = reservacion.cantTipoPersona.Sum();
+            int cantidadPersonas = reservacion.CantTipoPersona.Sum();
             string fechas = ObtenerFechasEntreMeses();
                 // Crear el comando para ejecutar el procedimiento almacenado
                 using (SqlCommand command = new SqlCommand("BuscarDiasNoDisponibles", conexion))
@@ -238,43 +238,43 @@ namespace JunquillalUserSystem.Handlers
         public void InsertarEnBaseDatos(HospederoModelo hospedero , ReservacionModelo reservacion)
         {
             //llama al método para insertar un hospedero
-            InsertarHospedero(hospedero.identificacion, hospedero.email , hospedero.nombre , hospedero.apellido1
-                ,hospedero.apellido2);
+            InsertarHospedero(hospedero.Identificacion, hospedero.Email , hospedero.Nombre , hospedero.Apellido1
+                ,hospedero.Apellido2);
             //obtiene la cantidad total de personas en la reserva 
-            int cantidadTotal = reservacion.cantTipoPersona[0] + reservacion.cantTipoPersona[1] +
-                reservacion.cantTipoPersona[2] + reservacion.cantTipoPersona[3];
+            int cantidadTotal = reservacion.CantTipoPersona[0] + reservacion.CantTipoPersona[1] +
+                reservacion.CantTipoPersona[2] + reservacion.CantTipoPersona[3];
             //llama al método para insertar una reserva
-            InsertarReserva(reservacion.identificador,reservacion.primerDia,reservacion.ultimoDia,"0", 
+            InsertarReserva(reservacion.Identificador,reservacion.PrimerDia,reservacion.UltimoDia,"0", 
                 cantidadTotal.ToString());
 
             //se encarga de llamar al método de insertar las placas de los vehículos dependiendo de la 
             //cantidad de placas que haya introducido el usuario
-            switch (reservacion.placasVehiculos.Count)
+            switch (reservacion.PlacasVehiculos.Count)
             {
                 case 0:
-                    InsertarPlacas(reservacion.identificador, "", "", "", "");
+                    InsertarPlacas(reservacion.Identificador, "", "", "", "");
                     break;
                 case 1:
-                    InsertarPlacas(reservacion.identificador, reservacion.placasVehiculos[0], "", "", "");
+                    InsertarPlacas(reservacion.Identificador, reservacion.PlacasVehiculos[0], "", "", "");
                     break;
                 case 2:
-                    InsertarPlacas(reservacion.identificador, reservacion.placasVehiculos[0], reservacion.placasVehiculos[1], "", "");
+                    InsertarPlacas(reservacion.Identificador, reservacion.PlacasVehiculos[0], reservacion.PlacasVehiculos[1], "", "");
                     break;
                 case 3:
-                    InsertarPlacas(reservacion.identificador, reservacion.placasVehiculos[0], reservacion.placasVehiculos[1],
-                        reservacion.placasVehiculos[2], "");
+                    InsertarPlacas(reservacion.Identificador, reservacion.PlacasVehiculos[0], reservacion.PlacasVehiculos[1],
+                        reservacion.PlacasVehiculos[2], "");
                     break;
                 case 4:
-                    InsertarPlacas(reservacion.identificador, reservacion.placasVehiculos[0], reservacion.placasVehiculos[1],
-                       reservacion.placasVehiculos[2], reservacion.placasVehiculos[3]);
+                    InsertarPlacas(reservacion.Identificador, reservacion.PlacasVehiculos[0], reservacion.PlacasVehiculos[1],
+                       reservacion.PlacasVehiculos[2], reservacion.PlacasVehiculos[3]);
                     break;
 
             }
             //llama al método para insertar las tuplas de la cantidad de personas por población
-            InsertarPrecioReservacion(reservacion.identificador , reservacion.cantTipoPersona[0].ToString(),
-            reservacion.cantTipoPersona[1].ToString(), reservacion.cantTipoPersona[2].ToString(), 
-            reservacion.cantTipoPersona[3].ToString(), reservacion.cantTipoPersona[4].ToString(), reservacion.cantTipoPersona[5].ToString(),
-            reservacion.cantTipoPersona[6].ToString());
+            InsertarPrecioReservacion(reservacion.Identificador , reservacion.CantTipoPersona[0].ToString(),
+            reservacion.CantTipoPersona[1].ToString(), reservacion.CantTipoPersona[2].ToString(), 
+            reservacion.CantTipoPersona[3].ToString(), reservacion.CantTipoPersona[4].ToString(), reservacion.CantTipoPersona[5].ToString(),
+            reservacion.CantTipoPersona[6].ToString());
 
             //genera un identificador de pago
             string identificadorPago = metodosGenerales.crearIdentificador(6);
@@ -284,7 +284,7 @@ namespace JunquillalUserSystem.Handlers
             InsertarPago(identificadorPago, date.ToString());
 
             //llama al método que crea la relación entre una reserva, un hospedero y un pago en la base de datos
-            InsertarHospederoRealiza(hospedero.identificacion, reservacion.identificador,
+            InsertarHospederoRealiza(hospedero.Identificacion, reservacion.Identificador,
             identificadorPago);
 
 

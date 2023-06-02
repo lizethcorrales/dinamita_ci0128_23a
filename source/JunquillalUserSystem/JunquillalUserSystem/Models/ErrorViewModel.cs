@@ -2,7 +2,12 @@ namespace JunquillalUserSystem.Models
 {
     public class ErrorViewModel
     {
-        public string? requestId { get; set; }
+        private string? requestId;
+        public string RequestId
+        {
+            get { return requestId; }
+            set { requestId = value; }
+        }
 
         public bool ShowRequestId => !string.IsNullOrEmpty(requestId);
     }

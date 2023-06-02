@@ -3,18 +3,69 @@
 
     public class HospederoModelo
     {
-        public string nombre { get; set; }
-        public string apellido1 { get; set; }
-        public string apellido2 { get; set; }
-        public string identificacion { get; set; }
-        public string nacionalidad { get; set; }
-        public int estado { get; set; }
-        public string telefono { get; set; }
-        public string email { get; set; }
+        private string nombre;
+        public string Nombre
+        {
+            get { return nombre; }
+            set { nombre = value; }
+        }
 
-        public string tipoIdentificacion { get; set; }
+        private string apellido1;
+        public string Apellido1
+        {
+            get { return apellido1; }
+            set { apellido1 = value; }
+        }
+        private string apellido2;
+        public string Apellido2
+        {
+            get { return apellido2; }
+            set { apellido2 = value; }
+        }
+        private string identificacion;
+        public string Identificacion
+        {
+            get { return Identificacion; }
+            set { Identificacion = value; }
+        }
+        private string nacionalidad;
+        public string Nacionalidad
+        {
+            get { return nacionalidad; }
+            set { nacionalidad = value; }
+        }
+        private int estado;
+        public int Estado
+        {
+            get { return estado; }
+            set { estado = value; }
+        }
+        private string telefono;
+        public string Telefono
+        {
+            get { return telefono; }
+            set { telefono = value; }
+        }
+        private string email;
+        public string Email
+        {
+            get { return email; }
+            set { email = value; }
+        }
 
-        public string motivo { get; set; }
+        private string tipoIdentificacion;
+        public string TipoIdentificacion
+        {
+            get { return tipoIdentificacion; }
+            set { tipoIdentificacion = value; }
+        }
+
+        private string motivo;
+        public string Motivo
+        {
+            get { return motivo; }
+            set { motivo = value; }
+        }
 
         public HospederoModelo()
         {
@@ -30,16 +81,16 @@
         {
             HospederoModelo hospedero = new HospederoModelo();
 
-            hospedero.nombre = form["nombre"];
-            hospedero.apellido1 = form["primerApellido"];
-            hospedero.apellido2 = form["segundoApellido"];
-            hospedero.identificacion = form["identificacion"];
-            hospedero.telefono = form["segundoApellido"];
-            hospedero.email = form["email"];
-            hospedero.tipoIdentificacion = form["nacionalidad"];
-            hospedero.nacionalidad = form["pais"];
-            hospedero.motivo = form["motivo"];
-            hospedero.estado = 0;
+            hospedero.Nombre = form["nombre"];
+            hospedero.Apellido1 = form["primerApellido"];
+            hospedero.Apellido2 = form["segundoApellido"];
+            hospedero.Identificacion = form["identificacion"];
+            hospedero.Telefono = form["segundoApellido"];
+            hospedero.Email = form["email"];
+            hospedero.TipoIdentificacion = form["nacionalidad"];
+            hospedero.Nacionalidad = form["pais"];
+            hospedero.Motivo = form["motivo"];
+            hospedero.Estado = 0;
 
             return hospedero;
         }

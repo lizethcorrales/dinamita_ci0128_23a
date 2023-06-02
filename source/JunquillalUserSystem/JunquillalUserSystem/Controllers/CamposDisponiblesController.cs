@@ -28,7 +28,7 @@ namespace JunquillalUserSystem.Controllers
         public IActionResult Edit()
         {
             camposModelo = handlerCampos.LlenarFecha(camposModelo, Request.Form);
-            int resultado = 80 - handlerCampos.ReservasTotal(camposModelo.fecha);
+            int resultado = 80 - handlerCampos.ReservasTotal(camposModelo.Fecha);
             TempData["camposDisponibles"] = resultado.ToString();
             ViewData["IsAdminArea"] = TempData["IsAdminArea"];
             TempData["IsAdminArea"] = TempData["IsAdminArea"];

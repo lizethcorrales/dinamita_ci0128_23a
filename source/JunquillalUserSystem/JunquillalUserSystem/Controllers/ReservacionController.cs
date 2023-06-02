@@ -59,7 +59,7 @@ namespace JunquillalUserSystem.Controllers
            // metodosGenerales.EnviarEmail(confirmacion,hospedero.email);
             ViewBag.mensaje = new HtmlString(confirmacion);
             reservacionHandler.InsertarEnBaseDatos(hospedero,reservacion);
-            ViewBag.costoTotal = reservacionHandler.CostoTotal(reservacion.identificador).ToString();
+            ViewBag.costoTotal = reservacionHandler.CostoTotal(reservacion.Identificador).ToString();
 
 
 

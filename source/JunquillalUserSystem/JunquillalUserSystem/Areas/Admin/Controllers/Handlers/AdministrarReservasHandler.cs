@@ -57,8 +57,8 @@ namespace JunquillalUserSystem.Areas.Admin.Controllers.Handlers
 
 			foreach (ReservacionModelo reserva in reservas)
 			{
-				reserva.placasVehiculos = ObtenerPlacasReservacion(reserva.identificador);
-				reserva.tipoPersona = ObtenerPersonasReservacion(reserva.identificador);
+				reserva.PlacasVehiculos = ObtenerPlacasReservacion(reserva.Identificador);
+				reserva.tipoPersona = ObtenerPersonasReservacion(reserva.Identificador);
 			}
 
 
@@ -72,14 +72,14 @@ namespace JunquillalUserSystem.Areas.Admin.Controllers.Handlers
 			while (reader.Read())
 			{
 				ReservacionModelo reservacion = new ReservacionModelo();
-				reservacion.primerDia = reader.GetDateTime(reader.GetOrdinal("primerDia")).ToString("yyyy-MM-dd");
-				reservacion.identificador = reader.GetString(reader.GetOrdinal("IdentificadorReserva"));
-				reservacion.ultimoDia = reader.GetDateTime(reader.GetOrdinal("ultimoDia")).ToString("yyyy-MM-dd");
-				reservacion.hospedero.nombre = reader.GetString(reader.GetOrdinal("nombre"));
-				reservacion.hospedero.apellido1 = reader.GetString(reader.GetOrdinal("apellido1"));
-				reservacion.hospedero.apellido2 = reader.GetString(reader.GetOrdinal("apellido2"));
-				reservacion.hospedero.email = reader.GetString(reader.GetOrdinal("email"));
-				reservacion.hospedero.identificacion = reader.GetString(reader.GetOrdinal("identificacion"));
+				reservacion.PrimerDia = reader.GetDateTime(reader.GetOrdinal("primerDia")).ToString("yyyy-MM-dd");
+				reservacion.Identificador = reader.GetString(reader.GetOrdinal("IdentificadorReserva"));
+				reservacion.UltimoDia = reader.GetDateTime(reader.GetOrdinal("ultimoDia")).ToString("yyyy-MM-dd");
+				reservacion.Hospedero.Nombre = reader.GetString(reader.GetOrdinal("nombre"));
+				reservacion.Hospedero.Apellido1 = reader.GetString(reader.GetOrdinal("apellido1"));
+				reservacion.Hospedero.Apellido2 = reader.GetString(reader.GetOrdinal("apellido2"));
+				reservacion.Hospedero.Email = reader.GetString(reader.GetOrdinal("email"));
+				reservacion.Hospedero.Identificacion = reader.GetString(reader.GetOrdinal("identificacion"));
 				//reservacion.hospedero.nacionalidad = reader.GetString(reader.GetOrdinal("NombrePais"));
 
 
