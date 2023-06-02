@@ -17,6 +17,7 @@
         <link href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" rel="stylesheet" />
         <script src="//code.jquery.com/jquery-3.5.1.js"></script>
         <script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+        <script defer src="~/js/ReportesScript.js"> </script>
         <link rel="stylesheet" href="~/css/CalendarioStyle.css">
         <link rel="stylesheet" href="~/css/cantidadPersonasStyle.css" />
     </head>
@@ -26,7 +27,7 @@
         <div>
             <h3>Bienvenido a la sección de reportes</h3>
             <h5>Elija el tipo de reporte</h5>
-            <input type="radio" id="diario" name="reportes" value="diario">
+            <input type="radio" id="diario" name="reportes" value="diario" checked>
             <label for="diario">Diario</label>
             <input type="radio" id="visitas" name="reportes" value="visitas">
             <label for="visitas">Rango específico</label><br>
@@ -38,14 +39,14 @@
                 <div class="centrar">
 
                     <div class="flex">
-                        <div>
-                            <label class="centrar" id="label-fecha-entrada" for="fecha-entrada">Fecha de entrada:</label><br><br>
+                        <div id="calendarioDiario">
+                            <label class="centrar" id="label-fecha-entrada" for="fecha-entrada">Fecha de Inicial:</label><br><br>
                             <input type="datetime" id="fecha-entrada" name="fecha-entrada" readonly>
 
                         </div>
-                    
-                        <div>
-                            <label class="centrar" for="fecha-salida" id="label-fecha-salida">Fecha de salida:</label><br><br>
+
+                        <div id="calendarioRangoDias" hidden>
+                            <label class="centrar" for="fecha-salida" id="label-fecha-salida">Fecha de Final:</label><br><br>
                             <input type="datetime" id="fecha-salida" name="fecha-salida" readonly>
                         </div>
                     </div>
