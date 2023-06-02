@@ -9,20 +9,17 @@
 
 
 .button1 {
-    position: relative;
+    position: fixed;
     background: #F39800 !important;
     color: #fff !important;
     border-radius: 10px;
-    
+    margin-top: 5% !important;
     margin-left: 21%;
-
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
     color: white;
     font-size: 25px;
     border: none;
-
     border-radius: 10px;
-
 }
 
 .button {
@@ -30,9 +27,9 @@
 }
 
 #error {
-    position: relative;
+    position: fixed;
     color: red;
- 
+    margin-top: 28% !important;
     margin-left: 36%;
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     font-size: 22px;
@@ -51,9 +48,6 @@
     padding: 18%;
     border: none;
     border-radius: 10px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
 }
 
 .ui-datepicker {
@@ -84,7 +78,7 @@
 .resultadoCampos {
     margin: 2%;
     position: absolute;
-
+    top: 30%;
     left: 67%;
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     font-size: 20px;
@@ -95,14 +89,14 @@
     display: flex;
     flex-direction: column;
     position: absolute;
-
+    top: 35%;
     left: 64%;
     font-size: 20px;
 }
 
 #label-fecha-entrada {
-    position: relative;
- 
+    position: fixed;
+    top: 36%;
     left: 25%;
     transform: translate(-50%, -50%);
     display: block;
@@ -114,8 +108,8 @@
 }
 
 #fecha-entrada {
-    position: relative;
- 
+    position: fixed;
+    top: 40%;
     left: 19%;
 }
 
@@ -137,23 +131,20 @@
     }
 
     .button1 {
-        
         position: relative;
         background: #F39800 !important;
         color: #fff !important;
         border-radius: 10px;
-     
+        margin-top: 70% !important;
         margin-left: 0%;
-        
     }
 
     .button2 {
-        position: relative;
+        position: fixed;
         background: #A2A2A2 !important;
         color: #fff !important;
         border-radius: 10px;
-    
+        margin-top: 40% !important;
         margin-left: 35%;
     }
 }
-
