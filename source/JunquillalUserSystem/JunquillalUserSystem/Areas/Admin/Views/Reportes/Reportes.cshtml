@@ -136,14 +136,25 @@
 
                 var form = document.getElementById("fechas");
                 var err = document.getElementById("error");
+                var calendarioRangoDias = document.getElementById("visitas");
+                var calendarioDiario = document.getElementById("diario");
                 const btnSiguiente = document.querySelector('#btn-siguiente');
                 btnSiguiente.addEventListener('click', function () {
                     const fechaEntrada = document.querySelector('#fecha-entrada').value;
                     const fechaSalida = document.querySelector('#fecha-salida').value;
-                    if (fechaEntrada && fechaSalida) {
-                        form.submit();
-                    } else {
-                        err.innerText = "Debes llenar lo que se solicita";
+                    const mensajeError = "Debes llenar lo que se solicita";
+                    if (calendarioRangoDias.checked) {
+                        if (fechaEntrada && fechaSalida) {
+                            form.submit();
+                        } else {
+                            err.innerText = mensajeError;
+                        }
+                    } else if (calendarioDiario.checked) {
+                        if (fechaEntrada) {
+                            form.submit();
+                        } else {
+                            err.innerText = mensajeError;
+                        }
                     }
                 });
 
