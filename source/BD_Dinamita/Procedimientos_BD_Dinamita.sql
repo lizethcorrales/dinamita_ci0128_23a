@@ -340,3 +340,26 @@ RETURN
 go
 
 
+SELECT *
+FROM dbo.ObtenerReservacionesPorFecha(@Fecha)
+
+--Esta funcion busca las credenciales de un empleado dentro de la tabla Trabajador, en donde las credenciales retornadas 
+--van a ser las del empleado que sea encontrado con la identificacion pasada por parametro
+go
+CREATE FUNCTION ObtenerCredencialesTrabajador
+(
+    @Identificacion VARCHAR(10)
+)
+RETURNS TABLE
+AS
+RETURN
+(
+    SELECT T.Cedula, T.Nombre, T.Apellido1, T.Contrasena, T.Salt, T.Puesto
+    FROM Trabajador as T
+    WHERE T.Cedula = @Identificacion
+)
+
+DECLARE @Identificacion  VARCHAR(10) = '211118888'
+
+SELECT *
+FROM dbo.ObtenerCredencialesTrabajador(@Identificacion)
