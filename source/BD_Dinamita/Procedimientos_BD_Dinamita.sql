@@ -598,3 +598,10 @@ ELSE
 END;
 go
 
+--Para los reportes se usa el siguiente codigo
+
+	SELECT P.Nacionalidad, P.Poblacion, P.Actividad, SUM(P.Cantidad) AS Cantidad_Total, SUM(P.Cantidad*P.PrecioAlHacerReserva) AS Ventas_Totales
+	FROM PrecioReservacion AS P JOIN Reservacion AS R ON P.IdentificadorReserva = R.IdentificadorReserva
+	WHERE R.Estado != '2' AND R.PrimerDia >= @primerDia AND R.UltimoDia <= @ultimoDia AND P.Actividad = @actividad
+	GROUP BY  P.Nacionalidad, P.Poblacion, P.Actividad
+

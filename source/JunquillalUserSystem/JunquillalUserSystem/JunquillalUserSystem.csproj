@@ -7,6 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Areas\Admin\Views\Shared\ReportesCSV\**" />
+    <Content Remove="Areas\Admin\Views\Shared\ReportesCSV\**" />
+    <EmbeddedResource Remove="Areas\Admin\Views\Shared\ReportesCSV\**" />
+    <None Remove="Areas\Admin\Views\Shared\ReportesCSV\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Remove="Views\Home\CalendarioR.cshtml.cs" />
     <Compile Remove="Views\Home\FileName.cshtml.cs" />
   </ItemGroup>
@@ -33,7 +40,6 @@
   <ItemGroup>
     <Folder Include="Areas\Admin\Data\" />
     <Folder Include="Areas\Admin\Models\" />
-    <Folder Include="Areas\Admin\Views\Shared\ReportesCSV\" />
   </ItemGroup>
 
 </Project>

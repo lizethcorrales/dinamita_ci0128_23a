@@ -20,10 +20,10 @@ namespace JunquillalUserSystem.Areas.Admin.Controllers
 
             listaCamping.AddRange(listaPicnic);
 
-
+            System.Diagnostics.Debug.WriteLine(listaCamping.Count);
             
 
-            reportesHandler.escribirCSV(listaCamping);
+            reportesHandler.escribirCSV(listaCamping, Request.Form);
             return RedirectToAction("Reportes", "Reportes");
         }
 
