@@ -15,14 +15,11 @@
     border-radius: 10px;
     margin-top: 5% !important;
     margin-left: 21%;
-
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
     color: white;
     font-size: 25px;
     border: none;
-
     border-radius: 10px;
-
 }
 
 .button {
@@ -134,14 +131,12 @@
     }
 
     .button1 {
-        
         position: relative;
         background: #F39800 !important;
         color: #fff !important;
         border-radius: 10px;
         margin-top: 70% !important;
         margin-left: 0%;
-        
     }
 
     .button2 {
@@ -153,4 +148,3 @@
         margin-left: 35%;
     }
 }
-

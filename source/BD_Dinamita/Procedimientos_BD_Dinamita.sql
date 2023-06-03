@@ -14,12 +14,14 @@ END;
 
 
 -- Este procedimiento agrega los datos del hospedero a la tabla Hospedero, según los datos recibidos por parámetro.
+GO
 CREATE PROCEDURE insertar_Hospedero (
 	@identificacion_entrante AS CHAR(20),
 	@email_entrante AS VARCHAR(60),
 	@nombre_entrante AS VARCHAR(20),
 	@apellido1_entrante AS VARCHAR(20),
-	@apellido2_entrante AS VARCHAR(20)
+	@apellido2_entrante AS VARCHAR(20),
+	@telefono_entrante AS VARCHAR(20)
 ) AS
 BEGIN 
 	SELECT Hospedero.Identificacion
@@ -29,27 +31,31 @@ BEGIN
 	IF @@ROWCOUNT = 0 
 		 INSERT INTO Hospedero
 		 VALUES (@identificacion_entrante, @email_entrante, @nombre_entrante, @apellido1_entrante,
-				 @apellido2_entrante);
+				 @apellido2_entrante, @telefono_entrante);
 END;
 
 
 
 -- Este procedimiento agrega la información de una reserva a la tabla Reservacion
+GO
 CREATE PROCEDURE insertar_Reservacion (
 	@identificacion_entrante AS VARCHAR(10),
 	@primerDia_entrante AS DATE,
 	@ultimoDia_entrante AS DATE,
 	@estado_entrante AS BIT,
-	@cantidad_entrante AS SMALLINT
+	@cantidad_entrante AS SMALLINT,
+	@motivo_entrante AS VARCHAR(30),
+	@tipoActividad AS VARCHAR(10)
 ) AS
 BEGIN
 	INSERT INTO Reservacion
-		VALUES (@identificacion_entrante, @primerDia_entrante, @ultimoDia_entrante, @estado_entrante, @cantidad_entrante)
+		VALUES (@identificacion_entrante, @primerDia_entrante, @ultimoDia_entrante, 
+		@estado_entrante, @cantidad_entrante, @motivo_entrante, @tipoActividad);
 END;
 
-
 -- Este procedimiento agrega a la tabla PrecioReservacion, el precio por cada tipo de población registrada en la reservación.
-ALTER PROCEDURE [dbo].[insertar_PrecioReservacion](
+GO
+CREATE PROCEDURE insertar_PrecioReservacion(
 	@identificador_Reserva AS VARCHAR(10),
 	@adulto_nacional AS SMALLINT,
 	@ninno_nacional_mayor6 AS SMALLINT,
@@ -57,7 +63,8 @@ ALTER PROCEDURE [dbo].[insertar_PrecioReservacion](
 	@adulto_mayor_nacional AS SMALLINT,
 	@adulto_extranjero AS SMALLINT,
 	@ninno_extranjero AS SMALLINT,
-	@adulto_mayor_extranjero AS SMALLINT
+	@adulto_mayor_extranjero AS SMALLINT,
+	@tipoActividad AS VARCHAR(10)
 ) AS
 BEGIN
 	DECLARE @precio AS DOUBLE PRECISION;
@@ -66,74 +73,73 @@ BEGIN
 		BEGIN
 		SELECT @precio = Tarifa.precio
 		FROM Tarifa
-		WHERE Tarifa.Nacionalidad = 'Nacional' AND Tarifa.Poblacion = 'Adulto' AND Tarifa.Actividad = 'Camping';
+		WHERE Tarifa.Nacionalidad = 'Nacional' AND Tarifa.Poblacion = 'Adulto' AND Tarifa.Actividad = @tipoActividad;
 
 		INSERT INTO PrecioReservacion
-		VALUES (@identificador_Reserva, 'Nacional', 'Adulto', 'Camping', @adulto_nacional, @precio);
+		VALUES (@identificador_Reserva, 'Nacional', 'Adulto',@tipoActividad, @adulto_nacional, @precio);
 		END;
 
 	IF (@ninno_nacional_menor6 > 0) 
 		BEGIN
 		SELECT @precio = Tarifa.precio
 		FROM Tarifa
-		WHERE Tarifa.Nacionalidad = 'Nacional' AND Tarifa.Poblacion = 'Niño menor 6 años' AND Tarifa.Actividad = 'Camping';
+		WHERE Tarifa.Nacionalidad = 'Nacional' AND Tarifa.Poblacion = 'Niño menor 6 años' AND Tarifa.Actividad = @tipoActividad;
  
 		INSERT INTO PrecioReservacion
-		VALUES (@identificador_Reserva, 'Nacional', 'Niño menor 6 años', 'Camping', @ninno_nacional_menor6, @precio);
+		VALUES (@identificador_Reserva, 'Nacional', 'Niño menor 6 años', @tipoActividad, @ninno_nacional_menor6, @precio);
 		END;
 
 	IF (@ninno_nacional_mayor6 > 0) 
 		BEGIN
 		SELECT @precio = Tarifa.precio
 		FROM Tarifa
-		WHERE Tarifa.Nacionalidad = 'Nacional' AND Tarifa.Poblacion = 'Niño' AND Tarifa.Actividad = 'Camping';
+		WHERE Tarifa.Nacionalidad = 'Nacional' AND Tarifa.Poblacion = 'Niño' AND Tarifa.Actividad = @tipoActividad;
  
 		INSERT INTO PrecioReservacion
-		VALUES (@identificador_Reserva, 'Nacional', 'Niño', 'Camping', @ninno_nacional_mayor6, @precio);
+		VALUES (@identificador_Reserva, 'Nacional', 'Niño', @tipoActividad, @ninno_nacional_mayor6, @precio);
 		END;
 
 	IF (@adulto_mayor_nacional > 0)
 		BEGIN
 		SELECT @precio = Tarifa.precio
 		FROM Tarifa
-		WHERE Tarifa.Nacionalidad = 'Nacional' AND Tarifa.Poblacion = 'Adulto Mayor' AND Tarifa.Actividad = 'Camping';
+		WHERE Tarifa.Nacionalidad = 'Nacional' AND Tarifa.Poblacion = 'Adulto Mayor' AND Tarifa.Actividad = @tipoActividad;
 
 		INSERT INTO PrecioReservacion
-		VALUES (@identificador_Reserva, 'Nacional', 'Adulto Mayor', 'Camping', @adulto_mayor_nacional, @precio);
+		VALUES (@identificador_Reserva, 'Nacional', 'Adulto Mayor', @tipoActividad, @adulto_mayor_nacional, @precio);
 		END;
 
 	IF (@adulto_extranjero > 0)
 		BEGIN
 		SELECT @precio = Tarifa.precio
 		FROM Tarifa
-		WHERE Tarifa.Nacionalidad = 'Extranjero' AND Tarifa.Poblacion = 'Adulto' AND Tarifa.Actividad = 'Camping';
+		WHERE Tarifa.Nacionalidad = 'Extranjero' AND Tarifa.Poblacion = 'Adulto' AND Tarifa.Actividad = @tipoActividad;
 
 		INSERT INTO PrecioReservacion
-		VALUES (@identificador_Reserva, 'Extranjero', 'Adulto', 'Camping', @adulto_extranjero, @precio);
+		VALUES (@identificador_Reserva, 'Extranjero', 'Adulto', @tipoActividad, @adulto_extranjero, @precio);
 		END;
 
 	IF (@ninno_extranjero >0) 
 		BEGIN
 		SELECT @precio = Tarifa.precio
 		FROM Tarifa
-		WHERE Tarifa.Nacionalidad = 'Extranjero' AND Tarifa.Poblacion = 'Niño' AND Tarifa.Actividad = 'Camping';
+		WHERE Tarifa.Nacionalidad = 'Extranjero' AND Tarifa.Poblacion = 'Niño' AND Tarifa.Actividad = @tipoActividad;
 
 		INSERT INTO PrecioReservacion
-		VALUES (@identificador_Reserva, 'Extranjero', 'Niño', 'Camping', @ninno_extranjero, @precio);
+		VALUES (@identificador_Reserva, 'Extranjero', 'Niño', @tipoActividad, @ninno_extranjero, @precio);
 		END;
 
 	IF (@adulto_mayor_extranjero > 0)
 		BEGIN
 		SELECT @precio = Tarifa.precio
 		FROM Tarifa
-		WHERE Tarifa.Nacionalidad = 'Nacional' AND Tarifa.Poblacion = 'Adulto Mayor' AND Tarifa.Actividad = 'Camping';
+		WHERE Tarifa.Nacionalidad = 'Nacional' AND Tarifa.Poblacion = 'Adulto Mayor' AND Tarifa.Actividad = @tipoActividad;
 
 		INSERT INTO PrecioReservacion
-		VALUES (@identificador_Reserva, 'Extranjero', 'Adulto Mayor', 'Camping', @adulto_mayor_extranjero, @precio);
+		VALUES (@identificador_Reserva, 'Extranjero', 'Adulto Mayor', @tipoActividad, @adulto_mayor_extranjero, @precio);
 		END;
 
 END;
-
 
 -- Este procedimiento agrega las placas ingresadas por el reservante a la tabla Placa
 CREATE PROCEDURE insertar_Placas (
@@ -237,7 +243,8 @@ BEGIN
             SELECT 1
             FROM Reservacion r
             
-            WHERE r.PrimerDia <= @fecha AND r.UltimoDia >= @fecha
+            WHERE r.PrimerDia <= @fecha AND r.UltimoDia >= @fecha AND R.TipoActividad = 'Camping'
+			And Estado = '0'
             GROUP BY r.PrimerDia , r.CantidadTotalPersonas
             HAVING SUM(r.CantidadTotalPersonas) + @cantidadPersonas > 15
                 OR 15 - SUM(r.CantidadTotalPersonas) < @cantidadPersonas 
@@ -248,12 +255,210 @@ BEGIN
         SET @contador = @contador + 1;
     END;
 
-
-
+	
     -- Devolver los días no disponibles como cadena de caracteres
     DECLARE @resultString VARCHAR(MAX) = '';
     SELECT @resultString = @resultString + CAST(fecha AS VARCHAR(10)) + ',' FROM @diasNoDisponibles;
+    IF LEN(@resultString) > 0
     SET @result = LEFT(@resultString, LEN(@resultString) - 1);
+ELSE
+    SET @result = '';
+
+END;
+
+GO
+CREATE PROCEDURE insertarVisita(
+	@identificacion AS CHAR(20),
+	@fechaEntrada AS DATE
+)AS
+BEGIN
+	SELECT Visita.Identificacion, Visita.FechaEntrada
+	FROM Visita
+	WHERE Visita.Identificacion = @identificacion AND Visita.FechaEntrada = @fechaEntrada;
+
+	IF @@ROWCOUNT <= 0
+		BEGIN
+		INSERT INTO Visita
+		VALUES (@identificacion, @fechaEntrada)
+		END;
+
+END;
+
+GO
+CREATE PROCEDURE insertarNacionalidadVisita (
+	@identificacionVisita AS CHAR(20),
+	@fechaEntrada AS DATE,
+	@NombrePais AS VARCHAR(30),
+	@cantidad AS SMALLINT
+) AS 
+BEGIN 
+	SELECT Pais.Nombre
+	FROM Pais
+	WHERE Pais.Nombre = @NombrePais;
+
+	IF @@ROWCOUNT <= 0
+		BEGIN 
+		INSERT INTO Pais
+		VALUES(@NombrePais);
+		END;
+
+	INSERT INTO NacionalidadVisita
+	VALUES (@identificacionVisita, @fechaEntrada, @NombrePais, @cantidad);
+END;
+
+GO
+CREATE PROCEDURE insertar_PrecioVisita(
+	@identificador_Visita AS VARCHAR(20),
+	@fechaEntrada AS DATE,
+	@adulto_nacional AS SMALLINT,
+	@ninno_nacional_mayor6 AS SMALLINT,
+	@ninno_nacional_menor6 AS SMALLINT,
+	@adulto_mayor_nacional AS SMALLINT,
+	@adulto_extranjero AS SMALLINT,
+	@ninno_extranjero AS SMALLINT,
+	@adulto_mayor_extranjero AS SMALLINT
+) AS
+BEGIN
+	DECLARE @precio AS DOUBLE PRECISION;
+
+	IF (@adulto_nacional > 0)
+		BEGIN
+		SELECT @precio = Tarifa.precio
+		FROM Tarifa
+		WHERE Tarifa.Nacionalidad = 'Nacional' AND Tarifa.Poblacion = 'Adulto' AND Tarifa.Actividad = 'Picnic';
+
+		INSERT INTO PrecioVisita
+		VALUES (@identificador_Visita, @fechaEntrada, 'Nacional', 'Adulto', 'Picnic', @adulto_nacional, @precio);
+		END;
+
+	IF (@ninno_nacional_menor6 > 0) 
+		BEGIN
+		SELECT @precio = Tarifa.precio
+		FROM Tarifa
+		WHERE Tarifa.Nacionalidad = 'Nacional' AND Tarifa.Poblacion = 'Niño menor 6 años' AND Tarifa.Actividad = 'Picnic';
+ 
+		INSERT INTO PrecioVisita
+		VALUES (@identificador_Visita, @fechaEntrada, 'Nacional', 'Niño menor 6 años', 'Picnic', @ninno_nacional_menor6, @precio);
+		END;
+
+	IF (@ninno_nacional_mayor6 > 0) 
+		BEGIN
+		SELECT @precio = Tarifa.precio
+		FROM Tarifa
+		WHERE Tarifa.Nacionalidad = 'Nacional' AND Tarifa.Poblacion = 'Niño' AND Tarifa.Actividad = 'Picnic';
+ 
+		INSERT INTO PrecioVisita
+		VALUES (@identificador_Visita, @fechaEntrada, 'Nacional', 'Niño', 'Picnic', @ninno_nacional_mayor6, @precio);
+		END;
+
+	IF (@adulto_mayor_nacional > 0)
+		BEGIN
+		SELECT @precio = Tarifa.precio
+		FROM Tarifa
+		WHERE Tarifa.Nacionalidad = 'Nacional' AND Tarifa.Poblacion = 'Adulto Mayor' AND Tarifa.Actividad = 'Picnic';
+
+		INSERT INTO PrecioVisita
+		VALUES (@identificador_Visita, @fechaEntrada, 'Nacional', 'Adulto Mayor', 'Picnic', @adulto_mayor_nacional, @precio);
+		END;
+
+	IF (@adulto_extranjero > 0)
+		BEGIN
+		SELECT @precio = Tarifa.precio
+		FROM Tarifa
+		WHERE Tarifa.Nacionalidad = 'Extranjero' AND Tarifa.Poblacion = 'Adulto' AND Tarifa.Actividad = 'Picnic';
+
+		INSERT INTO PrecioVisita
+		VALUES (@identificador_Visita, @fechaEntrada, 'Extranjero', 'Adulto', 'Picnic', @adulto_extranjero, @precio);
+		END;
+
+	IF (@ninno_extranjero >0) 
+		BEGIN
+		SELECT @precio = Tarifa.precio
+		FROM Tarifa
+		WHERE Tarifa.Nacionalidad = 'Extranjero' AND Tarifa.Poblacion = 'Niño' AND Tarifa.Actividad = 'Picnic';
+
+		INSERT INTO PrecioVisita
+		VALUES (@identificador_Visita, @fechaEntrada, 'Extranjero', 'Niño', 'Picnic', @ninno_extranjero, @precio);
+		END;
+
+	IF (@adulto_mayor_extranjero > 0)
+		BEGIN
+		SELECT @precio = Tarifa.precio
+		FROM Tarifa
+		WHERE Tarifa.Nacionalidad = 'Nacional' AND Tarifa.Poblacion = 'Adulto Mayor' AND Tarifa.Actividad = 'Picnic';
+
+		INSERT INTO PrecioVisita
+		VALUES (@identificador_Visita, @fechaEntrada, 'Extranjero', 'Adulto Mayor', 'Picnic', @adulto_mayor_extranjero, @precio);
+		END;
+
+END;
+
+GO
+CREATE PROCEDURE actualizarPrecioTarifa (
+	@Nacionalidad AS VARCHAR(30),
+	@Poblacion AS VARCHAR(30),
+	@Actividad AS VARCHAR(30),
+	@Precio AS FLOAT
+) AS
+BEGIN 
+	SELECT *
+	FROM Tarifa
+	WHERE Tarifa.Nacionalidad = @Nacionalidad AND Tarifa.Poblacion = @Poblacion AND Tarifa.Actividad = @Actividad;
+
+	IF @@ROWCOUNT = 1
+		BEGIN 
+		UPDATE Tarifa
+		SET Precio = @Precio
+		WHERE Tarifa.Nacionalidad = @Nacionalidad AND Tarifa.Poblacion = @Poblacion AND Tarifa.Actividad = @Actividad;
+		END;
+END;
+
+
+GO
+CREATE PROCEDURE insertarTieneNacionalidad(
+	@IdentificadorReserva AS VARCHAR(10),
+	@NombrePais AS VARCHAR(30),
+	@cantidad AS SMALLINT
+)
+AS 
+BEGIN 
+SELECT Pais.Nombre
+	FROM Pais
+	WHERE Pais.Nombre = @NombrePais;
+
+	IF @@ROWCOUNT <= 0
+		BEGIN 
+		INSERT INTO Pais
+		VALUES(@NombrePais);
+		END;
+
+	INSERT INTO TieneNacionalidad
+	VALUES (@IdentificadorReserva, @NombrePais, @cantidad);
+END
+
+GO
+CREATE PROCEDURE InsertarProvincia(
+@identificadorReserva AS VARCHAR(10),
+@nombreProvincia AS VARCHAR(20),
+@cantidad AS SMALLINT
+) AS 
+BEGIN 
+	SELECT *
+	FROM Reservacion
+	WHERE Reservacion.IdentificadorReserva = @identificadorReserva;
+
+	IF @@ROWCOUNT > 0 
+		BEGIN
+		SELECT *
+		FROM Provincia
+		WHERE Provincia.NombreProvincia = @nombreProvincia;
+
+		IF @@ROWCOUNT > 0 
+			BEGIN 
+			INSERT INTO ProvinciaReserva
+			VALUES(@identificadorReserva, @nombreProvincia, @cantidad)
+			END;
+		END;
 END;
 
 
@@ -264,23 +469,132 @@ END;
 go
 CREATE FUNCTION ObtenerReservacionesPorFecha
 (
-    @Fecha VARCHAR(15)
+    @Fecha Date
 )
 RETURNS TABLE
 AS
 RETURN
 (
     SELECT R.IdentificadorReserva ,PrimerDia, UltimoDia , Hospedero.Nombre,
-	        Hospedero.Apellido1 , Hospedero.Apellido2 , Hospedero.Email 
-    FROM Reservacion as R
+	        Hospedero.Apellido1 , Hospedero.Apellido2 , Hospedero.Email , 
+			Hospedero.Identificacion , TN.NombrePais
+    FROM Reservacion as R 
 	join HospederoRealiza AS HR on R.IdentificadorReserva = HR.IdentificadorReserva
 	join Hospedero on HR.IdentificacionHospedero = Hospedero.Identificacion
-    WHERE PrimerDia <= @Fecha And @Fecha <= UltimoDia
+	left join TieneNacionalidad as TN on  R.IdentificadorReserva  = TN.IdentificadorReserva
+    WHERE PrimerDia <= @Fecha And @Fecha <= UltimoDia AND R.Estado != 2
 )
 go
 
 
-DECLARE @Fecha VARCHAR(10) = '2023-06-02' -- Fecha que deseas utilizar
 
-SELECT *
-FROM dbo.ObtenerReservacionesPorFecha(@Fecha)
+--Procedimiento que busca las reservaciones por identificador de reserva
+go
+CREATE FUNCTION ObtenerReservacionesPorIdentificador
+(
+    @Identificador Varchar(10)
+)
+RETURNS TABLE
+AS
+RETURN
+(
+    SELECT R.IdentificadorReserva ,PrimerDia, UltimoDia , Hospedero.Nombre,
+	        Hospedero.Apellido1 , Hospedero.Apellido2 , Hospedero.Email , 
+			Hospedero.Identificacion , TN.NombrePais
+    FROM Reservacion as R 
+	join HospederoRealiza AS HR on R.IdentificadorReserva = HR.IdentificadorReserva
+	join Hospedero on HR.IdentificacionHospedero = Hospedero.Identificacion
+	left join TieneNacionalidad as TN on  R.IdentificadorReserva  = TN.IdentificadorReserva
+    WHERE R.IdentificadorReserva = @Identificador AND R.Estado != 2
+)
+go
+
+
+--Procedimiento que retorna una lista de placas de acuerdo al identificador de
+-- reservacion que se pasa por parametro
+go
+CREATE FUNCTION ObtenerPlacasReservacion
+(
+    @Identificador VARCHAR(10)
+)
+RETURNS TABLE
+AS
+RETURN
+(
+    SELECT Placa.Placa
+    FROM Placa 
+    WHERE Placa.IdentificadorReserva = @Identificador 
+)
+go
+
+--Funcion almacenda que devuelve el tipo de poblacion , la cantidad 
+-- y el total que se pago en la reservacion que coincida con el identificador por parametro
+go
+CREATE FUNCTION ObtenerCantidaTipoPersona
+(
+    @Identificador VARCHAR(10)
+)
+RETURNS TABLE
+AS
+RETURN
+(
+    SELECT  Poblacion , Nacionalidad , Cantidad , PrecioAlHacerReserva 
+    FROM  PrecioReservacion
+    WHERE PrecioReservacion.IdentificadorReserva = @Identificador 
+)
+go
+
+
+go
+--Este procedimiento encuentra los dias no disponibles al momento de elegir el dia d entrada  en el calendario
+-- se toma en cuenta la cantidad de personas que registradas en una visita de Picnic
+CREATE PROCEDURE [dbo].[BuscarDiasNoDisponiblesVisita]
+    @fechas VARCHAR(MAX),
+    @cantidadPersonas INT,
+    @result VARCHAR(MAX) OUTPUT
+AS
+BEGIN
+    -- Convertir la cadena de fechas en una tabla temporal
+    DECLARE @fechasTabla TABLE (RowNum INT, fecha DATE);
+    DECLARE @xml XML = N'<root><fecha>' + REPLACE(@fechas, ',', '</fecha><fecha>') + '</fecha></root>';
+    INSERT INTO @fechasTabla (RowNum, fecha)
+    SELECT ROW_NUMBER() OVER (ORDER BY (SELECT NULL)) AS RowNum, fecha.value('.', 'date') AS fecha
+    FROM @xml.nodes('//root/fecha') AS T(fecha);
+
+    -- Crear una tabla temporal para almacenar las fechas dentro del intervalo dado
+    DECLARE @diasNoDisponibles TABLE (fecha DATE);
+
+    -- Buscar los días no disponibles
+    DECLARE @fecha DATE;
+    DECLARE @contador INT = 1;
+    WHILE @contador <= (SELECT COUNT(*) FROM @fechasTabla)
+    BEGIN
+        SET @fecha = (SELECT fecha FROM @fechasTabla WHERE RowNum = @contador);
+        IF EXISTS (
+            SELECT 1
+            FROM Reservacion r
+            
+            WHERE r.PrimerDia = @fecha  AND R.TipoActividad = 'Picnic'
+			And Estado = '0'
+            GROUP BY r.PrimerDia , r.CantidadTotalPersonas
+            HAVING SUM(r.CantidadTotalPersonas) + @cantidadPersonas > 40
+                OR 40 - SUM(r.CantidadTotalPersonas) < @cantidadPersonas 
+        )
+        BEGIN
+            INSERT INTO @diasNoDisponibles (fecha) VALUES (@fecha);
+        END;
+        SET @contador = @contador + 1;
+    END;
+
+	
+    -- Devolver los días no disponibles como cadena de caracteres
+    DECLARE @resultString VARCHAR(MAX) = '';
+    SELECT @resultString = @resultString + CAST(fecha AS VARCHAR(10)) + ',' FROM @diasNoDisponibles;
+    IF LEN(@resultString) > 0
+    SET @result = LEFT(@resultString, LEN(@resultString) - 1);
+ELSE
+    SET @result = '';
+
+END;
+go
+

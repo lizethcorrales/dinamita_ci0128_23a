@@ -8,75 +8,47 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/JunquillalUserSystem.styles.css" asp-append-version="true" />
     <link href="~/lib/jquery-ui-1.12.1.custom/jquery-ui.min.css" rel="stylesheet" />
-        <link rel="stylesheet" href="~/css/styleReservacion.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/styleReservacion.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/Layout_Admin.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.15.3/css/all.css" integrity="tu-integridad" crossorigin="anonymous" />
 
-
-    <style>
-        body {
-            background-color: #f4f4f4;
-        }
-
-        header {
-            background-color: #8e44ad;
-            padding: 15px;
-            border-bottom: 3px solid #7d3c98;
-        }
-
-        nav ul li a:hover {
-            color: gray;
-        }
-
-        main {
-            background-color: #fff;
-            padding: 20px;
-            margin-top: 20px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-        }
-
-        footer {
-            background-color: #8e44ad;
-            color: #fff;
-            padding: 8px;
-            margin-top: 10px;
-            text-align: center;
-        }
-
-        .navbar-brand,
-        .nav-link,
-        .footer a {
-            color: #fff;
-        }
-    </style>
 </head>
 <body>
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-purple border-bottom box-shadow mb-3">
-            <div class="container-fluid">                                       
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
+            <div class="container-fluid">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="@(ViewContext.RouteData.Values["Action"].ToString() == "Index" ? "navbar-brand text-black " : "navbar-brand text-white")"
-                               href="@Url.Action("Index","Home" , new { area = "Admin" })"> Inicio </a>
+                            <a class="@(ViewContext.RouteData.Values["Action"].ToString() == "Index" ? "navbar-brand text-black " : "navbar-brand text-white")" 
+                                       href="@Url.Action("Index","Home" , new { area = "Admin" })">Inicio</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="@(ViewContext.RouteData.Values["Controller"].ToString() == "Reservacion" ? "navbar-brand text-black " : "navbar-brand text-white")"
-                               href="@Url.Action("FormularioCantidadPersonas","Reservacion" , new { area = "" })">Hacer una reservación</a>
+
+                        <li  class="nav-item submenu">
+                            <a class="@(ViewContext.RouteData.Values["Action"].ToString() == "FormularioCantidadPersonas" ? "navbar-brand text-black " : "navbar-brand text-white")"
+                                       href="#">Reservar <i class="fas fa-chevron-down"></i></a>
+                            <ul class="nav-item submenu-content">
+                                <li><a href="@Url.Action("FormularioCantidadPersonas","Reservacion" , new { area = "" })">Camping</a></li>
+                                <li><a href="@Url.Action("FormularioCantidadPersonas","Visita" , new { area = "" })">Picnic</a></li>
+                            </ul>
                         </li>
-                        <li class="nav-item">
-                            <a class="@(ViewContext.RouteData.Values["Controller"].ToString() == "Visita" ? "navbar-brand text-black " : "navbar-brand text-white")"
-                               href="@Url.Action("FormularioCantidadPersonas","Visita" , new { area = "" })">Hacer una visita</a>
-                        </li>
+
                         <li class="nav-item">
                             <a class="@(ViewContext.RouteData.Values["Controller"].ToString() == "CamposDisponibles" ? "navbar-brand text-black " : "navbar-brand text-white")"
-                               href="@Url.Action("CamposDisponibles","CamposDisponibles" , new { area = "" })">Campos Disponibles</a>
-                        <li class="nav-item">
-                            <a class="@(ViewContext.RouteData.Values["Controller"].ToString() == "AdministrarReservas" ? "navbar-brand text-black " : "navbar-brand text-white")"
-                               href="@Url.Action("Reservas","AdministrarReservas" , new { area = "Admin" })">Administrar Reservas</a>
+                                       href="@Url.Action("CamposDisponibles","CamposDisponibles" , new { area = "" })">Campos Disponibles</a>
+                        </li>
+
+                         <li class="nav-item submenu">
+                            <a class="@(ViewContext.RouteData.Values["Controller"].ToString() == "AdministrarReservas" || ViewContext.RouteData.Values["Controller"].ToString() == "Tarifas"
+                                       ? "navbar-brand text-black " : "navbar-brand text-white")"  href="#">Administrar <i class="fas fa-chevron-down"></i></a>
+                             <ul class="nav-item submenu-content">
+                                  <li><a href="@Url.Action("Reservas","AdministrarReservas" , new { area = "Admin" })">Reservas</a></li>
+                                  <li><a href="@Url.Action("Tarifas","Tarifas" , new { area = "Admin" })">Tarifas</a></li>
+                              </ul>
+
                         </li>
                         <li class="nav-item">
                             <a class="@(ViewContext.RouteData.Values["Controller"].ToString() == "Reportes" ? "navbar-brand text-black " : "navbar-brand text-white")"
@@ -88,13 +60,13 @@
             </div>
         </nav>
     </header>
-    <div class="container">
+    <div class="container" style=" margin:60px;">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
     </div>
 
-    <footer class="border-top footer text-muted"  style=" color: #fff background-color: #8e44ad;">
+    <footer class="border-top footer text-muted" style=" margin-top:60px; color: #fff; background-color: #8e44ad;">
         <div class="container" style="color: #fff;">
             &copy; 2023 - JunquillalUserSystem   
         </div>
