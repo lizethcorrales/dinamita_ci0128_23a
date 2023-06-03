@@ -27,7 +27,16 @@ namespace JunquillalUserSystem.Areas.Admin.Controllers
                 string hashLogin = empleadoLogin.HashearContrasena($"{empleadoLogin.Contrasena}{empleadoLogin.Sal}");
                 if (String.Equals(hashLogin, hashLocal, StringComparison.OrdinalIgnoreCase))
                 {
-                    return RedirectToAction("Index", "Home", new { area = "Admin" });
+                    if(String.Equals(empleado.Puesto, empleado2.Puesto, StringComparison.OrdinalIgnoreCase))
+                    {
+                        return RedirectToAction("Index", "Home", new { area = "Admin" });
+                    }
+                    else
+                    {
+                        ViewData["Mensaje"] = "El puesto es incorrecto";
+                        return View();
+                    }
+                    
                 } else
                 {
                     ViewData["Mensaje"] = "La contraseña es incorrecta";

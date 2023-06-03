@@ -36,7 +36,7 @@ namespace JunquillalUserSystem.Areas.Admin.Controllers.Handlers
                         empleado.Apellido1 = reader.GetString(reader.GetOrdinal("Apellido1"));
                         empleado.Contrasena = reader.GetString(reader.GetOrdinal("Contrasena"));
                         empleado.Sal = reader.GetString(reader.GetOrdinal("Salt"));
-
+                        empleado.Puesto = reader.GetString(reader.GetOrdinal("Puesto"));
                     }
                 }
             }

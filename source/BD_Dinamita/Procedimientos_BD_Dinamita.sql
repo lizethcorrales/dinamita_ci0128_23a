@@ -296,7 +296,7 @@ RETURNS TABLE
 AS
 RETURN
 (
-    SELECT T.Cedula, T.Nombre, T.Apellido1, T.Contrasena, T.Salt
+    SELECT T.Cedula, T.Nombre, T.Apellido1, T.Contrasena, T.Salt, T.Puesto
     FROM Trabajador as T
     WHERE T.Cedula = @Identificacion
 )
