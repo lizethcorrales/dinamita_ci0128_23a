@@ -31,17 +31,12 @@ namespace JunquillalUserSystem.Areas.Admin.Controllers.Handlers
             {
                 ultimoDia = form["fecha-salida"];
             }
-
-            System.Diagnostics.Debug.WriteLine(primerDia);
-            System.Diagnostics.Debug.WriteLine(ultimoDia);
-
-
             List<PrecioReservacionDesglose> precioReservacion = new List<PrecioReservacionDesglose>();
 
             string consultaBaseDatos = @"SELECT P.Nacionalidad, P.Poblacion, P.Actividad, SUM(P.Cantidad) AS Cantidad_Total, SUM(P.Cantidad*P.PrecioAlHacerReserva) AS Ventas_Totales
 	                                    FROM PrecioReservacion AS P JOIN Reservacion AS R ON P.IdentificadorReserva = R.IdentificadorReserva
 	                                    WHERE R.Estado != '2' AND R.PrimerDia >= '" +primerDia+ "' AND R.UltimoDia <= '"+ultimoDia+ "' AND P.Actividad = '"+actividad+"' GROUP BY  P.Nacionalidad, P.Poblacion, P.Actividad";
-            System.Diagnostics.Debug.WriteLine(consultaBaseDatos);
+            
             DataTable tablaDeReporte = CrearTablaConsulta(consultaBaseDatos);
                 foreach (DataRow columna in tablaDeReporte.Rows)
                 {
@@ -79,15 +74,15 @@ namespace JunquillalUserSystem.Areas.Admin.Controllers.Handlers
             var dateNow = "del_" + primerDia + "_a_" + ultimoDia;
             string archivo = "reporte_" + dateNow+".csv";
             string ruta = @"wwwroot/ReportesCSV" + archivo;
-            string separador = ",";
+            string separador = "\t";
             StringBuilder salida = new StringBuilder();
             List<string> lista = new List<string>();
 
-            string cadena = "Nacionalidad,Poblacion,Actividad,Cantidad,Ventas" + "\n";
+            string cadena = "Nacionalidad"+ separador+"Poblacion"+separador+"Actividad"+separador+"Cantidad"+separador+"Ventas" + "\n";
 
             foreach(PrecioReservacionDesglose item in precioReservacion)
             {
-                cadena += agregarDato(item) ;
+                cadena += agregarDato(item, separador) ;
                 cadena += "\n";
             }
             lista.Add(cadena);
@@ -95,14 +90,14 @@ namespace JunquillalUserSystem.Areas.Admin.Controllers.Handlers
             for (int i = 0; i < lista.Count; ++i)
             {
                 salida.AppendLine(string.Join(separador, lista[i]));
-                File.AppendAllText(ruta, salida.ToString());
+                File.AppendAllText(ruta, salida.ToString(), Encoding.Unicode);
             }
         }
 
-        public string agregarDato(PrecioReservacionDesglose precio)
+        public string agregarDato(PrecioReservacionDesglose precio, string separador)
         {
-            return (precio.Nacionalidad + "," + precio.Poblacion + "," + precio.Actividad
-                    + "," + precio.Cantidad + "," + precio.PrecioAlHacerReserva);
+            return (precio.Nacionalidad + separador + precio.Poblacion + separador + precio.Actividad
+                    + separador + precio.Cantidad + separador + precio.PrecioAlHacerReserva);
         }
 
     }
