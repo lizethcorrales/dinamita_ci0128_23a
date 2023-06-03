@@ -264,23 +264,81 @@ END;
 go
 CREATE FUNCTION ObtenerReservacionesPorFecha
 (
-    @Fecha VARCHAR(15)
+    @Fecha Date
 )
 RETURNS TABLE
 AS
 RETURN
 (
     SELECT R.IdentificadorReserva ,PrimerDia, UltimoDia , Hospedero.Nombre,
-	        Hospedero.Apellido1 , Hospedero.Apellido2 , Hospedero.Email 
-    FROM Reservacion as R
+	        Hospedero.Apellido1 , Hospedero.Apellido2 , Hospedero.Email , 
+			Hospedero.Identificacion , TN.NombrePais
+    FROM Reservacion as R 
 	join HospederoRealiza AS HR on R.IdentificadorReserva = HR.IdentificadorReserva
 	join Hospedero on HR.IdentificacionHospedero = Hospedero.Identificacion
-    WHERE PrimerDia <= @Fecha And @Fecha <= UltimoDia
+	left join TieneNacionalidad as TN on  R.IdentificadorReserva  = TN.IdentificadorReserva
+    WHERE PrimerDia <= @Fecha And @Fecha <= UltimoDia AND R.Estado != 2
 )
 go
 
 
-DECLARE @Fecha VARCHAR(10) = '2023-06-02' -- Fecha que deseas utilizar
+
+--Procedimiento que busca las reservaciones por identificador de reserva
+go
+CREATE FUNCTION ObtenerReservacionesPorIdentificador
+(
+    @Identificador Varchar(10)
+)
+RETURNS TABLE
+AS
+RETURN
+(
+    SELECT R.IdentificadorReserva ,PrimerDia, UltimoDia , Hospedero.Nombre,
+	        Hospedero.Apellido1 , Hospedero.Apellido2 , Hospedero.Email , 
+			Hospedero.Identificacion , TN.NombrePais
+    FROM Reservacion as R 
+	join HospederoRealiza AS HR on R.IdentificadorReserva = HR.IdentificadorReserva
+	join Hospedero on HR.IdentificacionHospedero = Hospedero.Identificacion
+	left join TieneNacionalidad as TN on  R.IdentificadorReserva  = TN.IdentificadorReserva
+    WHERE R.IdentificadorReserva = @Identificador AND R.Estado != 2
+)
+go
+
+
+--Procedimiento que retorna una lista de placas de acuerdo al identificador de
+-- reservacion que se pasa por parametro
+go
+CREATE FUNCTION ObtenerPlacasReservacion
+(
+    @Identificador VARCHAR(10)
+)
+RETURNS TABLE
+AS
+RETURN
+(
+    SELECT Placa.Placa
+    FROM Placa 
+    WHERE Placa.IdentificadorReserva = @Identificador 
+)
+go
+
+--Funcion almacenda que devuelve el tipo de poblacion , la cantidad 
+-- y el total que se pago en la reservacion que coincida con el identificador por parametro
+go
+CREATE FUNCTION ObtenerCantidaTipoPersona
+(
+    @Identificador VARCHAR(10)
+)
+RETURNS TABLE
+AS
+RETURN
+(
+    SELECT  Poblacion , Nacionalidad , Cantidad , PrecioAlHacerReserva 
+    FROM  PrecioReservacion
+    WHERE PrecioReservacion.IdentificadorReserva = @Identificador 
+)
+go
+
 
 SELECT *
 FROM dbo.ObtenerReservacionesPorFecha(@Fecha)
