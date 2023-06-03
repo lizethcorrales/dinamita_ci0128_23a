@@ -4,14 +4,15 @@ using JunquillalUserSystem.Handlers;
 using JunquillalUserSystem.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Primitives;
-//using static JunquillalUserSystemTest.CalculadorFechas;
+using static JunquillalUserSystemTest.CalculadorFechas;
+using System.Diagnostics;
 
-namespace JunquillalUserSystemTest
+namespace JunquillalUserSystemTest.Handlers
 {
     [TestClass]
-    public class TestHandlers
+    public class TestHandlerCamposDisponibles
     {
-        [TestMethod]        
+        [TestMethod]
         public void FechaConCeroReservas()
         {
             // Arrange
@@ -47,68 +48,32 @@ namespace JunquillalUserSystemTest
         {
             // Arrange
             HandlerCamposDisponibles handlerCamposDisponibles = new HandlerCamposDisponibles();
-            int maxDias = 0;
             bool bisiesto = false;
-            for (int anio = 2022; anio < 2023; ++anio)
+            int maxDias = 0;
+
+            // Act
+            for (int anio = 2020; anio < 2023; ++anio)
             {
                 bisiesto = anioBisiesto(anio);
-                for (int mes = 1; mes < 12; ++mes)
+                for (int mes = 1; mes <= 12; ++mes)
                 {
-                    maxDias = calcularDiasMes(mes);
+                    maxDias = obtenerDiasDeMes(mes, anio);
                     for (int dia = 1; dia < maxDias + 1; ++dia)
                     {
-                        DateOnly fecha = new(anio,mes, dia);
-                        // Act
+                        DateOnly fecha = new(anio, mes, dia);
                         int resultado = handlerCamposDisponibles.ReservasTotal(fecha.ToString("yyyy-MM-dd"));
                         // Assert
                         Assert.IsNotNull(resultado);
                     }
-
                 }
             }
         }
-
-        public bool anioBisiesto (int anio)
-        {
-            return anio % 4 != 0 ? false : true;
-        }
-
-        public bool esFebrero(int mes)
-        {
-            return mes == 2 ? true : false;
-        }
-
-        public int calcularDiasMes(int mes)
-        {
-            int diasDelMes = 31;
-            if (mes <= 7)
-            {
-                if (mes % 2 == 0)
-                {
-                    diasDelMes = 30;
-                }
-                if (esFebrero(mes))
-                {
-                    diasDelMes = 28;
-                }
-            } 
-            else
-            {
-                if (mes % 2 == 1)
-                {
-                    diasDelMes = 30;
-                }
-            }
-            return diasDelMes;
-        }
-
-
 
         [TestMethod]
         public void MetodoLlenarFechaHandlerCamposDisponibles()
         {
             //Arrange
-            HandlerCamposDisponibles handlerCamposDisponibles = new(); 
+            HandlerCamposDisponibles handlerCamposDisponibles = new();
             CamposDisponiblesModel modeloEsperado = new();
             CamposDisponiblesModel modeloAPrueba = null;
             string fechaDePrueba = "2023-06-02";
