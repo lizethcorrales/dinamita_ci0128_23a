@@ -2,6 +2,7 @@
 
 var calendarioRangoDias = document.getElementById("visitas");
 var calendarioDiario = document.getElementById("diario");
+var generar = document.getElementById("btn-siguiente");
 
 calendarioRangoDias.addEventListener("change", (e) => {
     if (calendarioRangoDias.checked) {
@@ -14,3 +15,5 @@ calendarioDiario.addEventListener("change", (e) => {
         divCalendarioRangoDias.hidden = true;
     }
 });
+
+

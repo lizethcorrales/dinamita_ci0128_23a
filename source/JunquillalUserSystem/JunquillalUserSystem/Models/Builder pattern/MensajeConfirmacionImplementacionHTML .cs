@@ -78,20 +78,20 @@ namespace JunquillalUserSystem.Models.Patron_Bridge
 
             for (int i = 0; i < desglose.Count; i++)
             {
-                if (desglose[i].poblacion == "Niño menor 6 años")
+                if (desglose[i].Poblacion == "Niño menor 6 años")
                 {
-                    sb.Append("<li> Niño menor de 6 años " + desglose[i].nacionalidad + ": " + desglose[i].cantidad + " Precio por persona: "
-                   + desglose[i].precioAlHacerReserva + "</li>");
+                    sb.Append("<li> Niño menor de 6 años " + desglose[i].Nacionalidad + ": " + desglose[i].Cantidad + " Precio por persona: "
+                   + desglose[i].PrecioAlHacerReserva + "</li>");
                 }
-                else if (desglose[i].poblacion == "Niño")
+                else if (desglose[i].Poblacion == "Niño")
                 {
-                    sb.Append("<li> Niño mayor de 6 años " + desglose[i].nacionalidad + ": " + desglose[i].cantidad + " Precio por persona: "
-                  + desglose[i].precioAlHacerReserva + "</li>");
+                    sb.Append("<li> Niño mayor de 6 años " + desglose[i].Nacionalidad + ": " + desglose[i].Cantidad + " Precio por persona: "
+                  + desglose[i].PrecioAlHacerReserva + "</li>");
                 }
                 else
                 {
-                    sb.Append("<li>" + desglose[i].poblacion + " " + desglose[i].nacionalidad + ": " + desglose[i].cantidad + " Precio por persona: "
-                    + desglose[i].precioAlHacerReserva + "</li>");
+                    sb.Append("<li>" + desglose[i].Poblacion + " " + desglose[i].Nacionalidad + ": " + desglose[i].Cantidad + " Precio por persona: "
+                    + desglose[i].PrecioAlHacerReserva + "</li>");
                 }
             }
 

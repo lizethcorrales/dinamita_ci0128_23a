@@ -245,12 +245,12 @@ namespace JunquillalUserSystem.Handlers
                 desglose.Add(
                 new PrecioReservacionDesglose
                 {
-                    identificadorReserva = Convert.ToString(columna["IdentificadorReserva"]),
-                    nacionalidad = Convert.ToString(columna["Nacionalidad"]),
-                    poblacion = Convert.ToString(columna["Poblacion"]),
-                    actividad = Convert.ToString(columna["Actividad"]),
-                    cantidad = Convert.ToInt32(columna["Cantidad"]),
-                    precioAlHacerReserva = Convert.ToDouble(columna["PrecioAlHacerReserva"])
+                    IdentificadorReserva = Convert.ToString(columna["IdentificadorReserva"]),
+                    Nacionalidad = Convert.ToString(columna["Nacionalidad"]),
+                    Poblacion = Convert.ToString(columna["Poblacion"]),
+                    Actividad = Convert.ToString(columna["Actividad"]),
+                    Cantidad = Convert.ToInt32(columna["Cantidad"]),
+                    PrecioAlHacerReserva = Convert.ToDouble(columna["PrecioAlHacerReserva"])
                 });
             }
             return desglose;

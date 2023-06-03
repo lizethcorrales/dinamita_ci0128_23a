@@ -1,4 +1,4 @@
-﻿
+﻿@model JunquillalUserSystem.Models.ReportesModel;
 @{
     ViewData["Title"] = "Reportes";
     Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
@@ -23,7 +23,8 @@
     </head>
 
     <body>
-
+    @using (Html.BeginForm("GenerarReporte", "Reportes", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
         <div>
             <h3>Bienvenido a la sección de reportes</h3>
             <h5>Elija el tipo de reporte</h5>
@@ -59,8 +60,10 @@
                                 window.location.reload();
                             }
                         </script>
-                        <button type="button" class="button1" id="btn-siguiente"> Generar </button>
 
+                        
+                    <button type="submit" method="POST" class="button1" id="btn-siguiente" asp-controller="Reportes" asp-action="GenerarReporte"> Generar </button>
+                    
                     </div>
                 </div>
 
@@ -164,6 +167,8 @@
                 await Html.RenderPartialAsync("_ValidationScriptsPartial");
             }
         }
+        }
     </body>
+
 
 </html>
