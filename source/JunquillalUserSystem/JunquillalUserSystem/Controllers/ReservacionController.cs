@@ -53,7 +53,7 @@ namespace JunquillalUserSystem.Controllers
         {
             HospederoModelo hospedero = new HospederoModelo();
             ReservacionModelo reservacion = JsonSerializer.Deserialize<ReservacionModelo>((string)TempData["Reservacion"]);
-            reservacion = reservacion.LlenarInformacionResarva(reservacion,Request.Form);
+            reservacion = reservacion.LlenarPlacasResarva(reservacion,Request.Form);
             hospedero = hospedero.LlenarHospedero(Request.Form);
             string confirmacion = metodosGenerales.CrearConfirmacionMensaje(reservacion,hospedero);
            // metodosGenerales.EnviarEmail(confirmacion,hospedero.Email);
