@@ -45,10 +45,12 @@ namespace JunquillalUserSystem.Handlers
             conexion.Open();
             comandoParaConsulta.ExecuteNonQuery();
             System.Diagnostics.Debug.Write(campos.Value);
+            conexion.Close();
             return (int)campos.Value;
         }
-        public CamposDisponiblesModel LlenarFecha(CamposDisponiblesModel campos, IFormCollection form)
+        public CamposDisponiblesModel LlenarFecha(IFormCollection form)
         {
+            CamposDisponiblesModel campos = new CamposDisponiblesModel();
             campos.fecha = form["fecha-entrada"];
             return campos;
         }
