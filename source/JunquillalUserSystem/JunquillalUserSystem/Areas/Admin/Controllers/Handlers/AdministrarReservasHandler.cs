@@ -94,7 +94,7 @@ namespace JunquillalUserSystem.Areas.Admin.Controllers.Handlers
 		}
 
 
-		private List<String> ObtenerPlacasReservacion(string IdentificadorReserva)
+		public List<String> ObtenerPlacasReservacion(string IdentificadorReserva)
 		{
 			List<string> placas = new List<string>();
 
@@ -124,7 +124,7 @@ namespace JunquillalUserSystem.Areas.Admin.Controllers.Handlers
 			return placas;
 		}
 
-		private Dictionary<string, Tuple<int, string>> ObtenerPersonasReservacion(string IdentificadorReserva)
+		public Dictionary<string, Tuple<int, string>> ObtenerPersonasReservacion(string IdentificadorReserva)
 		{
 			Dictionary<string, Tuple<int, string>> cantidadTipoPersona = new Dictionary<string, Tuple<int, string>>();
 
