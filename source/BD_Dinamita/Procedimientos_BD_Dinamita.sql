@@ -209,6 +209,7 @@ BEGIN
 END;
 
 
+
 --Este procedimiento encuentra los dias no disponibles al momento de elegir dias de entrada y salida en el calendario
 -- se toma en cuenta la cantidad de personas que registradas en la reservación
 CREATE PROCEDURE [dbo].[BuscarDiasNoDisponibles]
@@ -239,8 +240,8 @@ BEGIN
             
             WHERE r.PrimerDia <= @fecha AND r.UltimoDia >= @fecha
             GROUP BY r.PrimerDia , r.CantidadTotalPersonas
-            HAVING SUM(r.CantidadTotalPersonas) + @cantidadPersonas > 15
-                OR 15 - SUM(r.CantidadTotalPersonas) < @cantidadPersonas 
+            HAVING SUM(r.CantidadTotalPersonas) + @cantidadPersonas > 80
+                OR 80 - SUM(r.CantidadTotalPersonas) < @cantidadPersonas 
         )
         BEGIN
             INSERT INTO @diasNoDisponibles (fecha) VALUES (@fecha);
@@ -272,7 +273,7 @@ RETURN
 (
     SELECT R.IdentificadorReserva ,PrimerDia, UltimoDia , Hospedero.Nombre,
 	        Hospedero.Apellido1 , Hospedero.Apellido2 , Hospedero.Email , 
-			Hospedero.Identificacion , TN.NombrePais
+			Hospedero.Identificacion , TN.NombrePais ,  Hospedero.Telefono , R.Motivo
     FROM Reservacion as R 
 	join HospederoRealiza AS HR on R.IdentificadorReserva = HR.IdentificadorReserva
 	join Hospedero on HR.IdentificacionHospedero = Hospedero.Identificacion
@@ -280,7 +281,6 @@ RETURN
     WHERE PrimerDia <= @Fecha And @Fecha <= UltimoDia AND R.Estado != 2
 )
 go
-
 
 
 --Procedimiento que busca las reservaciones por identificador de reserva
@@ -295,7 +295,7 @@ RETURN
 (
     SELECT R.IdentificadorReserva ,PrimerDia, UltimoDia , Hospedero.Nombre,
 	        Hospedero.Apellido1 , Hospedero.Apellido2 , Hospedero.Email , 
-			Hospedero.Identificacion , TN.NombrePais
+			Hospedero.Identificacion , TN.NombrePais , Hospedero.Telefono , R.Motivo
     FROM Reservacion as R 
 	join HospederoRealiza AS HR on R.IdentificadorReserva = HR.IdentificadorReserva
 	join Hospedero on HR.IdentificacionHospedero = Hospedero.Identificacion
@@ -304,7 +304,7 @@ RETURN
 )
 go
 
-
+select * from TieneNacionalidad
 --Procedimiento que retorna una lista de placas de acuerdo al identificador de
 -- reservacion que se pasa por parametro
 go

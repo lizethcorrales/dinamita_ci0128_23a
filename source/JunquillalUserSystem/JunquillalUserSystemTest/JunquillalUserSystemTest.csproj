@@ -20,4 +20,8 @@
     <ProjectReference Include="..\JunquillalUserSystem\JunquillalUserSystem.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Admin\Handlers\" />
+  </ItemGroup>
+
 </Project>
