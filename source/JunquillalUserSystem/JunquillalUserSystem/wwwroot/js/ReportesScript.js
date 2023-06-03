@@ -3,6 +3,7 @@
 var calendarioRangoDias = document.getElementById("visitas");
 var calendarioDiario = document.getElementById("diario");
 var generar = document.getElementById("btn-siguiente");
+var botonLimpiar = document.getElementById("boton-limpiar");
 
 calendarioRangoDias.addEventListener("change", (e) => {
     if (calendarioRangoDias.checked) {
@@ -16,4 +17,11 @@ calendarioDiario.addEventListener("change", (e) => {
     }
 });
 
+botonLimpiar.addEventListener("click", (e) => {
+    limpiar();
+});
+
+function limpiar() {
+    window.location.reload();
+}
 

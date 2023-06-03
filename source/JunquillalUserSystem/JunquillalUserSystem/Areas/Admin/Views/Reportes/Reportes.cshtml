@@ -25,6 +25,12 @@
     <body>
     @using (Html.BeginForm("GenerarReporte", "Reportes", FormMethod.Post, new { enctype = "multipart/form-data" }))
     {
+        @if (!string.IsNullOrEmpty(TempData["Mensaje"] as string))
+        {
+            <div class="alert alert-info">
+                @TempData["Mensaje"]
+            </div>
+        }
         <div>
             <h3>Bienvenido a la sección de reportes</h3>
             <h5>Elija el tipo de reporte</h5>
@@ -54,15 +60,8 @@
                     <br>
                     <div id="error"></div>
                     <div class="centrar1">
-                        <button class="button2" type="button" onclick="limpiar()"> Limpiar </button>
-                        <script>
-                            function limpiar () {
-                                window.location.reload();
-                            }
-                        </script>
-
-                        
-                    <button type="submit" method="POST" class="button1" id="btn-siguiente" asp-controller="Reportes" asp-action="GenerarReporte"> Generar </button>
+                        <button class="button2" id="boton-limpiar" type="button" onclick="limpiar()"> Limpiar </button>  
+                        <button type="submit" method="POST" class="button1" id="btn-siguiente" asp-controller="Reportes" asp-action="GenerarReporte"> Generar </button>
                     
                     </div>
                 </div>

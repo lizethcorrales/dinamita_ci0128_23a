@@ -21,7 +21,7 @@ namespace JunquillalUserSystem.Areas.Admin.Controllers.Handlers
         {
             string primerDia = form["fecha-entrada"];
             string ultimoDia = "";
-            
+
             var tipoReporte = form["reportes"];
 
             if (tipoReporte == "diario")
@@ -35,11 +35,11 @@ namespace JunquillalUserSystem.Areas.Admin.Controllers.Handlers
 
             string consultaBaseDatos = @"SELECT P.Nacionalidad, P.Poblacion, P.Actividad, SUM(P.Cantidad) AS Cantidad_Total, SUM(P.Cantidad*P.PrecioAlHacerReserva) AS Ventas_Totales
 	                                    FROM PrecioReservacion AS P JOIN Reservacion AS R ON P.IdentificadorReserva = R.IdentificadorReserva
-	                                    WHERE R.Estado != '2' AND R.PrimerDia >= '" +primerDia+ "' AND R.UltimoDia <= '"+ultimoDia+ "' AND P.Actividad = '"+actividad+"' GROUP BY  P.Nacionalidad, P.Poblacion, P.Actividad";
-            
+	                                    WHERE R.Estado != '2' AND R.PrimerDia >= '" + primerDia + "' AND R.UltimoDia <= '" + ultimoDia + "' AND P.Actividad = '" + actividad + "' GROUP BY  P.Nacionalidad, P.Poblacion, P.Actividad";
+
             DataTable tablaDeReporte = CrearTablaConsulta(consultaBaseDatos);
-                foreach (DataRow columna in tablaDeReporte.Rows)
-                {
+            foreach (DataRow columna in tablaDeReporte.Rows)
+            {
                 precioReservacion.Add(
                 new PrecioReservacionDesglose
                 {
@@ -49,13 +49,13 @@ namespace JunquillalUserSystem.Areas.Admin.Controllers.Handlers
                     Cantidad = Convert.ToInt32(columna["Cantidad_Total"]),
                     PrecioAlHacerReserva = Convert.ToDouble(columna["Ventas_Totales"])
                 });
-                }
+            }
 
             return precioReservacion;
         }
 
 
-        public void escribirCSV(List<PrecioReservacionDesglose> precioReservacion, IFormCollection form)
+        public bool escribirCSV(List<PrecioReservacionDesglose> precioReservacion, IFormCollection form)
         {
             string primerDia = form["fecha-entrada"];
             string ultimoDia = "";
@@ -72,25 +72,29 @@ namespace JunquillalUserSystem.Areas.Admin.Controllers.Handlers
             }
 
             var dateNow = "del_" + primerDia + "_a_" + ultimoDia;
-            string archivo = "reporte_" + dateNow+".csv";
+            string archivo = "reporte_" + dateNow + ".csv";
             string ruta = @"wwwroot/ReportesCSV" + archivo;
             string separador = "\t";
             StringBuilder salida = new StringBuilder();
             List<string> lista = new List<string>();
 
-            string cadena = "Nacionalidad"+ separador+"Poblacion"+separador+"Actividad"+separador+"Cantidad"+separador+"Ventas" + "\n";
+            string cadena = "Nacionalidad" + separador + "Poblacion" + separador + "Actividad" + separador + "Cantidad" + separador + "Ventas" + "\n";
 
-            foreach(PrecioReservacionDesglose item in precioReservacion)
+            foreach (PrecioReservacionDesglose item in precioReservacion)
             {
-                cadena += agregarDato(item, separador) ;
+                cadena += agregarDato(item, separador);
                 cadena += "\n";
             }
             lista.Add(cadena);
-
-            for (int i = 0; i < lista.Count; ++i)
-            {
-                salida.AppendLine(string.Join(separador, lista[i]));
-                File.AppendAllText(ruta, salida.ToString(), Encoding.Unicode);
+            try { 
+                for (int i = 0; i < lista.Count; ++i)
+                {
+                    salida.AppendLine(string.Join(separador, lista[i]));
+                    File.AppendAllText(ruta, salida.ToString(), Encoding.Unicode);
+                }
+                return true;
+            } catch (Exception e) {
+                return false;
             }
         }
 
