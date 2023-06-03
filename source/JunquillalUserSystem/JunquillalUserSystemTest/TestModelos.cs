@@ -1,6 +1,6 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using JunquillalUserSystem.Controllers;
 using JunquillalUserSystem.Models;
+using Microsoft.AspNetCore.Mvc;
 
 namespace JunquillalUserSystemTest
 {
@@ -16,6 +16,6 @@ namespace JunquillalUserSystemTest
 
             //Act & Assert
             Assert.ThrowsException<OverflowException>(() => metodosGeneralesModel.crearIdentificador(valorNegativo));
-        }
+        }        
     }
 }
