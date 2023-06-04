@@ -23,11 +23,13 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="@(ViewContext.RouteData.Values["Action"].ToString() == "Index" ? "navbar-brand text-black " : "navbar-brand text-white")" href="@Url.Action("Index","Home" , new { area = "Admin" })">Inicio</a>
+                            <a class="@(ViewContext.RouteData.Values["Action"].ToString() == "Index" ? "navbar-brand text-black " : "navbar-brand text-white")" 
+                                       href="@Url.Action("Index","Home" , new { area = "Admin" })">Inicio</a>
                         </li>
 
-                        <li class="nav-item submenu">
-                            <a class="@(ViewContext.RouteData.Values["Controller"].ToString() == "Reservacion" ? "navbar-brand text-black " : "navbar-brand text-white")" href="#">Reservar <i class="fas fa-chevron-down"></i></a>
+                        <li  class="nav-item submenu">
+                            <a class="@(ViewContext.RouteData.Values["Action"].ToString() == "FormularioCantidadPersonas" ? "navbar-brand text-black " : "navbar-brand text-white")"
+                                       href="#">Reservar <i class="fas fa-chevron-down"></i></a>
                             <ul class="nav-item submenu-content">
                                 <li><a href="@Url.Action("FormularioCantidadPersonas","Reservacion" , new { area = "" })">Camping</a></li>
                                 <li><a href="@Url.Action("FormularioCantidadPersonas","Visita" , new { area = "" })">Picnic</a></li>
@@ -35,24 +37,32 @@
                         </li>
 
                         <li class="nav-item">
-                            <a class="@(ViewContext.RouteData.Values["Controller"].ToString() == "CamposDisponibles" ? "navbar-brand text-black " : "navbar-brand text-white")" href="@Url.Action("CamposDisponibles","CamposDisponibles" , new { area = "" })">Campos Disponibles</a>
+                            <a class="@(ViewContext.RouteData.Values["Controller"].ToString() == "CamposDisponibles" ? "navbar-brand text-black " : "navbar-brand text-white")"
+                                       href="@Url.Action("CamposDisponibles","CamposDisponibles" , new { area = "" })">Campos Disponibles</a>
                         </li>
 
-                        <li class="nav-item">
-                            <a class="@(ViewContext.RouteData.Values["Controller"].ToString() == "AdministrarReservas" ? "navbar-brand text-black " : "navbar-brand text-white")" href="@Url.Action("Reservas","AdministrarReservas" , new { area = "Admin" })">Administrar Reservas</a>
+                         <li class="nav-item submenu">
+                            <a class="@(ViewContext.RouteData.Values["Controller"].ToString() == "AdministrarReservas" || ViewContext.RouteData.Values["Controller"].ToString() == "Tarifas"
+                                       ? "navbar-brand text-black " : "navbar-brand text-white")"  href="#">Administrar <i class="fas fa-chevron-down"></i></a>
+                             <ul class="nav-item submenu-content">
+                                  <li><a href="@Url.Action("Reservas","AdministrarReservas" , new { area = "Admin" })">Reservas</a></li>
+                                  <li><a href="@Url.Action("Tarifas","Tarifas" , new { area = "Admin" })">Tarifas</a></li>
+                              </ul>
+
                         </li>
+
                     </ul>
                 </div>
             </div>
         </nav>
     </header>
-    <div class="container">
+    <div class="container" style=" margin:60px;">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
     </div>
 
-    <footer class="border-top footer text-muted"  style=" color: #fff background-color: #8e44ad;">
+    <footer class="border-top footer text-muted" style=" margin-top:60px; color: #fff; background-color: #8e44ad;">
         <div class="container" style="color: #fff;">
             &copy; 2023 - JunquillalUserSystem   
         </div>

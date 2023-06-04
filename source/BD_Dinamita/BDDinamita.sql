@@ -350,3 +350,24 @@ CREATE TABLE Trabajador (
 
 ALTER TABLE Trabajador
 ADD Salt varchar(255);
+);
+
+ALTER TABLE Hospedero
+ADD Telefono VARCHAR(20);
+
+ALTER TABLE Reservacion
+ADD Motivo VARCHAR(30);
+
+CREATE TABLE Provincia(
+NombreProvincia VARCHAR(20),
+PRIMARY KEY (NombreProvincia)
+)
+
+CREATE TABLE ProvinciaReserva (
+IdentificadorReserva VARCHAR(10),
+NombreProvincia VARCHAR(20),
+Cantidad SMALLINT,
+PRIMARY KEY(IdentificadorReserva, NombreProvincia),
+FOREIGN KEY(IdentificadorReserva) REFERENCES Reservacion(IdentificadorReserva),
+FOREIGN KEY(NombreProvincia) REFERENCES Provincia(NombreProvincia)
+)

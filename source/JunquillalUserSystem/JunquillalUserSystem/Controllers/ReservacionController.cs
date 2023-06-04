@@ -1,18 +1,35 @@
 ﻿using JunquillalUserSystem.Models;
 using Microsoft.AspNetCore.Mvc;
-using System.Diagnostics;
-using System.Numerics;
 using System.Text.Json;
 using JunquillalUserSystem.Handlers;
 using System.Reflection.Metadata;
 using Microsoft.AspNetCore.Html;
+using JunquillalUserSystem.Models.Dependency_Injection;
+using JunquillalUserSystem.Models.Patron_Bridge;
 
 namespace JunquillalUserSystem.Controllers
 {
     public class ReservacionController : Controller
     {
-        private ReservacionHandler reservacionHandler = new ReservacionHandler();
-        private MetodosGeneralesModel metodosGenerales = new MetodosGeneralesModel();
+        private CampingHandler reservacionHandler = new CampingHandler();
+        
+
+        // Dependency Injection de servicio email
+        private readonly IEmailService _emailService;
+
+        // Dependency Injection de servicio mensaje htm
+        private readonly MensajeConfirmacionImplementacionHTML _mensajeConfirmacionImplementacion;
+
+
+        /*
+         *  el constructor con parámetro en el controlador se utiliza para permitir la 
+         *  inyección de dependencias del servicio requerido. 
+         */
+        public ReservacionController(IEmailService emailService , IMensajeConfirmacionImplementacion mensajeConfirmacionImplementacion )
+        {
+            _emailService = emailService;
+            _mensajeConfirmacionImplementacion = mensajeConfirmacionImplementacion as MensajeConfirmacionImplementacionHTML;
+        }
         public IActionResult FormularioCantidadPersonas()
         {
             ViewBag.TipoTurista = "reserva";
@@ -28,7 +45,7 @@ namespace JunquillalUserSystem.Controllers
             reservacion = reservacion.LlenarCantidadPersonas(reservacion,Request.Form);
             TempData["Reservacion"] = JsonSerializer.Serialize(reservacion);
 
-            var reservedDates = reservacionHandler.BuscarDiasNoDisponibles(reservacion);
+            var reservedDates = reservacionHandler.BuscarDiasNoDisponiblesReserva(reservacion);
             ViewBag.reservedDates = reservedDates;
             ViewData["IsAdminArea"] = TempData["IsAdminArea"];
             TempData["IsAdminArea"] = TempData["IsAdminArea"];
@@ -53,12 +70,14 @@ namespace JunquillalUserSystem.Controllers
         {
             HospederoModelo hospedero = new HospederoModelo();
             ReservacionModelo reservacion = JsonSerializer.Deserialize<ReservacionModelo>((string)TempData["Reservacion"]);
-            reservacion = reservacion.LlenarPlacasResarva(reservacion,Request.Form);
+            reservacion.Identificador = reservacionHandler.crearIdentificador(10);
+            reservacion = reservacion.LlenarInformacionResarva(reservacion,Request.Form);
             hospedero = hospedero.LlenarHospedero(Request.Form);
-            string confirmacion = metodosGenerales.CrearConfirmacionMensaje(reservacion,hospedero);
-           // metodosGenerales.EnviarEmail(confirmacion,hospedero.Email);
+            reservacionHandler.InsertarEnBaseDatos(hospedero, reservacion);
+            List<PrecioReservacionDesglose> desglose = reservacionHandler.obtenerDesgloseReservaciones(reservacion.Identificador);
+            string confirmacion = _mensajeConfirmacionImplementacion.CrearConfirmacionMensaje(reservacion, hospedero, desglose);
             ViewBag.mensaje = new HtmlString(confirmacion);
-            reservacionHandler.InsertarEnBaseDatos(hospedero,reservacion);
+            _emailService.EnviarEmail(confirmacion, hospedero.Email);
             ViewBag.costoTotal = reservacionHandler.CostoTotal(reservacion.Identificador).ToString();
 
 

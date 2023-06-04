@@ -1,0 +1,31 @@
+﻿
+@model JunquillalUserSystem.Models.TarifaModelo;
+
+@{
+    ViewBag.Title = "Editar Tarifa";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+
+}
+<html>
+<head>
+</head>
+<body>
+    @using (Html.BeginForm("editarTarifa", "tarifas", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        @Html.AntiForgeryToken()
+        <h1>Formulario de edición de películas</h1>
+        @Html.HiddenFor(model=>model.Nacionalidad) 
+        @Html.HiddenFor(model=>model.Poblacion)
+        @Html.HiddenFor(model=>model.Actividad)
+        <div class="form-horizontal">
+            <div class="form-group">
+                @Html.LabelFor(model => model.Precio)
+                @Html.TextBoxFor(model => model.Precio, new { @class = "form-control"})
+                @Html.ValidationMessageFor(model => model.Precio, "", new {@class = "text-danger"})
+            </div>
+            <input type="submit" class="btn btn-success" value="Aplicar Cambios" />
+        </div>
+    }
+</body>
+
+</html>

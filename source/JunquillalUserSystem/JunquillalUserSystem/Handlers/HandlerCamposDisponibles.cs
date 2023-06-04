@@ -18,16 +18,10 @@ using Microsoft.AspNetCore.Builder;
 
 namespace JunquillalUserSystem.Handlers
 {
-    public class HandlerCamposDisponibles
+    public class HandlerCamposDisponibles : HandlerBase
     {
-        private SqlConnection conexion;
-        private string rutaConexion;
         public HandlerCamposDisponibles()
         {
-            var builder = WebApplication.CreateBuilder();
-            rutaConexion =
-            builder.Configuration.GetConnectionString("ContextoJunquillal");
-            conexion = new SqlConnection(rutaConexion);
         }
         
         public int ReservasTotal(string fecha) { 
