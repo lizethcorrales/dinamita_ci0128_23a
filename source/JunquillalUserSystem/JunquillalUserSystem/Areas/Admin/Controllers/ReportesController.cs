@@ -14,16 +14,18 @@ namespace JunquillalUserSystem.Areas.Admin.Controllers
         {
             ReportesHandler reportesHandler = new ReportesHandler();
 
-            System.Diagnostics.Debug.WriteLine("aqui paso");
             List<PrecioReservacionDesglose> listaCamping = reportesHandler.obtenerReporte(Request.Form, "Camping");
             List<PrecioReservacionDesglose> listaPicnic = reportesHandler.obtenerReporte(Request.Form, "Picnic");
 
-            listaCamping.AddRange(listaPicnic);
+            listaCamping.AddRange(listaPicnic);            
 
-            System.Diagnostics.Debug.WriteLine(listaCamping.Count);
-            
-
-            reportesHandler.escribirCSV(listaCamping, Request.Form);
+            bool exito = reportesHandler.escribirCSV(listaCamping, Request.Form);
+            if (exito)
+            {
+                TempData["Mensaje"] = "El reporte fue creado exitosamente";
+            } else {
+                TempData["Mensaje"] = "Error: hubo un problema al intentar crear el archivo";
+            }
             return RedirectToAction("Reportes", "Reportes");
         }
 
