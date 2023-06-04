@@ -31,11 +31,11 @@
 		public ReservacionModelo(string tipo)
 		{
             tipoPersona = new Dictionary<string, Tuple<int, String>>();
-            this.Tipo = tipo;
+            this.TipoActividad = tipo;
 			cantTipoPersona = new List<int>();
 			placasVehiculos = new List<string>();
-
-		}
+            hospedero = new HospederoModelo();
+        }
 
 		/*
         * Obtiene la informacion importante del form y la guarda en el modelo reserva
