@@ -75,15 +75,16 @@
                                 <h6 class="modal-info">Identificación: @item.hospedero.Identificacion</h6>
                                 <h6 class="modal-info">País: @item.hospedero.Nacionalidad</h6>
                                 <h6 class="modal-info">Email: @item.hospedero.Email</h6>
+                                 <h6 class="modal-info">Teléfono: @item.hospedero.Telefono</h6>
                                 <br>
                                 
                                 <h6 class="modal-info"></h6>
                                 <h4 >Detalles de la reserva:</h4><br>
                                 <h6 class="modal-info">Tu código de reservación es: @item.Identificador</h6>
                                 <h6 class="modal-info">Fecha de ingreso: @item.PrimerDia</h6>
-
-              
                                 <h6 class="modal-info">Fecha de salida: @item.UltimoDia</h6>
+                                <h6 class="modal-info">Motivo de la vista : @item.TipoActividad</h6>
+
                                 
 
                                     <h6 class="modal-info">Cantidad de personas:@item.tipoPersona.Sum(pair => pair.Value.Item1)</h6>

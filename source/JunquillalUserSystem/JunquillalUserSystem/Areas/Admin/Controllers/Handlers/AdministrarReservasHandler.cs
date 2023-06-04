@@ -81,18 +81,20 @@ namespace JunquillalUserSystem.Areas.Admin.Controllers.Handlers
 				reservacion.hospedero.Email = reader.GetString(reader.GetOrdinal("Email"));
 				reservacion.hospedero.Identificacion = reader.GetString(reader.GetOrdinal("Identificacion"));
 				//reservacion.hospedero.Nacionalidad = reader.GetString(reader.GetOrdinal("NombrePais"));
+                //reservacion.hospedero.Telefono= reader.GetString(reader.GetOrdinal("Telefono"));
+                //reservacion.actividadVisita = reader.GetString(reader.GetOrdinal("Motivo"));
 
 
 
 
-				reservas.Add(reservacion);
+                reservas.Add(reservacion);
 			}
 
 			return reservas;
 		}
 
 
-		private List<String> ObtenerPlacasReservacion(string IdentificadorReserva)
+		public List<String> ObtenerPlacasReservacion(string IdentificadorReserva)
 		{
 			List<string> placas = new List<string>();
 
@@ -122,7 +124,7 @@ namespace JunquillalUserSystem.Areas.Admin.Controllers.Handlers
 			return placas;
 		}
 
-		private Dictionary<string, Tuple<int, string>> ObtenerPersonasReservacion(string IdentificadorReserva)
+		public Dictionary<string, Tuple<int, string>> ObtenerPersonasReservacion(string IdentificadorReserva)
 		{
 			Dictionary<string, Tuple<int, string>> cantidadTipoPersona = new Dictionary<string, Tuple<int, string>>();
 

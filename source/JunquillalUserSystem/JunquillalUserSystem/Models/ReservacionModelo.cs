@@ -30,16 +30,17 @@
 
 		public ReservacionModelo(string tipo)
 		{
+            tipoPersona = new Dictionary<string, Tuple<int, String>>();
             this.TipoActividad = tipo;
 			cantTipoPersona = new List<int>();
 			placasVehiculos = new List<string>();
-
-		}
+            hospedero = new HospederoModelo();
+        }
 
 		/*
         * Obtiene la informacion importante del form y la guarda en el modelo reserva
         */
-		public ReservacionModelo LlenarInformacionResarva(ReservacionModelo reservacion, IFormCollection form)
+		public ReservacionModelo LlenarPlacasResarva(ReservacionModelo reservacion, IFormCollection form)
         {
 
             if (form["placa1"] != "")

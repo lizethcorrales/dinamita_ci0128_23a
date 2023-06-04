@@ -337,6 +337,21 @@ FOREIGN KEY (IdentificadorVisita, FechaEntrada) REFERENCES Visita(Identificacion
 FOREIGN KEY (NombrePais) REFERENCES Pais(Nombre)
 );
 
+CREATE TABLE Trabajador (
+	Cedula varchar(10) NOT Null,
+	Nombre varchar(50),
+	Apellido1 varchar(50),
+	Apellido2 varchar(50),
+	Correo varchar(80),
+	Puesto varchar(20),
+	Contrasena varchar(255),
+	PRIMARY KEY (Cedula)
+)
+
+ALTER TABLE Trabajador
+ADD Salt varchar(255);
+);
+
 ALTER TABLE Hospedero
 ADD Telefono VARCHAR(20);
 

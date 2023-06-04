@@ -71,7 +71,7 @@ namespace JunquillalUserSystem.Controllers
             HospederoModelo hospedero = new HospederoModelo();
             ReservacionModelo reservacion = JsonSerializer.Deserialize<ReservacionModelo>((string)TempData["Reservacion"]);
             reservacion.Identificador = reservacionHandler.crearIdentificador(10);
-            reservacion = reservacion.LlenarInformacionResarva(reservacion,Request.Form);
+            reservacion = reservacion.LlenarPlacasResarva(reservacion,Request.Form);
             hospedero = hospedero.LlenarHospedero(Request.Form);
             reservacionHandler.InsertarEnBaseDatos(hospedero, reservacion);
             List<PrecioReservacionDesglose> desglose = reservacionHandler.obtenerDesgloseReservaciones(reservacion.Identificador);
