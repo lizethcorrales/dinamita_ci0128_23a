@@ -29,17 +29,31 @@ namespace JunquillalUserSystem.Handlers
 
         public void actualizarPrecioTarifas(TarifaModelo tarifa)
         {
-            string consulta = "actualizarPrecioTarifa";
-            SqlCommand comandoParaConsulta = new SqlCommand(consulta, conexion);
-            comandoParaConsulta.CommandType = CommandType.StoredProcedure;
-            comandoParaConsulta.Parameters.AddWithValue("@Nacionalidad", tarifa.Nacionalidad);
-            comandoParaConsulta.Parameters.AddWithValue("@Poblacion", tarifa.Poblacion);
-            comandoParaConsulta.Parameters.AddWithValue("@Actividad", tarifa.Actividad);
-            comandoParaConsulta.Parameters.AddWithValue("@Precio", tarifa.Precio);
+            if (TarifaNoNula(tarifa))
+            {
+                string consulta = "actualizarPrecioTarifa";
+                SqlCommand comandoParaConsulta = new SqlCommand(consulta, conexion);
+                try
+                {
+                    comandoParaConsulta.CommandType = CommandType.StoredProcedure;
+                    comandoParaConsulta.Parameters.AddWithValue("@Nacionalidad", tarifa.Nacionalidad);
+                    comandoParaConsulta.Parameters.AddWithValue("@Poblacion", tarifa.Poblacion);
+                    comandoParaConsulta.Parameters.AddWithValue("@Actividad", tarifa.Actividad);
+                    comandoParaConsulta.Parameters.AddWithValue("@Precio", tarifa.Precio);
+                    conexion.Open();
+                    comandoParaConsulta.ExecuteNonQuery();
+                    conexion.Close();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Error al ejecutar la consulta: " + ex.Message);
+                }
+            }
+        }
 
-            conexion.Open();
-            comandoParaConsulta.ExecuteNonQuery();
-            conexion.Close();
+        public bool TarifaNoNula(TarifaModelo tarifa)
+        {
+            return tarifa == null ? false : true;
         }
     }
 }
