@@ -147,9 +147,9 @@ namespace JunquillalUserSystemTest.Models
              Assert.IsNotNull(reserva2.tipoPersona);
              Assert.IsNotNull(reserva2.cantTipoPersona);
              Assert.IsNotNull(reserva2.placasVehiculos);
-             Assert.IsNull(reserva2.hospedero);
+        
 
-             Assert.AreEqual(tipo, reserva2.Tipo);
+             Assert.AreEqual(tipo, reserva2.TipoActividad);
              Assert.AreEqual(0, reserva2.cantTipoPersona.Count);
              Assert.AreEqual(0, reserva2.placasVehiculos.Count);
             }
