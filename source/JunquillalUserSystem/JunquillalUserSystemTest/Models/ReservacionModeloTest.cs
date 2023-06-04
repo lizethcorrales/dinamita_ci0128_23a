@@ -1,4 +1,8 @@
-﻿using JunquillalUserSystem.Models;
+﻿/*
+ * Pruebas unitarias creadas porAndrés Matarrita C04668
+ */
+
+using JunquillalUserSystem.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Primitives;
@@ -147,7 +151,7 @@ namespace JunquillalUserSystemTest.Models
              Assert.IsNotNull(reserva2.tipoPersona);
              Assert.IsNotNull(reserva2.cantTipoPersona);
              Assert.IsNotNull(reserva2.placasVehiculos);
-        
+             Assert.IsNotNull(reserva2.hospedero);
 
              Assert.AreEqual(tipo, reserva2.TipoActividad);
              Assert.AreEqual(0, reserva2.cantTipoPersona.Count);

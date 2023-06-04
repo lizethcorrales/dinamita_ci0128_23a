@@ -85,8 +85,7 @@ namespace JunquillalUserSystem.Handlers
             insertarHospedero(hospedero);
             //obtiene la cantidad total de personas en la reserva 
             int cantidadPersonas = sacarCantidadPersonasTotal(reservacion);
-           // int cantidadTotal = reservacion.cantTipoPersona[0] + reservacion.cantTipoPersona[1] +
-                //reservacion.cantTipoPersona[2] + reservacion.cantTipoPersona[3];
+
             //llama al método para insertar una reserva
             insertarReserva(reservacion, hospedero, "0");
 
