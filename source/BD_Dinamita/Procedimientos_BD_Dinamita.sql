@@ -1,17 +1,17 @@
 --PROCEDIMIENTOS DE LA BASE DE DATOS
 -- Este procedimiento devuelve el costo total de la reserva a partir de la información contenida en la tabla PrecioReservacion.
 CREATE PROCEDURE calcularCostoTotalReserva (
-     @identificador_Reserva AS VARCHAR(10),
-     @costo_Total AS DOUBLE PRECISION OUTPUT
+               @identificador_Reserva AS VARCHAR(10),
+               @costo_Total AS DOUBLE PRECISION OUTPUT
 ) AS 
-BEGIN
-    -- Se obtiene el producto de la cantidad de personas (de cierta población:niño/adulto, nacional/extranjero) por su tarifa, posteriormente es sumado para obtener el precio total de la reserva.
-    SELECT @costo_Total = SUM(PrecioReservacion.Cantidad * PrecioReservacion.PrecioActual)
-    FROM PrecioReservacion
-    WHERE PrecioReservacion.IdentificadorReserva = @identificador_Reserva
-    GROUP BY PrecioReservacion.IdentificadorReserva;
-END;
+BEGIN 
+			SET @costo_Total = 0;
+            SELECT @costo_Total = SUM(PrecioReservacion.Cantidad * PrecioReservacion.PrecioAlHacerReserva)
+            FROM PrecioReservacion JOIN Reservacion ON PrecioReservacion.IdentificadorReserva = Reservacion.IdentificadorReserva
+			WHERE PrecioReservacion.IdentificadorReserva = @identificador_Reserva AND Reservacion.Estado != '2'
+            GROUP BY PrecioReservacion.IdentificadorReserva;
 
+END;
 
 -- Este procedimiento agrega los datos del hospedero a la tabla Hospedero, según los datos recibidos por parámetro.
 GO
@@ -414,7 +414,6 @@ BEGIN
 		END;
 END;
 
-
 GO
 CREATE PROCEDURE insertarTieneNacionalidad(
 	@IdentificadorReserva AS VARCHAR(10),
@@ -433,8 +432,15 @@ SELECT Pais.Nombre
 		VALUES(@NombrePais);
 		END;
 
-	INSERT INTO TieneNacionalidad
-	VALUES (@IdentificadorReserva, @NombrePais, @cantidad);
+	SELECT *
+	FROM TieneNacionalidad
+	WHERE TieneNacionalidad.IdentificadorReserva = @IdentificadorReserva AND TieneNacionalidad.NombrePais = @NombrePais
+
+	IF @@ROWCOUNT <= 0 
+	BEGIN
+		INSERT INTO TieneNacionalidad
+		VALUES (@IdentificadorReserva, @NombrePais, @cantidad);
+	END
 END
 
 GO
@@ -629,3 +635,24 @@ DECLARE @Identificacion  VARCHAR(10) = '211118888'
 
 SELECT *
 FROM dbo.ObtenerCredencialesTrabajador(@Identificacion)
+
+
+DECLARE @costoTotal AS DOUBLE PRECISION;
+EXEC calcularCostoTotalReserva 'yxl4cO4lsr', @costo_Total = @costoTotal OUTPUT;
+select @costoTotal;
+
+SELECT * FROM Hospedero WHERE Hospedero.Identificacion = '308970567';
+select * from Reservacion Where Reservacion.IdentificadorReserva = '13t2tdxZ6q';
+delete Hospedero
+where Hospedero.Identificacion = '308970567';
+
+Delete Pais 
+where Pais.Nombre = 'Francia';
+
+delete TieneNacionalidad 
+where TieneNacionalidad.IdentificadorReserva = '3463933048' AND TieneNacionalidad.NombrePais= 'Francia'
+
+delete TieneNacionalidad 
+where TieneNacionalidad.IdentificadorReserva = '2595141556' AND TieneNacionalidad.NombrePais= 'Estados Unidos'
+delete Reservacion
+where Reservacion.IdentificadorReserva = 'JCzZsDEp37';
