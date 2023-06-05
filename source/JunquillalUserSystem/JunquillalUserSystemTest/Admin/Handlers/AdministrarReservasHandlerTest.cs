@@ -1,5 +1,5 @@
 ﻿/*
- * Archivo creado por Andrés Matarrita C04668
+ * Pruebas unitarias creadas por Andrés Matarrita C04668
  */
 
 using JunquillalUserSystem.Areas.Admin.Controllers.Handlers;
