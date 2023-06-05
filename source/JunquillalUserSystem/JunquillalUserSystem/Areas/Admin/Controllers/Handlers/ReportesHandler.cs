@@ -79,11 +79,16 @@ namespace JunquillalUserSystem.Areas.Admin.Controllers.Handlers
             List<string> lista = new List<string>();
 
             string cadena = "Nacionalidad" + separador + "Poblacion" + separador + "Actividad" + separador + "Cantidad" + separador + "Ventas" + "\n";
-
-            foreach (PrecioReservacionDesglose item in precioReservacion)
+            try
             {
-                cadena += agregarDato(item, separador);
-                cadena += "\n";
+                foreach (PrecioReservacionDesglose item in precioReservacion)
+                {
+                    cadena += agregarDato(item, separador);
+                    cadena += "\n";
+                }
+            } catch (NullReferenceException ex) 
+            {
+                return false;
             }
             lista.Add(cadena);
             try { 
@@ -100,8 +105,14 @@ namespace JunquillalUserSystem.Areas.Admin.Controllers.Handlers
 
         public string agregarDato(PrecioReservacionDesglose precio, string separador)
         {
-            return (precio.Nacionalidad + separador + precio.Poblacion + separador + precio.Actividad
+            try
+            {
+                return (precio.Nacionalidad + separador + precio.Poblacion + separador + precio.Actividad
                     + separador + precio.Cantidad + separador + precio.PrecioAlHacerReserva);
+            } catch (NullReferenceException ex)
+            {
+                return null;
+            }            
         }
 
     }

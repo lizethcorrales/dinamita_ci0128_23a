@@ -1,4 +1,8 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿/*
+ * Archivo creado por Lizeth Corrales C02428
+ */
+
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.AspNetCore.Mvc;
 using JunquillalUserSystem.Handlers;
 using JunquillalUserSystem.Models;
@@ -29,12 +33,12 @@ namespace JunquillalUserSystemTest.Handlers
         }
 
         [TestMethod]
-        public void FechaRegistradaEnBDPeroNoDisponibleParaReservar()
+        public void ComprobarFechaRegistradaEnBDParaVerificarCamposDisponibles()
         {
             // Arrange
             HandlerCamposDisponibles handlerCamposDisponibles = new HandlerCamposDisponibles();
-            string fecha = "2023-05-12";
-            int resultadoEsperado = 19;
+            string fecha = "2023-06-08";
+            int resultadoEsperado = 9;
 
             // Act
             int resultado = handlerCamposDisponibles.ReservasTotal(fecha);
