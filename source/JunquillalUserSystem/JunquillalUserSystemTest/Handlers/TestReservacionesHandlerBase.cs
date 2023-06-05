@@ -186,7 +186,8 @@ namespace JunquillalUserSystemTest.Handlers
          TieneNacionalidad 
           where TieneNacionalidad.IdentificadorReserva = '2595141556' AND TieneNacionalidad.NombrePais= 'Estados Unidos'
          */
-        [TestMeth        public void insertarNacionalidadExistente()
+        [TestMethod]        
+        public void insertarNacionalidadExistente()
         {
             HospederoModelo hospedero = new HospederoModelo();
             hospedero.Nacionalidad = "Estados Unidos";
