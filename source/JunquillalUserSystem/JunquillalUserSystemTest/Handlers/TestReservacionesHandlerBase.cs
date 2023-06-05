@@ -13,6 +13,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Data;
 
+/*Hechas por Sabrina Brenes Hernandez C01309*/
+
 namespace JunquillalUserSystemTest.Handlers
 {
     [TestClass]
@@ -184,8 +186,7 @@ namespace JunquillalUserSystemTest.Handlers
          TieneNacionalidad 
           where TieneNacionalidad.IdentificadorReserva = '2595141556' AND TieneNacionalidad.NombrePais= 'Estados Unidos'
          */
-        [TestMethod]
-        public void insertarNacionalidadExistente()
+        [TestMeth        public void insertarNacionalidadExistente()
         {
             HospederoModelo hospedero = new HospederoModelo();
             hospedero.Nacionalidad = "Estados Unidos";

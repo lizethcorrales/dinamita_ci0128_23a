@@ -462,12 +462,19 @@ BEGIN
 
 		IF @@ROWCOUNT > 0 
 			BEGIN 
-			INSERT INTO ProvinciaReserva
-			VALUES(@identificadorReserva, @nombreProvincia, @cantidad)
+			SELECT *
+			FROM ProvinciaReserva
+			WHERE ProvinciaReserva.IdentificadorReserva = @identificadorReserva AND 
+			ProvinciaReserva.NombreProvincia = @nombreProvincia;
+
+			IF @@ROWCOUNT <=0
+				BEGIN
+				INSERT INTO ProvinciaReserva
+				VALUES(@identificadorReserva, @nombreProvincia, @cantidad);
+				END;
 			END;
 		END;
 END;
-
 
 --Es procedimiento busca reservaciones por fecha , en donde las reservaciones retornadas van a ser las
 -- se encuentren entre la fecha pasada por parametro
@@ -654,5 +661,14 @@ where TieneNacionalidad.IdentificadorReserva = '3463933048' AND TieneNacionalida
 
 delete TieneNacionalidad 
 where TieneNacionalidad.IdentificadorReserva = '2595141556' AND TieneNacionalidad.NombrePais= 'Estados Unidos'
+delete TieneNacionalidad 
+where TieneNacionalidad.IdentificadorReserva = '2595141556' AND TieneNacionalidad.NombrePais= 'Alemania';
+
 delete Reservacion
-where Reservacion.IdentificadorReserva = 'JCzZsDEp37';
+where Reservacion.IdentificadorReserva = 'fURHS56lEV';
+
+delete ProvinciaReserva
+where ProvinciaReserva.IdentificadorReserva = '8865933684';
+
+  delete Pago
+  where Pago.Comprobante = 'f8JEHa';

@@ -3,6 +3,8 @@ using JunquillalUserSystemTest;
 using System.Data;
 using System.Data.SqlClient;
 namespace JunquillalUserSystem.Handlers
+
+/*Hechas por Sabrina Brenes Hernandez C01309*/
 {
     public class HandlerPruebas : HandlerBase
     {
