@@ -160,7 +160,7 @@ namespace JunquillalUserSystemTest.Admin.Handlers
         {
             // Arrange
             AdministrarReservasHandler handler = new AdministrarReservasHandler();
-            string identificadorReservaExistente = "6pw5R8YhzY";
+            string identificadorReservaExistente = "3FPPWbCEw8";
             string identificadorReservaNoExistente = "identificador_no_existente";
             bool exceptionThrownExistente = false;
             bool exceptionThrownNoExistente = false;
@@ -203,8 +203,8 @@ namespace JunquillalUserSystemTest.Admin.Handlers
         {
             // Arrange
             AdministrarReservasHandler handler = new AdministrarReservasHandler();
-            string identificadorReserva = "6pw5R8YhzY";
-            string placaEsperada = "fsdscsadf ";
+            string identificadorReserva = "3FPPWbCEw8";
+            string placaEsperada = "uio-678   ";
 
             // Act
             var placas = handler.ObtenerPlacasReservacion(identificadorReserva);
@@ -214,10 +214,5 @@ namespace JunquillalUserSystemTest.Admin.Handlers
             Assert.AreEqual(1, placas.Count);
             Assert.AreEqual(placaEsperada, placas[0]);
         }
-
-
-
-
-
     }
 }
