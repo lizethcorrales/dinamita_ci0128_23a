@@ -671,3 +671,26 @@ where ProvinciaReserva.IdentificadorReserva = '8865933684';
 
   delete Pago
   where Pago.Comprobante = 'f8JEHa';
+
+  -- Se crea procedimiento que agrega a un trabajador
+  CREATE PROCEDURE 
+ [dbo].[insertar_Trabajador] (
+	@Cedula_entrante AS VARCHAR(10),
+	@Nombre_entrante AS VARCHAR(50),
+	@Apellido1_entrante AS VARCHAR(50),
+	@Apellido2_entrante AS VARCHAR(50),
+	@Correo_entrante AS VARCHAR(80),
+	@Puesto_entrante AS VARCHAR(20),
+	@Contrasena_entrante AS VARCHAR(255),
+	@Salt_entrante AS VARCHAR(255)
+) AS
+BEGIN 
+	SELECT Trabajador.Cedula
+	FROM Trabajador
+	WHERE Trabajador.Cedula = @Cedula_entrante;
+
+	IF @@ROWCOUNT = 0 
+		 INSERT INTO Trabajador
+		 VALUES (@Cedula_entrante, @Nombre_entrante, @Apellido1_entrante, @Apellido2_entrante,
+				 @Correo_entrante, @Puesto_entrante, @Contrasena_entrante, @Salt_entrante);
+END;
