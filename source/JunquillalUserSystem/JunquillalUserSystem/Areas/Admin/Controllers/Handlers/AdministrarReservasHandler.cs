@@ -80,9 +80,10 @@ namespace JunquillalUserSystem.Areas.Admin.Controllers.Handlers
 				reservacion.hospedero.Apellido2 = reader.GetString(reader.GetOrdinal("Apellido2"));
 				reservacion.hospedero.Email = reader.GetString(reader.GetOrdinal("Email"));
 				reservacion.hospedero.Identificacion = reader.GetString(reader.GetOrdinal("Identificacion"));
-				//reservacion.hospedero.Nacionalidad = reader.GetString(reader.GetOrdinal("NombrePais"));
-                //reservacion.hospedero.Telefono= reader.GetString(reader.GetOrdinal("Telefono"));
-                //reservacion.actividadVisita = reader.GetString(reader.GetOrdinal("Motivo"));
+				reservacion.hospedero.Nacionalidad = reader.GetString(reader.GetOrdinal("NombrePais"));
+                reservacion.hospedero.Telefono= reader.GetString(reader.GetOrdinal("Telefono"));
+                reservacion.TipoActividad = reader.GetString(reader.GetOrdinal("TipoActividad"));
+                reservacion.actividad= reader.GetString(reader.GetOrdinal("Motivo"));
 
 
 

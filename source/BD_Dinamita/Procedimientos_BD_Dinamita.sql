@@ -479,7 +479,6 @@ END;
 --Es procedimiento busca reservaciones por fecha , en donde las reservaciones retornadas van a ser las
 -- se encuentren entre la fecha pasada por parametro
 
-
 go
 CREATE FUNCTION ObtenerReservacionesPorFecha
 (
@@ -491,7 +490,7 @@ RETURN
 (
     SELECT R.IdentificadorReserva ,PrimerDia, UltimoDia , Hospedero.Nombre,
 	        Hospedero.Apellido1 , Hospedero.Apellido2 , Hospedero.Email , 
-			Hospedero.Identificacion , TN.NombrePais ,  Hospedero.Telefono , R.Motivo
+			Hospedero.Identificacion , TN.NombrePais ,  Hospedero.Telefono , R.Motivo , R.TipoActividad
     FROM Reservacion as R 
 	join HospederoRealiza AS HR on R.IdentificadorReserva = HR.IdentificadorReserva
 	join Hospedero on HR.IdentificacionHospedero = Hospedero.Identificacion
@@ -513,7 +512,7 @@ RETURN
 (
     SELECT R.IdentificadorReserva ,PrimerDia, UltimoDia , Hospedero.Nombre,
 	        Hospedero.Apellido1 , Hospedero.Apellido2 , Hospedero.Email , 
-			Hospedero.Identificacion , TN.NombrePais , Hospedero.Telefono , R.Motivo
+			Hospedero.Identificacion , TN.NombrePais , Hospedero.Telefono , R.Motivo , R.TipoActividad
     FROM Reservacion as R 
 	join HospederoRealiza AS HR on R.IdentificadorReserva = HR.IdentificadorReserva
 	join Hospedero on HR.IdentificacionHospedero = Hospedero.Identificacion
