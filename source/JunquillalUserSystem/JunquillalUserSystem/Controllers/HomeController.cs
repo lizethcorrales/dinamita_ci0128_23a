@@ -15,6 +15,7 @@ namespace JunquillalUserSystem.Controllers
 
         public IActionResult Index()
         {
+            TempData["IsAdminArea"] = null;
             return View();
         }
 

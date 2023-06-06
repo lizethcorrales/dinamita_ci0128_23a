@@ -24,13 +24,7 @@
 
     <body>
     @using (Html.BeginForm("GenerarReporte", "Reportes", FormMethod.Post, new { enctype = "multipart/form-data" }))
-    {
-        @if (!string.IsNullOrEmpty(TempData["Mensaje"] as string))
-        {
-            <div class="alert alert-info">
-                @TempData["Mensaje"]
-            </div>
-        }
+    {        
         <div>
             <h3>Bienvenido a la sección de reportes</h3>
             <h5>Elija el tipo de reporte</h5>
@@ -58,9 +52,14 @@
                         </div>
                     </div>
                     <br>
-                    <div id="error"></div>
+                    @if (!string.IsNullOrEmpty(TempData["Mensaje"] as string))
+                    {
+                        <div class="centrar">
+                            @TempData["Mensaje"]
+                        </div>
+                    }
                     <div class="centrar1">
-                        <button class="button2" id="boton-limpiar" type="button" onclick="limpiar()"> Limpiar </button>  
+                        <button class="button2" id="boton-limpiar" type="button" onclick="limpiar()"> Limpiar </button>
                         <button type="submit" method="POST" class="button1" id="btn-siguiente" asp-controller="Reportes" asp-action="GenerarReporte"> Generar </button>
                     
                     </div>
@@ -135,31 +134,6 @@
                     });
 
                 });
-
-                var form = document.getElementById("fechas");
-                var err = document.getElementById("error");
-                var calendarioRangoDias = document.getElementById("visitas");
-                var calendarioDiario = document.getElementById("diario");
-                const btnSiguiente = document.querySelector('#btn-siguiente');
-                btnSiguiente.addEventListener('click', function () {
-                    const fechaEntrada = document.querySelector('#fecha-entrada').value;
-                    const fechaSalida = document.querySelector('#fecha-salida').value;
-                    const mensajeError = "Debes llenar lo que se solicita";
-                    if (calendarioRangoDias.checked) {
-                        if (fechaEntrada && fechaSalida) {
-                            form.submit();
-                        } else {
-                            err.innerText = mensajeError;
-                        }
-                    } else if (calendarioDiario.checked) {
-                        if (fechaEntrada) {
-                            form.submit();
-                        } else {
-                            err.innerText = mensajeError;
-                        }
-                    }
-                });
-
             </script>
 
             @{

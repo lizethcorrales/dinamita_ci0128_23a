@@ -28,8 +28,6 @@ botonContinuar.addEventListener("click", (e) => {
 		divContrasena.lastElementChild.textContent = "";
 	}
 	if (datosValido > 0) {
-		// aqui se llama la vara para comprobar datos
-		location.href = '../Login/Bienvenida'
 		form.submit();
 	}
 
