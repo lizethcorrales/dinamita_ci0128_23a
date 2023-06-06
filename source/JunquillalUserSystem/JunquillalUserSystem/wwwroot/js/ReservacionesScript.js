@@ -25,6 +25,9 @@ var form = document.getElementById("datosImportantes");
 var pais = document.getElementById("pais");
 var provincia = document.getElementById("provincia");
 var tituloProvincia = document.getElementById("tituloProvincia");
+var opcionExtranjero = document.getElementById("Extranjero");
+var opcionNacional = document.getElementById("Nacional"); 
+var tituloProvincia = document.getElementById("tituloProvincia");
 
 
 
@@ -136,5 +139,19 @@ pais.addEventListener("change", (e) => {
 			tituloProvincia.hidden = true;
 			provincia.hidden = true;
 			break;
+	}
+});
+
+opcionExtranjero.addEventListener("change", (e) => {
+	if (opcionExtranjero.checked) {
+		provincia.hidden = true;
+		tituloProvincia.hidden = true;
+	}
+});
+
+opcionNacional.addEventListener("change", (e) => {
+	if (opcionNacional.checked) {
+		provincia.hidden = false;
+		tituloProvincia.hidden = false;
 	}
 });
