@@ -59,9 +59,5 @@ namespace JunquillalUserSystem.Areas.Admin.Controllers
             }
 
         }
-        public IActionResult Bienvenida()
-        {
-            return View();
-        }
     }
 }

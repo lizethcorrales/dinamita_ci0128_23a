@@ -1,29 +1,21 @@
 ﻿using System.Data.SqlClient;
 using JunquillalUserSystem.Models;
+using JunquillalUserSystem.Handlers;
 using NuGet.Protocol.Plugins;
 
 namespace JunquillalUserSystem.Areas.Admin.Controllers.Handlers
 {
-    public class LoginHandler
+    public class LoginHandler : HandlerBase
     {
-        private SqlConnection conexion;
+        public LoginHandler() { }
         public SqlConnection Conexion { get { return conexion; } }
-        private string rutaConexion;
-
-        public LoginHandler()
-        {
-            var builder = WebApplication.CreateBuilder();
-            rutaConexion =
-            builder.Configuration.GetConnectionString("ContextoJunquillal");
-            conexion = new SqlConnection(rutaConexion);
-        }
-
         public TrabajadorModelo ObtenerCredencialesTrabajador(string id)
         {
             TrabajadorModelo empleado = new TrabajadorModelo();
 
             string query = "SELECT * FROM dbo.ObtenerCredencialesTrabajador(@Identificacion)";
-            if (id != null)
+
+            if(id  != null)
             {
                 using (SqlCommand command = new SqlCommand(query, conexion))
                 {
@@ -33,7 +25,7 @@ namespace JunquillalUserSystem.Areas.Admin.Controllers.Handlers
                     {
                         while (reader.Read())
                         {
-                            empleado.ID= reader.GetString(reader.GetOrdinal("Cedula"));
+                            empleado.ID = reader.GetString(reader.GetOrdinal("Cedula"));
                             empleado.Nombre = reader.GetString(reader.GetOrdinal("Nombre"));
                             empleado.Apellido1 = reader.GetString(reader.GetOrdinal("Apellido1"));
                             empleado.Contrasena = reader.GetString(reader.GetOrdinal("Contrasena"));
@@ -42,11 +34,15 @@ namespace JunquillalUserSystem.Areas.Admin.Controllers.Handlers
                         }
                     }
                 }
-            } else {
+
+            }
+            else
+            {
                 return null;
-            
+
             }
             return empleado;
         }
     }
 }
+
