@@ -36,7 +36,7 @@
                 <th>Email</th>
                 <th>Fecha entrada</th>
                 <th>Fecha Salida</th>
-                <th>Cantidad Personas</th>
+                <th>Tipo de reserva</th>
                 <th>Detalles</th>
                 <th>Eliminar</th>
             </tr>
@@ -50,7 +50,7 @@
                     <td>@item.hospedero.Email</td>
                     <td>@item.PrimerDia</td>
                     <td>@item.UltimoDia</td>                    
-                    <td> @item.tipoPersona.Sum(pair => pair.Value.Item1)</td>
+                    <td> @item.TipoActividad</td>
                     <td>
                         <button style="margin-top: 0px;" type="button" class="btn btn alert-info" data-toggle="modal" data-target="#mensajeModal_@item.Identificador">Ver</button>
                     </td>
@@ -83,7 +83,8 @@
                                 <h6 class="modal-info">Tu código de reservación es: @item.Identificador</h6>
                                 <h6 class="modal-info">Fecha de ingreso: @item.PrimerDia</h6>
                                 <h6 class="modal-info">Fecha de salida: @item.UltimoDia</h6>
-                                <h6 class="modal-info">Motivo de la vista : @item.TipoActividad</h6>
+                                <h6 class="modal-info">Tipo de actividad : @item.TipoActividad</h6>
+                                    <h6 class="modal-info">Motivo de la vista : @item.actividad</h6>
 
                                 
 

@@ -479,7 +479,6 @@ END;
 --Es procedimiento busca reservaciones por fecha , en donde las reservaciones retornadas van a ser las
 -- se encuentren entre la fecha pasada por parametro
 
-
 go
 CREATE FUNCTION ObtenerReservacionesPorFecha
 (
@@ -491,7 +490,7 @@ RETURN
 (
     SELECT R.IdentificadorReserva ,PrimerDia, UltimoDia , Hospedero.Nombre,
 	        Hospedero.Apellido1 , Hospedero.Apellido2 , Hospedero.Email , 
-			Hospedero.Identificacion , TN.NombrePais ,  Hospedero.Telefono , R.Motivo
+			Hospedero.Identificacion , TN.NombrePais ,  Hospedero.Telefono , R.Motivo , R.TipoActividad
     FROM Reservacion as R 
 	join HospederoRealiza AS HR on R.IdentificadorReserva = HR.IdentificadorReserva
 	join Hospedero on HR.IdentificacionHospedero = Hospedero.Identificacion
@@ -513,7 +512,7 @@ RETURN
 (
     SELECT R.IdentificadorReserva ,PrimerDia, UltimoDia , Hospedero.Nombre,
 	        Hospedero.Apellido1 , Hospedero.Apellido2 , Hospedero.Email , 
-			Hospedero.Identificacion , TN.NombrePais , Hospedero.Telefono , R.Motivo
+			Hospedero.Identificacion , TN.NombrePais , Hospedero.Telefono , R.Motivo , R.TipoActividad
     FROM Reservacion as R 
 	join HospederoRealiza AS HR on R.IdentificadorReserva = HR.IdentificadorReserva
 	join Hospedero on HR.IdentificacionHospedero = Hospedero.Identificacion
@@ -672,3 +671,26 @@ where ProvinciaReserva.IdentificadorReserva = '8865933684';
 
   delete Pago
   where Pago.Comprobante = 'f8JEHa';
+
+  -- Se crea procedimiento que agrega a un trabajador
+  CREATE PROCEDURE 
+ [dbo].[insertar_Trabajador] (
+	@Cedula_entrante AS VARCHAR(10),
+	@Nombre_entrante AS VARCHAR(50),
+	@Apellido1_entrante AS VARCHAR(50),
+	@Apellido2_entrante AS VARCHAR(50),
+	@Correo_entrante AS VARCHAR(80),
+	@Puesto_entrante AS VARCHAR(20),
+	@Contrasena_entrante AS VARCHAR(255),
+	@Salt_entrante AS VARCHAR(255)
+) AS
+BEGIN 
+	SELECT Trabajador.Cedula
+	FROM Trabajador
+	WHERE Trabajador.Cedula = @Cedula_entrante;
+
+	IF @@ROWCOUNT = 0 
+		 INSERT INTO Trabajador
+		 VALUES (@Cedula_entrante, @Nombre_entrante, @Apellido1_entrante, @Apellido2_entrante,
+				 @Correo_entrante, @Puesto_entrante, @Contrasena_entrante, @Salt_entrante);
+END;
