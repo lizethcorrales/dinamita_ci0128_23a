@@ -124,11 +124,12 @@ namespace JunquillalUserSystemTest.Admin.Handlers
             string identificadorReservaConPersonas = "13t2tdxZ6q";
             bool exceptionThrownSinPersonas = false;
             bool exceptionThrownConPersonas = false;
+            ReservacionModelo reservacion = new ReservacionModelo();
 
             // Act - Sin personas
             try
             {
-                var resultSinPersonas = handler.ObtenerPersonasReservacion(identificadorReservaInexistente);
+                var resultSinPersonas = handler.ObtenerPersonasReservacion(identificadorReservaInexistente,reservacion);
             }
             catch (Exception)
             {
@@ -138,7 +139,7 @@ namespace JunquillalUserSystemTest.Admin.Handlers
             // Act - Con personas
             try
             {
-                var resultConPersonas = handler.ObtenerPersonasReservacion(identificadorReservaConPersonas);
+                var resultConPersonas = handler.ObtenerPersonasReservacion(identificadorReservaConPersonas, reservacion);
             }
             catch (Exception)
             {
