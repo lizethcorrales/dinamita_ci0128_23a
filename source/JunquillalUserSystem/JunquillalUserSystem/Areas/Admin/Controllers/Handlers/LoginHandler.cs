@@ -7,6 +7,7 @@ namespace JunquillalUserSystem.Areas.Admin.Controllers.Handlers
     public class LoginHandler
     {
         private SqlConnection conexion;
+        public SqlConnection Conexion { get { return conexion; } }
         private string rutaConexion;
 
         public LoginHandler()
@@ -22,26 +23,29 @@ namespace JunquillalUserSystem.Areas.Admin.Controllers.Handlers
             TrabajadorModelo empleado = new TrabajadorModelo();
 
             string query = "SELECT * FROM dbo.ObtenerCredencialesTrabajador(@Identificacion)";
-
-            using (SqlCommand command = new SqlCommand(query, conexion))
+            if (id != null)
             {
-                command.Parameters.AddWithValue("@Identificacion", id);
-                conexion.Open();
-                using (SqlDataReader reader = command.ExecuteReader())
+                using (SqlCommand command = new SqlCommand(query, conexion))
                 {
-                    while (reader.Read())
+                    command.Parameters.AddWithValue("@Identificacion", id);
+                    conexion.Open();
+                    using (SqlDataReader reader = command.ExecuteReader())
                     {
-                        empleado.ID= reader.GetString(reader.GetOrdinal("Cedula"));
-                        empleado.Nombre = reader.GetString(reader.GetOrdinal("Nombre"));
-                        empleado.Apellido1 = reader.GetString(reader.GetOrdinal("Apellido1"));
-                        empleado.Contrasena = reader.GetString(reader.GetOrdinal("Contrasena"));
-                        empleado.Sal = reader.GetString(reader.GetOrdinal("Salt"));
-                        empleado.Puesto = reader.GetString(reader.GetOrdinal("Puesto"));
+                        while (reader.Read())
+                        {
+                            empleado.ID= reader.GetString(reader.GetOrdinal("Cedula"));
+                            empleado.Nombre = reader.GetString(reader.GetOrdinal("Nombre"));
+                            empleado.Apellido1 = reader.GetString(reader.GetOrdinal("Apellido1"));
+                            empleado.Contrasena = reader.GetString(reader.GetOrdinal("Contrasena"));
+                            empleado.Sal = reader.GetString(reader.GetOrdinal("Salt"));
+                            empleado.Puesto = reader.GetString(reader.GetOrdinal("Puesto"));
+                        }
                     }
                 }
+            } else {
+                return null;
+            
             }
-
-
             return empleado;
         }
     }

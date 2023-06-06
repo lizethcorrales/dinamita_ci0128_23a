@@ -18,33 +18,43 @@ namespace JunquillalUserSystem.Areas.Admin.Controllers
         [HttpPost]
         public IActionResult Login(TrabajadorModelo empleado)
         {
-            TrabajadorModelo empleado2 = handlerLogin.ObtenerCredencialesTrabajador(empleado.ID);
-            string hashLocal = empleado2.Contrasena;
-            if (empleado2.ID != "")
+            try
             {
-                TrabajadorModelo empleadoLogin = empleado;
-                empleadoLogin.Sal = empleado2.Sal;
-                string hashLogin = empleadoLogin.HashearContrasena($"{empleadoLogin.Contrasena}{empleadoLogin.Sal}");
-                if (String.Equals(hashLogin, hashLocal, StringComparison.OrdinalIgnoreCase))
+                TrabajadorModelo empleado2 = handlerLogin.ObtenerCredencialesTrabajador(empleado.ID);
+                string hashLocal = empleado2.Contrasena;
+                if (empleado2.ID != "")
                 {
-                    if(String.Equals(empleado.Puesto, empleado2.Puesto, StringComparison.OrdinalIgnoreCase))
+                    TrabajadorModelo empleadoLogin = empleado;
+                    empleadoLogin.Sal = empleado2.Sal;
+                    string hashLogin = empleadoLogin.HashearContrasena($"{empleadoLogin.Contrasena}{empleadoLogin.Sal}");
+                    if (String.Equals(hashLogin, hashLocal, StringComparison.OrdinalIgnoreCase))
                     {
-                        return RedirectToAction("Index", "Home", new { area = "Admin" });
-                    }
-                    else
+                        if(String.Equals(empleado.Puesto, empleado2.Puesto, StringComparison.OrdinalIgnoreCase))
+                        {
+                            //var 
+                            var direccion = RedirectToAction("Index", "Home", new { area = "Admin" });
+                            return direccion;
+                        }
+                        else
+                        {
+                            ViewData["Mensaje"] = "El puesto es incorrecto";
+                            return View();
+                        }
+                    
+                    } else
                     {
-                        ViewData["Mensaje"] = "El puesto es incorrecto";
+                        ViewData["Mensaje"] = "La contraseña es incorrecta";
                         return View();
                     }
-                    
                 } else
                 {
-                    ViewData["Mensaje"] = "La contraseña es incorrecta";
+                    ViewData["Mensaje"] = "Usuario no registrado";
                     return View();
                 }
-            } else
+            }
+            catch (NullReferenceException)
             {
-                ViewData["Mensaje"] = "Usuario no registrado";
+                ViewData["Mensaje"] = "Hubo un problema en el sistema";
                 return View();
             }
 

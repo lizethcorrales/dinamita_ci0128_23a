@@ -56,6 +56,7 @@ namespace JunquillalUserSystem.Models
             set { sal = value; }
         }
 
+
         public TrabajadorModelo() { 
             id = "";
             nombre = "";
@@ -67,30 +68,38 @@ namespace JunquillalUserSystem.Models
             sal = "";
         }
 
-        public void crearSal()
+        public string crearSal()
         {
             string salt = DateTime.Now.ToString("MM-dd-yyyy");
             string salt2 = salt.Replace('-', '1');
             sal = salt2;
+            return salt2;
         }
 
         public string HashearContrasena(string contrasena)
         {
-            String contrasenaHash = "";
+            string contrasenaHash = "";
             SHA256 hash = SHA256.Create();
             if (contrasena != "")
             {
-                var contrasenaBytes = Encoding.Default.GetBytes(contrasena);
-                var contrasenaHasheada = hash.ComputeHash(contrasenaBytes);
+                try
+                {
+                    var contrasenaBytes = Encoding.Default.GetBytes(contrasena);
+                    var contrasenaHasheada = hash.ComputeHash(contrasenaBytes);
 
-                contrasenaHash = Convert.ToHexString(contrasenaHasheada);
-
+                    contrasenaHash = Convert.ToHexString(contrasenaHasheada);
+                } catch(ArgumentNullException)
+                {
+                    return contrasenaHash = "0";
+                }
+            }
+            else
+            {
+                throw new ArgumentOutOfRangeException("Contraseña de tamaño no permitido");
             }
             
             return contrasenaHash;
         }
-
-
-        
+ 
     }
 }
