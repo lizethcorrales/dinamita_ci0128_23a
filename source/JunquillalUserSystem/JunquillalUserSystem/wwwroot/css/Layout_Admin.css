@@ -4,9 +4,9 @@
 }
 
 header {
-    background-color: #8e44ad;
+    background-color: #449dad;
     padding: 15px;
-    border-bottom: 3px solid #7d3c98;
+    border-bottom: 3px solid #449dad;
 }
 
 nav ul li a:hover {
@@ -22,7 +22,7 @@ main {
 }
 
 footer {
-    background-color: #8e44ad;
+    background-color: #449dad;
     color: #fff;
     padding: 5px;
     margin-top: 30px;
@@ -38,7 +38,7 @@ footer {
 .submenu-content {
     display: none;
     position: absolute;
-    background-color: #8e44ad;
+    background-color: #449dad;
 }
 
 .submenu:hover .submenu-content {
