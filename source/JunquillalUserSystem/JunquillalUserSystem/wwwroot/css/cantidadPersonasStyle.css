@@ -13,12 +13,10 @@ body {
 }
 
 #titulo {
-    background-color: #2C9E4C;
     color: black;
     display: flex;
     flex-flow: column;
     height: 90%;
-    color: white;
     margin: 0px;
     padding: 10px;
     text-align: center;
@@ -70,4 +68,10 @@ h2 {
  #instruccion {
      text-align: center;
  }
+
+.conCenter {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 
