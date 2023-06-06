@@ -1,5 +1,8 @@
-﻿using System.Data.SqlClient;
+﻿using System.Data;
+using System.Data.SqlClient;
+using System.Globalization;
 using JunquillalUserSystem.Models;
+using Microsoft.VisualBasic;
 using NuGet.Protocol.Plugins;
 
 namespace JunquillalUserSystem.Areas.Admin.Controllers.Handlers
@@ -58,7 +61,8 @@ namespace JunquillalUserSystem.Areas.Admin.Controllers.Handlers
 			foreach (ReservacionModelo reserva in reservas)
 			{
 				reserva.placasVehiculos = ObtenerPlacasReservacion(reserva.Identificador);
-				reserva.tipoPersona = ObtenerPersonasReservacion(reserva.Identificador);
+				reserva.tipoPersona = ObtenerPersonasReservacion(reserva.Identificador,reserva);
+				
 			}
 
 
@@ -125,7 +129,7 @@ namespace JunquillalUserSystem.Areas.Admin.Controllers.Handlers
 			return placas;
 		}
 
-		public Dictionary<string, Tuple<int, string>> ObtenerPersonasReservacion(string IdentificadorReserva)
+		public Dictionary<string, Tuple<int, string>> ObtenerPersonasReservacion(string IdentificadorReserva , ReservacionModelo reservacion)
 		{
 			Dictionary<string, Tuple<int, string>> cantidadTipoPersona = new Dictionary<string, Tuple<int, string>>();
 
@@ -135,20 +139,36 @@ namespace JunquillalUserSystem.Areas.Admin.Controllers.Handlers
 
 			using (SqlCommand command = new SqlCommand(query, conexion))
 			{
-
-				command.Parameters.AddWithValue("@Identificador", IdentificadorReserva); // Fecha que deseas utilizar
+				int totalNoches = 0;
+                command.Parameters.AddWithValue("@Identificador", IdentificadorReserva); // Fecha que deseas utilizar
 				conexion.Open();
 				// Llamar al método para obtener los datos del reader
 				using (SqlDataReader reader = command.ExecuteReader())
 				{
 					while (reader.Read())
 					{
-						cantidadTipoPersona.Add(reader.GetString(reader.GetOrdinal("Poblacion")) + " " + reader.GetString(reader.GetOrdinal("Nacionalidad")),
-							Tuple.Create((int)reader.GetInt16(reader.GetOrdinal("Cantidad")),
-							reader.GetDouble(reader.GetOrdinal("PrecioAlHacerReserva")).ToString()));
+						int cantidadPersonas = (int)reader.GetInt16(reader.GetOrdinal("Cantidad"));
+						int PrecioAlHacerReserva = (int)(reader.GetDouble("PrecioAlHacerReserva")) * cantidadPersonas;
+
+                        if (reservacion.TipoActividad == "Camping")
+                        {
+                            DateTime primerDia = DateTime.ParseExact(reservacion.PrimerDia, "yyyy-MM-dd", CultureInfo.InvariantCulture);
+                            DateTime ultimoDia = DateTime.ParseExact(reservacion.UltimoDia, "yyyy-MM-dd", CultureInfo.InvariantCulture);
+
+                            TimeSpan duracionReservacion = ultimoDia - primerDia;
+                            totalNoches = duracionReservacion.Days;
+							PrecioAlHacerReserva *= totalNoches;
 
 
-					}
+                        }
+
+
+                        cantidadTipoPersona.Add(reader.GetString(reader.GetOrdinal("Poblacion")) + " " + reader.GetString(reader.GetOrdinal("Nacionalidad")),
+							Tuple.Create(cantidadPersonas, PrecioAlHacerReserva.ToString()));
+
+
+
+                    }
 				}
 
 				conexion.Close();

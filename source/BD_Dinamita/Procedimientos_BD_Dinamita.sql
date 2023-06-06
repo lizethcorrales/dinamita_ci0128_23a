@@ -694,3 +694,5 @@ BEGIN
 		 VALUES (@Cedula_entrante, @Nombre_entrante, @Apellido1_entrante, @Apellido2_entrante,
 				 @Correo_entrante, @Puesto_entrante, @Contrasena_entrante, @Salt_entrante);
 END;
+
+select * from PrecioReservacion
