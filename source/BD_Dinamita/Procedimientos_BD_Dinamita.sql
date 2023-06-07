@@ -58,9 +58,7 @@ GO
 CREATE PROCEDURE insertar_PrecioReservacion(
 	@identificador_Reserva AS VARCHAR(10),
 	@adulto_nacional AS SMALLINT,
-	@ninno_nacional_mayor6 AS SMALLINT,
-	@ninno_nacional_menor6 AS SMALLINT,
-	@adulto_mayor_nacional AS SMALLINT,
+	@ninno_nacional AS SMALLINT,
 	@adulto_extranjero AS SMALLINT,
 	@ninno_extranjero AS SMALLINT,
 	@adulto_mayor_extranjero AS SMALLINT,
@@ -68,13 +66,14 @@ CREATE PROCEDURE insertar_PrecioReservacion(
 ) AS
 BEGIN
 	DECLARE @precio AS DOUBLE PRECISION;
-
+	-- Por cada tipo de población se agrega nacionalidad y su correspondiente tarifa
 	IF (@adulto_nacional > 0)
-		BEGIN
+
 		SELECT @precio = Tarifa.precio
 		FROM Tarifa
 		WHERE Tarifa.Nacionalidad = 'Nacional' AND Tarifa.Poblacion = 'Adulto' AND Tarifa.Actividad = @tipoActividad;
 
+		IF @adulto_nacional > 0
 		INSERT INTO PrecioReservacion
 		VALUES (@identificador_Reserva, 'Nacional', 'Adulto',@tipoActividad, @adulto_nacional, @precio);
 		END;
@@ -110,21 +109,23 @@ BEGIN
 		END;
 
 	IF (@adulto_extranjero > 0)
-		BEGIN
+
 		SELECT @precio = Tarifa.precio
 		FROM Tarifa
 		WHERE Tarifa.Nacionalidad = 'Extranjero' AND Tarifa.Poblacion = 'Adulto' AND Tarifa.Actividad = @tipoActividad;
 
+		IF (@adulto_extranjero > 0)
 		INSERT INTO PrecioReservacion
 		VALUES (@identificador_Reserva, 'Extranjero', 'Adulto', @tipoActividad, @adulto_extranjero, @precio);
 		END;
 
 	IF (@ninno_extranjero >0) 
-		BEGIN
+
 		SELECT @precio = Tarifa.precio
 		FROM Tarifa
 		WHERE Tarifa.Nacionalidad = 'Extranjero' AND Tarifa.Poblacion = 'Niño' AND Tarifa.Actividad = @tipoActividad;
 
+	IF (@ninno_extranjero >0) 
 		INSERT INTO PrecioReservacion
 		VALUES (@identificador_Reserva, 'Extranjero', 'Niño', @tipoActividad, @ninno_extranjero, @precio);
 		END;
@@ -212,6 +213,7 @@ BEGIN
     FROM Reservacion AS r
     JOIN PrecioReservacion AS p ON r.IdentificadorReserva = p.IdentificadorReserva
     WHERE r.PrimerDia <= @fecha AND r.UltimoDia >= @fecha
+    if @espaciosOcupados is null set @espaciosOcupados = 0
 END;
 
 

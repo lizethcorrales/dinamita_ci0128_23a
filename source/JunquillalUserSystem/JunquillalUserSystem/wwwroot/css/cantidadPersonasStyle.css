@@ -35,7 +35,7 @@ input {
 
 label {
     display: inline-block;
-    width: 400px;
+    width: 200px;
 }
 
 #error {
@@ -54,8 +54,6 @@ button {
     margin: 10px;
     padding: 10px;
     border-radius: 10px;
-    text-align:center;
-    align-self:center;
 }
 
 #atras {
@@ -63,7 +61,7 @@ button {
 }
 
 h2 {
-    text-align: left;
+    text-align: center;
 }
  #instruccion {
      text-align: center;

@@ -60,8 +60,6 @@ namespace JunquillalUserSystem.Controllers
             ReservacionModelo reservacion = JsonSerializer.Deserialize<ReservacionModelo>((string)TempData["Reservacion"]);
             reservacion = reservacion.LlenarFechas(reservacion,Request.Form);
             TempData["Reservacion"] = JsonSerializer.Serialize(reservacion);
-            ViewData["IsAdminArea"] = TempData["IsAdminArea"];
-            TempData["IsAdminArea"] = TempData["IsAdminArea"];
             return View();
         }
 
@@ -82,8 +80,7 @@ namespace JunquillalUserSystem.Controllers
 
 
 
-            ViewData["IsAdminArea"] = TempData["IsAdminArea"];
-            TempData["IsAdminArea"] = TempData["IsAdminArea"];
+
             return View();
         }
         

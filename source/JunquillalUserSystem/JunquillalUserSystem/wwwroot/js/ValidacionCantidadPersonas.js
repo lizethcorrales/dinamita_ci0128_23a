@@ -2,19 +2,9 @@
 
 //obtiene los valores de los datos introducidos
 var adultosNacionales = document.getElementById("cantidad_Adultos_Nacional");
-//alert(adultosNacionales.value);
-var ninnosNacionales_mayores6 = document.getElementById("cantidad_Ninnos_Nacional_mayor6");
-//alert(ninnosNacionales_mayores6.value);
-var ninnosNacionales_menores6 = document.getElementById("cantidad_Ninnos_Nacional_menor6");
-//alert(ninnosNacionales_menores6.value);
-var adulto_mayor_nacional = document.getElementById("cantidad_adulto_mayor");
-//alert(adulto_mayor_nacional.value);
+var ninnosNacionales = document.getElementById("cantidad_Ninnos_Nacional");
 var adultosExtranjeros = document.getElementById("cantidad_Adultos_Extranjero");
-//alert(adultosExtranjeros.value);
 var ninnosExtranjeros = document.getElementById("cantidad_ninnos_extranjero");
-//alert(ninnosExtranjeros.value);
-var adulto_mayor_extranjero = document.getElementById("cantidad_adultoMayor_extranjero");
-//alert(adulto_mayor_extranjero.value);
 var form = document.getElementById("cantidad");
 var err = document.getElementById("error");
 
@@ -24,10 +14,7 @@ submitButton.addEventListener('click', validarFormulario);
 function validarFormulario(event) {
     //se previene el envío del formulario hasta verificar los datos
     event.preventDefault();
-    var cantidadP = parseInt(adultosNacionales.value) + parseInt(ninnosNacionales_mayores6.value) +
-        parseInt(ninnosNacionales_menores6.value) + parseInt(adulto_mayor_nacional.value) +
-        parseInt(adultosExtranjeros.value) + parseInt(ninnosExtranjeros.value) +
-        parseInt(adulto_mayor_extranjero.value);
+    var cantidadP = parseInt(adultosNacionales.value) + parseInt(adultosExtranjeros.value) + parseInt(ninnosNacionales.value) + parseInt(ninnosExtranjeros.value);
     let messages = [];
   
     //si no hay personas en ninguno de los campos se indica que debe haber al menos una
@@ -35,8 +22,8 @@ function validarFormulario(event) {
         messages.push("Revise que haya al menos una persona");
     }
     //si la cantidad de personas excede el límite, se indica
-    if (cantidadP > 70) {
-        messages.push("Revise que la cantidad de personas no exceda las 70 personas");
+    if (cantidadP > 40) {
+        messages.push("Revise que la cantidad de personas no exceda las 40");
     }
     //si van niños debe ir un adulto responsable
     if ((ninnosNacionales_mayores6.value > 0 || ninnosNacionales_menores6.value > 0 || ninnosExtranjeros.value > 0)
