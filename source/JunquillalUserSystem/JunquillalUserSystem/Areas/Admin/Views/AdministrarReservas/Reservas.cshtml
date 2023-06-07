@@ -1,0 +1,179 @@
+﻿@model List<JunquillalUserSystem.Models.ReservacionModelo>;
+
+@{
+    ViewData["Title"] = "Administrar Reservas";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<!DOCTYPE html>
+
+<html>
+<h1>@ViewBag.MainTitle</h1>
+<head>
+
+    <title>Administrar Reservaciones</title>
+    <link rel="stylesheet" href="~/css/AdministrarReservas.css">
+
+
+</head>
+<body>
+<div class="search-container">
+    <button class="purple-button" onclick="buscarReservacionesPorFecha()">Buscar por Fecha</button>
+    <input type="text" id="fecha-input" placeholder="Fecha (yyyy-mm-dd)">
+    <button class="purple-button" onclick="buscarReservacionesPorIdentificador()">Buscar por Identificador</button>
+     <input type="text" id="identificador-input" placeholder="Identificador" maxlength="10">
+     <p id="errorMessage" style="color: red; display: none;"></p>
+</div>
+
+
+<div>
+    <a href="@Url.Action("FormularioCantidadPersonas", "Reservacion", new { area = "" })" class="btn btn-success">Crear Reservación</a>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Código Reserva</th>
+                <th>Nombre completo del hospedero</th>
+                <th>Email</th>
+                <th>Fecha entrada</th>
+                <th>Fecha Salida</th>
+                <th>Tipo de reserva</th>
+                <th>Detalles</th>
+                <th>Eliminar</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Identificador</td>
+                    <td>@item.hospedero.Nombre  @item.hospedero.Apellido1 @item.hospedero.Apellido2</td>
+                    <td>@item.hospedero.Email</td>
+                    <td>@item.PrimerDia</td>
+                    <td>@item.UltimoDia</td>                    
+                    <td> @item.TipoActividad</td>
+                    <td>
+                        <button style="margin-top: 0px;" type="button" class="btn btn alert-info" data-toggle="modal" data-target="#mensajeModal_@item.Identificador">Ver</button>
+                    </td>
+                    <td >
+                            @Html.ActionLink("Borrar", "EliminarReserva",
+                        new { identificador = item.Identificador },
+                           new { @class =  "btn btn alert-danger ", @onclick = "return confirm('Desea borrar esta reservación?')" })
+                    </td>
+                </tr>
+
+                <div class="modal fade" id="mensajeModal_@item.Identificador" tabindex="-1" role="dialog" aria-labelledby="mensajeModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-apple">
+                        <div class="modal-content modal-apple-content">
+                            <div class="modal-header modal-apple-header">
+                                <h5 class="modal-title" id="mensajeModalLabel">Detalles de la reservación</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <h4>Datos del hospedero:</h4><br>
+                                <h6 class="modal-info">Identificación: @item.hospedero.Identificacion</h6>
+                                <h6 class="modal-info">País: @item.hospedero.Nacionalidad</h6>
+                                <h6 class="modal-info">Email: @item.hospedero.Email</h6>
+                                 <h6 class="modal-info">Teléfono: @item.hospedero.Telefono</h6>
+                                <br>
+                                
+                                <h6 class="modal-info"></h6>
+                                <h4 >Detalles de la reserva:</h4><br>
+                                <h6 class="modal-info">Tu código de reservación es: @item.Identificador</h6>
+                                <h6 class="modal-info">Fecha de ingreso: @item.PrimerDia</h6>
+                                <h6 class="modal-info">Fecha de salida: @item.UltimoDia</h6>
+                                <h6 class="modal-info">Tipo de actividad : @item.TipoActividad</h6>
+                                    <h6 class="modal-info">Motivo de la vista : @item.actividad</h6>
+
+                                
+
+                                    <h6 class="modal-info">Cantidad de personas:@item.tipoPersona.Sum(pair => pair.Value.Item1)</h6>
+
+                                  
+                                    @foreach (var tipoCantidadPersona in item.tipoPersona)
+                                    {
+
+                                        <div>
+                                            <h5>@tipoCantidadPersona.Key</h5>
+                                            <span>  </span>
+                                            <span>Cantidad: @tipoCantidadPersona.Value.Item1   </span>
+                                            <span>Precio total: @tipoCantidadPersona.Value.Item2</span>
+                                        </div>
+                                      
+                                    }
+
+                                <ul>
+ 
+                                </ul><br>
+                                <h5 >Placas de vehículos:</h5>
+                                <ul>
+                                    @foreach (string placa in item.placasVehiculos)
+                                    {
+                                        <li class="modal-info">Placa: @placa</li>
+                                    }
+                                </ul><br>
+                        
+
+                            </div>
+                            <div class="modal-footer modal-apple-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            }
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
+
+<!-- Referencia a jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- Referencia a los archivos de script de Bootstrap -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+    function buscarReservacionesPorFecha() {
+        var fechaInput = document.getElementById("fecha-input");
+        var errorMessage = document.getElementById("errorMessage");
+
+        var fecha = fechaInput.value;
+
+        // Expresión regular para validar el formato de fecha (yyyy-mm-dd)
+        var fechaRegex = /^\d{4}-\d{2}-\d{2}$/;
+
+        if (!fechaRegex.test(fecha)) {
+            // El formato de fecha es incorrecto
+            errorMessage.textContent = "Formato de fecha inválido. Utiliza el formato yyyy-mm-dd";
+            errorMessage.style.display = "block";
+        } else {
+            // El formato de fecha es válido, redirigir a la página deseada
+            errorMessage.style.display = "none";
+            window.location.href = "/Admin/AdministrarReservas/ReservasPorFecha?fecha=" + fecha;
+        }
+    }
+
+    function buscarReservacionesPorIdentificador() {
+        var identificadorInput = document.getElementById("identificador-input");
+        var errorMessage = document.getElementById("errorMessage");
+        var identificador = identificadorInput.value;
+
+
+
+        if (identificador.trim() === "") {
+            //Input esta vacio
+            errorMessage.textContent = "Debes digitar el identificador de reserva";
+            errorMessage.style.display = "block";
+        } else {
+            // El formato de fecha es válido, redirigir a la página deseada
+            errorMessage.style.display = "none";
+            window.location.href = "/Admin/AdministrarReservas/ReservasPorIdentificador?identificador=" + identificador;
+        }
+    }
+
+
+</script>

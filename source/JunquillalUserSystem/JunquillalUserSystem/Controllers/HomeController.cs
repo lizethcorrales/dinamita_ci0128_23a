@@ -15,6 +15,7 @@ namespace JunquillalUserSystem.Controllers
 
         public IActionResult Index()
         {
+            TempData["IsAdminArea"] = null;
             return View();
         }
 
@@ -29,7 +30,7 @@ namespace JunquillalUserSystem.Controllers
             return View();
         }
 
-        public IActionResult Privacy()
+        public IActionResult terminos_Condiciones()
         {
             return View();
         }

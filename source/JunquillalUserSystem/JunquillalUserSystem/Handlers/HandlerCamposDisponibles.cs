@@ -18,16 +18,10 @@ using Microsoft.AspNetCore.Builder;
 
 namespace JunquillalUserSystem.Handlers
 {
-    public class HandlerCamposDisponibles
+    public class HandlerCamposDisponibles : HandlerBase
     {
-        private SqlConnection conexion;
-        private string rutaConexion;
         public HandlerCamposDisponibles()
         {
-            var builder = WebApplication.CreateBuilder();
-            rutaConexion =
-            builder.Configuration.GetConnectionString("ContextoJunquillal");
-            conexion = new SqlConnection(rutaConexion);
         }
         
         public int ReservasTotal(string fecha) { 
@@ -45,10 +39,12 @@ namespace JunquillalUserSystem.Handlers
             conexion.Open();
             comandoParaConsulta.ExecuteNonQuery();
             System.Diagnostics.Debug.Write(campos.Value);
+            conexion.Close();
             return (int)campos.Value;
         }
-        public CamposDisponiblesModel LlenarFecha(CamposDisponiblesModel campos, IFormCollection form)
+        public CamposDisponiblesModel LlenarFecha(IFormCollection form)
         {
+            CamposDisponiblesModel campos = new CamposDisponiblesModel();
             campos.fecha = form["fecha-entrada"];
             return campos;
         }

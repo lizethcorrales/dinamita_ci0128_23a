@@ -7,18 +7,31 @@
 }
 
 .button1 {
-    background: #F39800;
+    background: #F39800 ;
     color: #fff;
+    border-radius: 10px;
+    width: 100px;
+    margin: 0 5px;
 }
 
 .button2 {
     background: #A2A2A2;
     color: #fff;
+    width: 100px;
+    margin: 0 5px;
 }
 
-.button {
+button {
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-size: 15px;
+    border: none;
+    margin: 10px;
+    padding: 5px;
     border-radius: 10px;
+    text-align: center;
+    align-self: center;
 }
+
 
 .mensajeError {
     color: red;
@@ -28,4 +41,14 @@
 
 .formInput {
     margin-bottom: 30px;
+}
+
+.contorno {
+    border: 1px solid #A2A2A2;
+    padding: 15px 50px 15px 50px;
+    border-radius: 10px;
+}
+
+.gray {
+    background: #F5F5F5;
 }

@@ -13,12 +13,10 @@ body {
 }
 
 #titulo {
-    background-color: #2C9E4C;
     color: black;
     display: flex;
     flex-flow: column;
     height: 90%;
-    color: white;
     margin: 0px;
     padding: 10px;
     text-align: center;
@@ -37,7 +35,7 @@ input {
 
 label {
     display: inline-block;
-    width: 200px;
+    width: 400px;
 }
 
 #error {
@@ -56,6 +54,8 @@ button {
     margin: 10px;
     padding: 10px;
     border-radius: 10px;
+    text-align:center;
+    align-self:center;
 }
 
 #atras {
@@ -63,8 +63,15 @@ button {
 }
 
 h2 {
-    text-align: center;
+    text-align: left;
 }
  #instruccion {
-     text-align:center;
+     text-align: center;
  }
+
+.conCenter {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
