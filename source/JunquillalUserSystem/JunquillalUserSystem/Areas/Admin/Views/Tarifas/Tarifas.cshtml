@@ -1,0 +1,33 @@
+﻿@model List<JunquillalUserSystem.Models.TarifaModelo>;
+﻿
+@{
+    ViewData["Title"] = "Tarifas";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+<h1>@ViewBag.MainTitle</h1>
+<div>
+    <table class="table">
+    <thead>
+        <tr>
+            <th>Nacionalidad</th>
+            <th>Poblacion</th>
+            <th>Actividad</th>
+            <th>Precio</th>
+        </tr>
+    </thead>
+    <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Nacionalidad</td>
+                    <td>@item.Poblacion</td>
+                    <td>@item.Actividad</td>
+                    <td>@item.Precio</td>
+                    <td>
+                        @Html.ActionLink("Editar", "EditarTarifa", new {nacionalidad = @item.Nacionalidad, poblacion = @item.Poblacion, actividad = @item.Actividad}, new {@class = "btn btn alert-info", @onclick = "return confirm('¿Desea editar esta tarifa?')"})
+                    </td>
+                </tr>
+            }
+    </tbody>
+    </table>
+</div>

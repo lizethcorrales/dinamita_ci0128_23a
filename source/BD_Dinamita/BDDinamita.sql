@@ -325,4 +325,49 @@ VALUES ('8865933684', 'Costa Rica', '9'),
 		('9932098365', 'Inglaterra', '7')
 
 
---Falta agregar tabla de nacionalidad de las visitas parecida a TieneNacionalidad con Hospedero, para el sprint 2
+-- Sprint 2
+
+CREATE TABLE NacionalidadVisita  (
+IdentificadorVisita CHAR(20) NOT NULL,
+FechaEntrada DATE NOT NULL,
+NombrePais VARCHAR(30) NOT NULL,
+Cantidad SMALLINT,
+PRIMARY KEY (IdentificadorVisita, FechaEntrada, NombrePais),
+FOREIGN KEY (IdentificadorVisita, FechaEntrada) REFERENCES Visita(Identificacion, FechaEntrada),
+FOREIGN KEY (NombrePais) REFERENCES Pais(Nombre)
+);
+
+CREATE TABLE Trabajador (
+	Cedula varchar(10) NOT Null,
+	Nombre varchar(50),
+	Apellido1 varchar(50),
+	Apellido2 varchar(50),
+	Correo varchar(80),
+	Puesto varchar(20),
+	Contrasena varchar(255),
+	PRIMARY KEY (Cedula)
+)
+
+ALTER TABLE Trabajador
+ADD Salt varchar(255);
+);
+
+ALTER TABLE Hospedero
+ADD Telefono VARCHAR(20);
+
+ALTER TABLE Reservacion
+ADD Motivo VARCHAR(30);
+
+CREATE TABLE Provincia(
+NombreProvincia VARCHAR(20),
+PRIMARY KEY (NombreProvincia)
+)
+
+CREATE TABLE ProvinciaReserva (
+IdentificadorReserva VARCHAR(10),
+NombreProvincia VARCHAR(20),
+Cantidad SMALLINT,
+PRIMARY KEY(IdentificadorReserva, NombreProvincia),
+FOREIGN KEY(IdentificadorReserva) REFERENCES Reservacion(IdentificadorReserva),
+FOREIGN KEY(NombreProvincia) REFERENCES Provincia(NombreProvincia)
+)
