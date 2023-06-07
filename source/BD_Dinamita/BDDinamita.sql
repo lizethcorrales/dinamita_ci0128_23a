@@ -11,7 +11,7 @@ Email VARCHAR(60) NOT NULL,
 Nombre VARCHAR(20) NOT NULL,
 Apellido1 VARCHAR(20) NOT NULL,
 Apellido2 VARCHAR(20),
-Estado BIT,
+Estado BIT, -- se borra en el sprint 2
 NombrePais VARCHAR(30) NOT NULL, -- esto se borra en nuevas actualizaciones
 PRIMARY KEY (Identificacion),
 FOREIGN KEY(NombrePais) REFERENCES Pais (Nombre), -- esto se borra en nuevas actualizaciones
@@ -64,7 +64,7 @@ Nacionalidad VARCHAR(30) NOT NULL,
 Poblacion VARCHAR(30) NOT NULL,
 Actividad VARCHAR(30) NOT NULL,
 Precio DOUBLE PRECISION,
-ColorBrazalete VARCHAR(20),
+ColorBrazalete VARCHAR(20), -- se borra en sprint 2
 PRIMARY KEY (Nacionalidad, Poblacion, Actividad)
 );
 
