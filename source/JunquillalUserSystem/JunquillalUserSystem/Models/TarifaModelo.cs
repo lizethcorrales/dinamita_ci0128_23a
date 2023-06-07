@@ -3,8 +3,10 @@
     public class TarifaModelo
     {
         public string Nacionalidad { get; set; }
-        public string Poblacion { get; set; }        
-        public string Actividad { get; set; }
-        public double Precio { get; set; }
+        public string grupoPoblacion { get; set; }
+        
+        public float precio { get; set; }
+        public string colorBrazalete { get; set; }
+
     }
 }

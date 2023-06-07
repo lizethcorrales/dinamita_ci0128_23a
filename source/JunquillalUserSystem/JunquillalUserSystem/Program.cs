@@ -1,13 +1,8 @@
-using JunquillalUserSystem.Models.Dependency_Injection;
-using JunquillalUserSystem.Models.Patron_Bridge;
-
 var builder = WebApplication.CreateBuilder(args);
 
-
-// Registrar las dependencias y la inyección de dependencias
+// Add services to the container.
 builder.Services.AddControllersWithViews();
-builder.Services.AddScoped<IEmailService, SmtpEmailService>();
-builder.Services.AddScoped<IMensajeConfirmacionImplementacion,MensajeConfirmacionImplementacionHTML>(); 
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -25,18 +20,8 @@ app.UseRouting();
 
 app.UseAuthorization();
 
-app.UseEndpoints(endpoints =>
-{
-    endpoints.MapControllerRoute(
-      name: "areas",
-      pattern: "{area:exists}/{controller=Login}/{action=Login}/{id?}"
-    );
-
-    endpoints.MapControllerRoute(
+app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
-});
-
-
 
 app.Run();

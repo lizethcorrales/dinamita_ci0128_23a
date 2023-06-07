@@ -16,7 +16,6 @@ function validarFormulario(event) {
     event.preventDefault();
     var cantidadP = parseInt(adultosNacionales.value) + parseInt(adultosExtranjeros.value) + parseInt(ninnosNacionales.value) + parseInt(ninnosExtranjeros.value);
     let messages = [];
-  
     //si no hay personas en ninguno de los campos se indica que debe haber al menos una
     if (cantidadP < 1) {
         messages.push("Revise que haya al menos una persona");
@@ -26,9 +25,7 @@ function validarFormulario(event) {
         messages.push("Revise que la cantidad de personas no exceda las 40");
     }
     //si van niños debe ir un adulto responsable
-    if ((ninnosNacionales_mayores6.value > 0 || ninnosNacionales_menores6.value > 0 || ninnosExtranjeros.value > 0)
-        && (adultosNacionales.value <= 0 && adultosExtranjeros.value <= 0 && adulto_mayor_nacional.value <= 0
-            && adulto_mayor_extranjero.value <= 0)) {
+    if ((ninnosNacionales.value > 0 || ninnosExtranjeros.value > 0) && (adultosNacionales.value <= 0 && adultosExtranjeros.value <= 0)) {
         messages.push("Debe ir al menos un adulto");
     }
     //se muestra el mensaje de error dependiendo del que fue captado
@@ -38,8 +35,7 @@ function validarFormulario(event) {
         return false;
     }
 
-    if ((cantidadP >= 1 && cantidadP <= 70) && (adultosNacionales.value > 0 || adultosExtranjeros.value > 0
-        || adulto_mayor_nacional.value > 0 || adulto_mayor_extranjero.value > 0)) {
+    if ((cantidadP >= 1 && cantidadP <= 40) && (adultosNacionales.value > 0 || adultosExtranjeros.value > 0)) {
         form.submit();        
     }
 }

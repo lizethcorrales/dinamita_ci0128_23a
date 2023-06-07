@@ -13,13 +13,17 @@
     background: #F39800 !important;
     color: #fff !important;
     border-radius: 10px;
-    margin-top: 5% !important;
-    margin-left: 21%;
-    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-    color: white;
-    font-size: 25px;
-    border: none;
+    margin-top: 22% !important;
+    margin-left: 45%;
+}
+
+.button2 {
+    position: fixed;
+    background: #A2A2A2 !important;
+    color: #fff !important;
     border-radius: 10px;
+    margin-top: 22% !important;
+    margin-left: 35%;
 }
 
 .button {
@@ -96,12 +100,12 @@
 
 
     .button1 {
-        position: relative;
+        position: fixed;
         background: #F39800 !important;
         color: #fff !important;
         border-radius: 10px;
-        margin-top: 70% !important;
-        margin-left: 0%;
+        margin-top: 40% !important;
+        margin-left: 55%;
     }
 
     .button2 {

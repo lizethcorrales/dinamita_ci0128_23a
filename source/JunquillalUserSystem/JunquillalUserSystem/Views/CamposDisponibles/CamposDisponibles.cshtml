@@ -2,54 +2,51 @@
 <!DOCTYPE html>
 <html>
 
-<head>
+    <head>
 
-    <title>Calendario</title>
-    <link rel="stylesheet" href="~/css/CamposDisponiblesStyle.css">
-    <link href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" rel="stylesheet" />
-    <script src="//code.jquery.com/jquery-3.5.1.js"></script>
-    <script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-    <script defer src="~/js/DesplegarCamposDisponibles.js"></script>
-
-
-</head>
-
-<body>
-    <h4 class="titulo"> Bienvenido a la sección de Campos Disponibles</h4>
-    <div class="fondo">
+        <title>Calendario</title>
+        <link rel="stylesheet" href="~/css/CamposDisponiblesStyle.css">
+        <link href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" rel="stylesheet" />
+        <script src="//code.jquery.com/jquery-3.5.1.js"></script>
+        <script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+        <script defer src="~/js/DesplegarCamposDisponibles.js"></script>
+       
+    </head>
+    
+    <body>
         <form action="Edit" method="post" id="CamposDisponiblesForm">
 
             <label id="label-fecha-entrada" for="fecha-entrada">Fecha de entrada:</label>
             <input type="text" id="fecha-entrada" name="fecha-entrada" readonly>
-            <!-- <button class="button2" id="btn-atras" onclick="location.href='../Home/Index'"> Atrás </button> -->
+       <!-- <button class="button2" id="btn-atras" onclick="location.href='../Home/Index'"> Atrás </button> -->
             <button class="button1" type="button" id="buscar"> Buscar </button>
             <div id="error"></div>
 
 
 
-
-
+            <h4>Campos Disponibles</h4>   
+        
 
             <div id="camposDisponibles">
-                <label class="resultadoCampos " id="label_campos" for="label_campos">Campos casetilla:</label>
-                @if (ViewBag.camposDisponibles != null && !string.IsNullOrEmpty(ViewBag.camposDisponibles))
-                {
-                    <input class="entradaDatos" type="text" id="campos" name="campos" value=@Html.Raw(ViewBag.camposDisponibles) readonly>
-                }
-                else
-                {
-                    <input class="entradaDatos" type="text" id="campos" name="campos" readonly>
+            <label id="label_campos" for="label_campos">Campos casetilla:</label>
+            @if (ViewBag.camposDisponibles != null && !string.IsNullOrEmpty(ViewBag.camposDisponibles) )
+            {
+                <input type="text" id="campos" name="campos" value=@Html.Raw(ViewBag.camposDisponibles) readonly>
+            }
+            else
+            {
+                <input type="text" id="campos" name="campos" readonly>
 
             }
 
-
-
-                <p style="color:red"></p>
+        
+            
+             <p style="color:red"></p>
             </div>
         </form>
 
         <script>
-
+            
 
             $(function () {
 
@@ -100,7 +97,7 @@
                 });
 
                 $("<style>").text(".ui-datepicker.visible { display: inline-block; }").appendTo("head");
-
+               
             });
 
             var err = document.getElementById("error");
@@ -110,18 +107,18 @@
                 if (fechaEntrada) {
                     window.location.href = '../Home/FormularioCantidadPersonas';
 
-                } else {
+                } else {    
 
-                    err.innerText = "Debes llenar la fecha";
+                        err.innerText = "Debes llenar la fecha";
 
                 }
             });
-
+            
         </script>
         @{
             await Html.RenderPartialAsync("_ValidationScriptsPartial");
         }
-    </div>
-</body>
+
+    </body>
 
 </html>

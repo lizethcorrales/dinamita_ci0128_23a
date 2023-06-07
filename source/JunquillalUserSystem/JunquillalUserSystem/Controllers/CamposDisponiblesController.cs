@@ -22,7 +22,7 @@ namespace JunquillalUserSystem.Controllers
         [HttpPost]
         public IActionResult Edit()
         {
-            camposModelo = handlerCampos.LlenarFecha(Request.Form);
+            camposModelo = handlerCampos.LlenarFecha(camposModelo, Request.Form);
             int resultado = 80 - handlerCampos.ReservasTotal(camposModelo.fecha);
             TempData["camposDisponibles"] = resultado.ToString();
             return RedirectToAction("CamposDisponibles");
