@@ -13,7 +13,7 @@
     @using (Html.BeginForm("editarTarifa", "tarifas", FormMethod.Post, new { enctype = "multipart/form-data" }))
     {
         @Html.AntiForgeryToken()
-        <h1>Formulario de edición de películas</h1>
+        <h1>Formulario de edición de Tarifas</h1>
         @Html.HiddenFor(model=>model.Nacionalidad) 
         @Html.HiddenFor(model=>model.Poblacion)
         @Html.HiddenFor(model=>model.Actividad)
