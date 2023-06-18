@@ -222,6 +222,7 @@ BEGIN
 		VALUES (@identificador_hospedero, @identificador_reserva, @identificador_pago);
 END;
 
+
 -- Este procedimiento calcula la cantidad de reservas realizadas en un día específico
 CREATE PROCEDURE ReservasTotales(
     @fecha AS DATE,
@@ -629,4 +630,22 @@ BEGIN
 				 @Correo_entrante, @Puesto_entrante, @Contrasena_entrante, @Salt_entrante);
 END;
 
-select * from PrecioReservacion
+
+GO 
+CREATE PROCEDURE insertarNuevaTarifa(
+	@nacionalidad AS VARCHAR(30),
+	@poblacion AS VARCHAR(30),
+	@actividad AS VARCHAR(30),
+	@precio AS DOUBLE PRECISION
+) AS
+BEGIN 
+	SELECT Tarifa.Nacionalidad, Tarifa.Poblacion, Tarifa.Actividad, Tarifa.Precio
+	FROM Tarifa
+	WHERE Tarifa.Nacionalidad = @nacionalidad AND Tarifa.Poblacion = @poblacion AND Tarifa.Actividad = @actividad;
+
+	IF @@ROWCOUNT <= 0
+	BEGIN
+		INSERT INTO Tarifa
+		VALUES (@nacionalidad, @poblacion, @actividad, @precio, '1');
+	END;
+END;
