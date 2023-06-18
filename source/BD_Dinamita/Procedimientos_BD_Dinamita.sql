@@ -1,17 +1,38 @@
 --PROCEDIMIENTOS DE LA BASE DE DATOS
 -- Este procedimiento devuelve el costo total de la reserva a partir de la información contenida en la tabla PrecioReservacion.
+GO
 CREATE PROCEDURE calcularCostoTotalReserva (
                @identificador_Reserva AS VARCHAR(10),
                @costo_Total AS DOUBLE PRECISION OUTPUT
 ) AS 
 BEGIN 
+			DECLARE @primerDia AS DATE;
+			DECLARE @ultimoDia AS DATE;
+			DECLARE @cantidadDias AS INT;
 			SET @costo_Total = 0;
-            SELECT @costo_Total = SUM(PrecioReservacion.Cantidad * PrecioReservacion.PrecioAlHacerReserva)
-            FROM PrecioReservacion JOIN Reservacion ON PrecioReservacion.IdentificadorReserva = Reservacion.IdentificadorReserva
-			WHERE PrecioReservacion.IdentificadorReserva = @identificador_Reserva AND Reservacion.Estado != '2'
-            GROUP BY PrecioReservacion.IdentificadorReserva;
 
+			SELECT @primerDia = Reservacion.PrimerDia, @ultimoDia = Reservacion.UltimoDia
+			FROM Reservacion
+			WHERE Reservacion.IdentificadorReserva = @identificador_Reserva;
+
+			IF @primerDia = @ultimoDia
+			BEGIN 
+				SET @cantidadDias = 1;
+			END;
+			ELSE
+			BEGIN
+				SET @cantidadDias = DATEDIFF(DAY, @primerDia, @ultimoDia);
+			END;
+
+			IF @@ROWCOUNT > 0
+			BEGIN
+				SELECT @costo_Total = SUM(PrecioReservacion.Cantidad * PrecioReservacion.PrecioAlHacerReserva * @cantidadDias)
+				FROM PrecioReservacion JOIN Reservacion ON PrecioReservacion.IdentificadorReserva = Reservacion.IdentificadorReserva
+				WHERE PrecioReservacion.IdentificadorReserva = @identificador_Reserva AND Reservacion.Estado != '2'
+				GROUP BY PrecioReservacion.IdentificadorReserva;
+			END;
 END;
+
 
 -- Este procedimiento agrega los datos del hospedero a la tabla Hospedero, según los datos recibidos por parámetro.
 GO
@@ -307,92 +328,6 @@ BEGIN
 	VALUES (@identificacionVisita, @fechaEntrada, @NombrePais, @cantidad);
 END;
 
-GO
-CREATE PROCEDURE insertar_PrecioVisita(
-	@identificador_Visita AS VARCHAR(20),
-	@fechaEntrada AS DATE,
-	@adulto_nacional AS SMALLINT,
-	@ninno_nacional_mayor6 AS SMALLINT,
-	@ninno_nacional_menor6 AS SMALLINT,
-	@adulto_mayor_nacional AS SMALLINT,
-	@adulto_extranjero AS SMALLINT,
-	@ninno_extranjero AS SMALLINT,
-	@adulto_mayor_extranjero AS SMALLINT
-) AS
-BEGIN
-	DECLARE @precio AS DOUBLE PRECISION;
-
-	IF (@adulto_nacional > 0)
-		BEGIN
-		SELECT @precio = Tarifa.precio
-		FROM Tarifa
-		WHERE Tarifa.Nacionalidad = 'Nacional' AND Tarifa.Poblacion = 'Adulto' AND Tarifa.Actividad = 'Picnic';
-
-		INSERT INTO PrecioVisita
-		VALUES (@identificador_Visita, @fechaEntrada, 'Nacional', 'Adulto', 'Picnic', @adulto_nacional, @precio);
-		END;
-
-	IF (@ninno_nacional_menor6 > 0) 
-		BEGIN
-		SELECT @precio = Tarifa.precio
-		FROM Tarifa
-		WHERE Tarifa.Nacionalidad = 'Nacional' AND Tarifa.Poblacion = 'Niño menor 6 años' AND Tarifa.Actividad = 'Picnic';
- 
-		INSERT INTO PrecioVisita
-		VALUES (@identificador_Visita, @fechaEntrada, 'Nacional', 'Niño menor 6 años', 'Picnic', @ninno_nacional_menor6, @precio);
-		END;
-
-	IF (@ninno_nacional_mayor6 > 0) 
-		BEGIN
-		SELECT @precio = Tarifa.precio
-		FROM Tarifa
-		WHERE Tarifa.Nacionalidad = 'Nacional' AND Tarifa.Poblacion = 'Niño' AND Tarifa.Actividad = 'Picnic';
- 
-		INSERT INTO PrecioVisita
-		VALUES (@identificador_Visita, @fechaEntrada, 'Nacional', 'Niño', 'Picnic', @ninno_nacional_mayor6, @precio);
-		END;
-
-	IF (@adulto_mayor_nacional > 0)
-		BEGIN
-		SELECT @precio = Tarifa.precio
-		FROM Tarifa
-		WHERE Tarifa.Nacionalidad = 'Nacional' AND Tarifa.Poblacion = 'Adulto Mayor' AND Tarifa.Actividad = 'Picnic';
-
-		INSERT INTO PrecioVisita
-		VALUES (@identificador_Visita, @fechaEntrada, 'Nacional', 'Adulto Mayor', 'Picnic', @adulto_mayor_nacional, @precio);
-		END;
-
-	IF (@adulto_extranjero > 0)
-		BEGIN
-		SELECT @precio = Tarifa.precio
-		FROM Tarifa
-		WHERE Tarifa.Nacionalidad = 'Extranjero' AND Tarifa.Poblacion = 'Adulto' AND Tarifa.Actividad = 'Picnic';
-
-		INSERT INTO PrecioVisita
-		VALUES (@identificador_Visita, @fechaEntrada, 'Extranjero', 'Adulto', 'Picnic', @adulto_extranjero, @precio);
-		END;
-
-	IF (@ninno_extranjero >0) 
-		BEGIN
-		SELECT @precio = Tarifa.precio
-		FROM Tarifa
-		WHERE Tarifa.Nacionalidad = 'Extranjero' AND Tarifa.Poblacion = 'Niño' AND Tarifa.Actividad = 'Picnic';
-
-		INSERT INTO PrecioVisita
-		VALUES (@identificador_Visita, @fechaEntrada, 'Extranjero', 'Niño', 'Picnic', @ninno_extranjero, @precio);
-		END;
-
-	IF (@adulto_mayor_extranjero > 0)
-		BEGIN
-		SELECT @precio = Tarifa.precio
-		FROM Tarifa
-		WHERE Tarifa.Nacionalidad = 'Nacional' AND Tarifa.Poblacion = 'Adulto Mayor' AND Tarifa.Actividad = 'Picnic';
-
-		INSERT INTO PrecioVisita
-		VALUES (@identificador_Visita, @fechaEntrada, 'Extranjero', 'Adulto Mayor', 'Picnic', @adulto_mayor_extranjero, @precio);
-		END;
-
-END;
 
 GO
 CREATE PROCEDURE actualizarPrecioTarifa (
@@ -564,7 +499,7 @@ FROM dbo.ObtenerReservacionesPorFecha(@Fecha)
 go
 --Este procedimiento encuentra los dias no disponibles al momento de elegir el dia d entrada  en el calendario
 -- se toma en cuenta la cantidad de personas que registradas en una visita de Picnic
-CREATE PROCEDURE [dbo].[BuscarDiasNoDisponiblesVisita]
+CREATE PROCEDURE BuscarDiasNoDisponiblesVisita
     @fechas VARCHAR(MAX),
     @cantidadPersonas INT,
     @result VARCHAR(MAX) OUTPUT
@@ -673,8 +608,7 @@ where ProvinciaReserva.IdentificadorReserva = '8865933684';
   where Pago.Comprobante = 'f8JEHa';
 
   -- Se crea procedimiento que agrega a un trabajador
-  CREATE PROCEDURE 
- [dbo].[insertar_Trabajador] (
+  CREATE PROCEDURE insertar_Trabajador (
 	@Cedula_entrante AS VARCHAR(10),
 	@Nombre_entrante AS VARCHAR(50),
 	@Apellido1_entrante AS VARCHAR(50),
