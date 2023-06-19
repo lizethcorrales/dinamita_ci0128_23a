@@ -54,8 +54,9 @@ namespace JunquillalUserSystem.Handlers
             }
         }
 
-        public void insertarNuevaTarifa(TarifaModelo tarifa)
+        public bool insertarNuevaTarifa(TarifaModelo tarifa)
         {
+            bool exito = false;
             if (TarifaNoNula(tarifa))
             {
                 string consulta = "insertarNuevaTarifa";
@@ -68,7 +69,7 @@ namespace JunquillalUserSystem.Handlers
                     comandoParaConsulta.Parameters.AddWithValue("@Actividad", tarifa.Actividad);
                     comandoParaConsulta.Parameters.AddWithValue("@Precio", tarifa.Precio);
                     conexion.Open();
-                    comandoParaConsulta.ExecuteNonQuery();
+                    exito = comandoParaConsulta.ExecuteNonQuery() >= 1;
                     conexion.Close();
                 }
                 catch (Exception ex)
@@ -76,14 +77,15 @@ namespace JunquillalUserSystem.Handlers
                     Console.WriteLine("Error al ejecutar la consulta: " + ex.Message);
                 }
             }
+            return exito;
         }
 
         public void borrarTarifa(TarifaModelo tarifa)
         {
             if (TarifaNoNula(tarifa))
             {
-                string consulta = "DELETE Tarifa  WHERE Tarifa.Nacionalidad = "+tarifa.Nacionalidad+
-                    " AND Tarifa.Poblacion = "+tarifa.Nacionalidad+ " AND Tarifa.Actividad = "+tarifa.Actividad+";";
+                string consulta = "DELETE Tarifa  WHERE Tarifa.Nacionalidad = '"+tarifa.Nacionalidad+
+                    "' AND Tarifa.Poblacion = '"+tarifa.Nacionalidad+ "' AND Tarifa.Actividad = '"+tarifa.Actividad+"';";
                 SqlCommand comandoParaConsulta = new SqlCommand(consulta, conexion);
                 try
                 {
