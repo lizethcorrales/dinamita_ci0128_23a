@@ -6,7 +6,6 @@
         public string Poblacion { get; set; }        
         public string Actividad { get; set; }
         public double Precio { get; set; }
-
-        public string Esta_Vigente { get; set; }
+        public string? Esta_Vigente { get; set; }
     }
 }
