@@ -1,0 +1,11 @@
+﻿th, td {
+    width: 25%;
+    text-align: center;
+    padding: 2px;
+}
+
+.titulo {
+    text-align: center;
+    color: #fff;
+    background-color: #449dad;
+}
