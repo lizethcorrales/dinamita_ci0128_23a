@@ -32,10 +32,11 @@ namespace JunquillalUserSystem.Controllers
         }
         public IActionResult FormularioCantidadPersonas()
         {
+            List<TarifaModelo> tarifas = reservacionHandler.cargarTarifasCamping();
             ViewBag.TipoTurista = "reserva";
             ViewData["IsAdminArea"] = TempData["IsAdminArea"] ;
             TempData["IsAdminArea"] = TempData["IsAdminArea"];
-            return View();
+            return View(tarifas);
         }
 
         [HttpPost]

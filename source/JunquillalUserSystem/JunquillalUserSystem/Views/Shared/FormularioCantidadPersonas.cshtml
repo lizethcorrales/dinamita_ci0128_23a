@@ -1,4 +1,7 @@
-﻿@{
+﻿@model List<JunquillalUserSystem.Models.TarifaModelo>;
+
+
+@{
 
     if (ViewData["IsAdminArea"] != null)
     {
@@ -43,54 +46,25 @@ los campos incluyen a los adultos y niños nacionales y adultos y niños extranj
             <br />
             <div id="error"></div>
             <br />
-            <div id="adulto_nacional">
-                <label for="cantidad_Adultos_Nacional">Adultos nacionales</label>
-                <input type="number" name="cantidad_Adultos_Nacional" id="cantidad_Adultos_Nacional" required min="0" max="70" value="0" />
-            </div>
+            @{
+                string html = "";
+                foreach(TarifaModelo tarifa in Model)
+                {
+                    string idDiv = tarifa.Poblacion + tarifa.Nacionalidad + "Div";
+                    string idLabel = tarifa.Poblacion + tarifa.Nacionalidad + "Label";
+                    string idInput = tarifa.Poblacion.Replace(" ","") + tarifa.Nacionalidad;
+                    string poblacion = tarifa.Poblacion + " " + tarifa.Nacionalidad;
+                    html += $@"
+                     <div id={idDiv}>
+                        <label for={idInput}>{poblacion}</label>
+                        <input type=""number"" name={idInput} id={idInput} required min=""0"" max=""70"" value=""0"" />
+                     </div>
+                     </br>
+                 ";
+                }
+            }
 
-            <br />
-
-            <div id="ninno_nacional_mayor6">
-                <label for="cantidad_Ninnos_Nacional_mayor6">Niños nacionales mayores de 6 años</label>
-                <input type="number" name="cantidad_Ninnos_Nacional_mayor6" id="cantidad_Ninnos_Nacional_mayor6" required min="0" max="70" value="0" />
-            </div>
-
-            <br />
-
-            <div id="ninno_nacional_menor6">
-                <label for="cantidad_Ninnos_Nacional_menor6">Niños nacionales menores de 6 años</label>
-                <input type="number" name="cantidad_Ninnos_Nacional_menor6" id="cantidad_Ninnos_Nacional_menor6" required min="0" max="70" value="0" />
-            </div>
-
-            <br />
-
-            <div id="adulto_mayor_nacional">
-                <label for="cantidad_adulto_mayor">Adultos mayores nacionales</label>
-                <input type="number" name="cantidad_adulto_mayor" id="cantidad_adulto_mayor" required min="0" max="70" value="0" />
-            </div>
-
-            <br />
-
-            <div id="adulto_extranjero">
-                <label for="cantidad_Adultos_Extranjero">Adultos extranjeros</label>
-                <input type="number" name="cantidad_Adultos_Extranjero" id="cantidad_Adultos_Extranjero" required min="0" max="70" value="0" />
-            </div>
-
-            <br />
-
-            <div id="ninno_extranjero">
-                <label for="cantidad_ninnos_extranjero">Niños extranjeros</label>
-                <input type="number" name="cantidad_ninnos_extranjero" id="cantidad_ninnos_extranjero" required min="0" max="70" value="0" />
-            </div>
-
-            <br />
-
-            <div id="adultoMayor_extranjero">
-                <label for="cantidad_adultoMayor_extranjero">Adultos mayores extranjeros</label>
-                <input type="number" name="cantidad_adultoMayor_extranjero" id="cantidad_adultoMayor_extranjero" required min="0" max="70" value="0" />
-            </div>
-
-            <br />
+            @Html.Raw(html)
 
             <button type="button" id="siguiente_calendario">Siguiente</button>
             <br />
