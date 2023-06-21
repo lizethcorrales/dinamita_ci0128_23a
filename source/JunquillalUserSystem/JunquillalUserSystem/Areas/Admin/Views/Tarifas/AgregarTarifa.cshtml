@@ -7,6 +7,7 @@
 }
 <html>
 <head>
+    <script defer src="~/js/AgregarTarifas.js"></script>
 </head>
 <body>
     @if (ViewBag.Message != null)
@@ -27,8 +28,12 @@
         @Html.HiddenFor(model=>model.Esta_Vigente)
         <div class="form-horizontal">
             <div class="form-group">
-                @Html.LabelFor(model => model.Nacionalidad)
-                @Html.TextBoxFor(model => model.Nacionalidad, new { @class = "form-control"})
+                @Html.LabelFor(model => model.Nacionalidad) <br>
+                @Html.DropDownListFor(model => model.Nacionalidad, new List<SelectListItem>
+                {
+                    new SelectListItem { Text = "Nacional", Value = "Nacional" },
+                    new SelectListItem { Text = "Extranjero", Value = "Extranjero" }
+            }, "Seleccione una opción") <br>
                 @Html.ValidationMessageFor(model => model.Nacionalidad, "", new {@class = "text-danger"})
             </div>
             <div class="form-group">
@@ -37,15 +42,19 @@
                 @Html.ValidationMessageFor(model => model.Poblacion, "", new {@class = "text-danger"})
             </div>
             <div class="form-group">
-                @Html.LabelFor(model => model.Actividad)
-                @Html.TextBoxFor(model => model.Actividad, new { @class = "form-control"})
-                @Html.ValidationMessageFor(model => model.Actividad, "", new {@class = "text-danger"})
+                @Html.LabelFor(model => model.Actividad) <br>
+                @Html.DropDownListFor(model => model.Actividad, new List<SelectListItem>
+                {
+                    new SelectListItem { Text = "Picnic", Value = "Picnic" },
+                    new SelectListItem { Text = "Camping", Value = "Camping" }
+            }, "Seleccione una opción") <br>
+                @Html.ValidationMessageFor(model => model.Actividad, "", new {@class = "text-danger"}) 
             </div>
             <div class="form-group">
                 @Html.LabelFor(model => model.Precio)
-                @Html.TextBoxFor(model => model.Precio, new { @class = "form-control"})
+                @Html.TextBoxFor(model => model.Precio, new { @placeholder = "$ ó ₡", @class = "form-control"})
                 @Html.ValidationMessageFor(model => model.Precio, "", new {@class = "text-danger"})
-            </div>
+            </div>            
             <input type="submit" class="btn btn-success" value="Agregar Tarifa" />
         </div>
     }
