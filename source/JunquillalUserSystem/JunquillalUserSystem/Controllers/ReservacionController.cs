@@ -32,17 +32,20 @@ namespace JunquillalUserSystem.Controllers
         }
         public IActionResult FormularioCantidadPersonas()
         {
-            List<TarifaModelo> tarifas = reservacionHandler.cargarTarifasCamping();
+
+            ReservacionModelo reservacion = new ReservacionModelo("Camping");
+            reservacion.tarifas = reservacionHandler.cargarTarifasCamping();
+            TempData["Reservacion"] = JsonSerializer.Serialize(reservacion);
             ViewBag.TipoTurista = "reserva";
             ViewData["IsAdminArea"] = TempData["IsAdminArea"] ;
             TempData["IsAdminArea"] = TempData["IsAdminArea"];
-            return View(tarifas);
+            return View(reservacion.tarifas);
         }
 
         [HttpPost]
         public IActionResult Calendario()
         {
-            ReservacionModelo reservacion = new ReservacionModelo("Camping");
+            ReservacionModelo reservacion = JsonSerializer.Deserialize<ReservacionModelo>((string)TempData["Reservacion"]);
             reservacion = reservacion.LlenarCantidadPersonas(reservacion,Request.Form);
             TempData["Reservacion"] = JsonSerializer.Serialize(reservacion);
 

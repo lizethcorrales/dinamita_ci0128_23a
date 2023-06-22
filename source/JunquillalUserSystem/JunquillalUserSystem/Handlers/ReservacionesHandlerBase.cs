@@ -111,9 +111,9 @@ namespace JunquillalUserSystem.Handlers
         public int sacarCantidadPersonasTotal(ReservacionModelo reservacion)
         {
             int cantidadPersonas = 0;
-            for (int i = 0; i < reservacion.cantTipoPersona.Count(); i++)
+            for (int i = 0; i < reservacion.tarifas.Count(); i++)
             {
-                cantidadPersonas += reservacion.cantTipoPersona[i];
+                cantidadPersonas += reservacion.tarifas[i].Cantidad;
             }
             return cantidadPersonas;
         }
