@@ -108,27 +108,6 @@ namespace JunquillalUserSystem.Handlers
             insertarHospederoRealiza(hospedero, reservacion, identificadorPago);
 
         }
-
-        public List<TarifaModelo> cargarTarifasCamping()
-        {
-            List<TarifaModelo> tarifas = new List<TarifaModelo>();
-            string consultaBaseDatos = "SELECT * FROM Tarifa where Actividad = 'Camping' AND Esta_Vigente = 1;";
-            DataTable tablaDeTarifas = CrearTablaConsulta(consultaBaseDatos);
-            foreach (DataRow columna in tablaDeTarifas.Rows)
-            {
-                tarifas.Add(
-                new TarifaModelo
-                {
-                    Nacionalidad = Convert.ToString(columna["Nacionalidad"]),
-                    Poblacion = Convert.ToString(columna["Poblacion"]),
-                    Actividad = Convert.ToString(columna["Actividad"]),
-                    Precio = Convert.ToDouble(columna["Precio"]),
-                    Esta_Vigente = (Convert.ToBoolean(columna["Esta_Vigente"])) ? "Tarifa vigente" : "Tarifa no vigente"
-                });
-            }
-            return tarifas;
-        }
-
     }
 
 }

@@ -34,7 +34,7 @@ namespace JunquillalUserSystem.Controllers
         {
 
             ReservacionModelo reservacion = new ReservacionModelo("Camping");
-            reservacion.tarifas = reservacionHandler.cargarTarifasCamping();
+            reservacion.tarifas = reservacionHandler.cargarTarifasCamping("Camping");
             TempData["Reservacion"] = JsonSerializer.Serialize(reservacion);
             ViewBag.TipoTurista = "reserva";
             ViewData["IsAdminArea"] = TempData["IsAdminArea"] ;

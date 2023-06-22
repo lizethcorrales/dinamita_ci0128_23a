@@ -39,12 +39,16 @@ namespace JunquillalUserSystem.Models
 			cantTipoPersona = new List<int>();
 			placasVehiculos = new List<string>();
             hospedero = new HospederoModelo();
+            tarifas = new List<TarifaModelo>();
+
+
+
         }
 
-		/*
+        /*
         * Obtiene la informacion importante del form y la guarda en el modelo reserva
         */
-		public ReservacionModelo LlenarPlacasResarva(ReservacionModelo reservacion, IFormCollection form)
+        public ReservacionModelo LlenarPlacasResarva(ReservacionModelo reservacion, IFormCollection form)
         {
 
             if (form["placa1"] != "")
