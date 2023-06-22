@@ -51,23 +51,24 @@ namespace JunquillalUserSystem.Handlers
         recibe el identificador de la reserva y la cantidad de personas de cada población*/
         public void insertar_PrecioReservacion(ReservacionModelo reservacion)
         {
-            //se indica el procedimiento almacenado a ejecutarse
-            string consulta = "insertar_PrecioReservacion";
-            SqlCommand comandoParaConsulta = new SqlCommand(consulta, conexion);
-            comandoParaConsulta.CommandType = CommandType.StoredProcedure;
-            //se agregan los parámetros que recibe el procedimiento
-            comandoParaConsulta.Parameters.AddWithValue("@identificador_Reserva", reservacion.Identificador);
-            comandoParaConsulta.Parameters.AddWithValue("@adulto_nacional", reservacion.cantTipoPersona[0]);
-            comandoParaConsulta.Parameters.AddWithValue("@ninno_nacional_mayor6", reservacion.cantTipoPersona[1]);
-            comandoParaConsulta.Parameters.AddWithValue("@ninno_nacional_menor6", reservacion.cantTipoPersona[2]);
-            comandoParaConsulta.Parameters.AddWithValue("@adulto_mayor_nacional", reservacion.cantTipoPersona[3]);
-            comandoParaConsulta.Parameters.AddWithValue("@adulto_extranjero", reservacion.cantTipoPersona[4]);
-            comandoParaConsulta.Parameters.AddWithValue("@ninno_extranjero", reservacion.cantTipoPersona[5]);
-            comandoParaConsulta.Parameters.AddWithValue("@adulto_mayor_extranjero", reservacion.cantTipoPersona[6]);
-            comandoParaConsulta.Parameters.AddWithValue("@tipoActividad", reservacion.TipoActividad);
-            conexion.Open();
-            comandoParaConsulta.ExecuteNonQuery();
-            conexion.Close();
+            foreach (var tarifa in reservacion.tarifas) {
+                if (tarifa.Cantidad > 0)
+                {
+                    //se indica el procedimiento almacenado a ejecutarse
+                    string consulta = "insertar_PrecioReservacionNuevo";
+                    SqlCommand comandoParaConsulta = new SqlCommand(consulta, conexion);
+                    comandoParaConsulta.CommandType = CommandType.StoredProcedure;
+                    //se agregan los parámetros que recibe el procedimiento
+                    comandoParaConsulta.Parameters.AddWithValue("@identificador_Reserva", reservacion.Identificador);
+                    comandoParaConsulta.Parameters.AddWithValue("@cantidad", tarifa.Cantidad);
+                    comandoParaConsulta.Parameters.AddWithValue("@poblacion", tarifa.Poblacion);
+                    comandoParaConsulta.Parameters.AddWithValue("@nacionalidad", tarifa.Nacionalidad);
+                    comandoParaConsulta.Parameters.AddWithValue("@tipoActividad", reservacion.TipoActividad);
+                    conexion.Open();
+                    comandoParaConsulta.ExecuteNonQuery();
+                    conexion.Close();
+                }
+            }
         }
 
 

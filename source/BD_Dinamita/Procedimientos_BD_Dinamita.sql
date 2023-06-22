@@ -56,7 +56,6 @@ BEGIN
 END;
 
 
-
 -- Este procedimiento agrega la información de una reserva a la tabla Reservacion
 GO
 CREATE PROCEDURE insertar_Reservacion (
@@ -73,6 +72,28 @@ BEGIN
 		VALUES (@identificacion_entrante, @primerDia_entrante, @ultimoDia_entrante, 
 		@estado_entrante, @cantidad_entrante, @motivo_entrante, @tipoActividad);
 END;
+
+GO
+CREATE PROCEDURE insertar_PrecioReservacionNuevo(
+	@identificador_Reserva AS VARCHAR(10),
+	@cantidad AS SMALLINT ,
+	@poblacion AS VARCHAR(25),
+	@nacionalidad AS VARCHAR(15),
+	@tipoActividad AS VARCHAR(10)
+) AS
+BEGIN
+
+DECLARE @precio AS DOUBLE PRECISION;
+
+SELECT @precio = Tarifa.precio
+		FROM Tarifa
+		WHERE Tarifa.Nacionalidad = @nacionalidad AND Tarifa.Poblacion = @poblacion AND Tarifa.Actividad = @tipoActividad;
+
+		INSERT INTO PrecioReservacion
+		VALUES (@identificador_Reserva, @nacionalidad ,  @poblacion ,@tipoActividad, @cantidad, @precio);
+		
+END;
+GO
 
 -- Este procedimiento agrega a la tabla PrecioReservacion, el precio por cada tipo de población registrada en la reservación.
 GO
