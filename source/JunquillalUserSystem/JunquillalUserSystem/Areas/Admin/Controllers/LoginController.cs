@@ -10,6 +10,9 @@ namespace JunquillalUserSystem.Areas.Admin.Controllers
     public class LoginController : Controller
     {
         private LoginHandler handlerLogin = new LoginHandler();
+        private const string SessionKeyNombre = "_Nombre";
+        private const string SessionKeyPuesto = "_Puesto";
+
         public IActionResult Login()
         {
             return View();
@@ -29,18 +32,13 @@ namespace JunquillalUserSystem.Areas.Admin.Controllers
                     string hashLogin = empleadoLogin.HashearContrasena($"{empleadoLogin.Contrasena}{empleadoLogin.Sal}");
                     if (String.Equals(hashLogin, hashLocal, StringComparison.OrdinalIgnoreCase))
                     {
-                        if(String.Equals(empleado.Puesto, empleado2.Puesto, StringComparison.OrdinalIgnoreCase))
-                        {
-                            //var 
-                            var direccion = RedirectToAction("Index", "Home", new { area = "Admin" });
-                            return direccion;
-                        }
-                        else
-                        {
-                            ViewData["Mensaje"] = "El puesto es incorrecto";
-                            return View();
-                        }
-                    
+                        //datos a enviar a Home
+                        HttpContext.Session.SetString(SessionKeyNombre, (string)empleado2.Nombre);
+                        var nombre = HttpContext.Session.GetString(SessionKeyNombre);
+
+                        //var puesto = HttpContext.Session.GetInt32(SessionKeyAge).ToString();
+                        var direccion = RedirectToAction("Index", "Home", new { area = "Admin" });
+                       return direccion;
                     } else
                     {
                         ViewData["Mensaje"] = "La contraseña es incorrecta";
