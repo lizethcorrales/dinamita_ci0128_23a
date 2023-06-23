@@ -66,8 +66,9 @@ namespace JunquillalAutomatedTesting
             IWebElement radioExtranjero = wait.Until(e => e.FindElement(By.Id("Extranjero")));
             IJavaScriptExecutor jsExecutor = (IJavaScriptExecutor)driver;
             jsExecutor.ExecuteScript("arguments[0].click();", radioExtranjero);
-            var dropDownProvincia = driver.FindElements(By.Id("provincia"));
-            Assert.True(dropDownProvincia.Count == 0);
+            IWebElement dropDownProvincia = driver.FindElement(By.Id("provincia"));
+            Boolean visibility = dropDownProvincia.Displayed;
+            Assert.IsFalse(visibility);
             tearDown();
         }
 
