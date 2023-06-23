@@ -23,11 +23,10 @@ namespace JunquillalAutomatedTesting
             driver.Manage().Window.Maximize();
         }
 
-        /*[TearDown]
         public void tearDown()
         {
             driver.Quit();
-        }*/
+        }
 
         [Test, Order(1)]
         public void ComprobarValidacionCampos()
@@ -49,7 +48,6 @@ namespace JunquillalAutomatedTesting
         public void ComprobarQueExisteProvinciaConIdentificacionNacional()
         {
             Setup();
-            driver.Navigate().GoToUrl("https://localhost:7042/Reservacion/FormularioCantidadPersonas");
             irAPaginaFormularioDatosPersonales();
             WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
             IWebElement radioNacional = wait.Until(e => e.FindElement(By.Id("Nacional")));
@@ -63,7 +61,6 @@ namespace JunquillalAutomatedTesting
         public void ComprobarQueDesapareceProvinciaConIdentificacionExtranjera()
         {
             Setup();
-            driver.Navigate().GoToUrl("https://localhost:7042/Reservacion/FormularioCantidadPersonas");
             irAPaginaFormularioDatosPersonales();
             WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
             IWebElement radioExtranjero = wait.Until(e => e.FindElement(By.Id("Extranjero")));
@@ -71,6 +68,7 @@ namespace JunquillalAutomatedTesting
             jsExecutor.ExecuteScript("arguments[0].click();", radioExtranjero);
             var dropDownProvincia = driver.FindElements(By.Id("provincia"));
             Assert.True(dropDownProvincia.Count == 0);
+            tearDown();
         }
 
         public void CompletarPaginaCantidadPersonas()
