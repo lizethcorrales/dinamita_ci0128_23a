@@ -78,7 +78,8 @@ namespace JunquillalAutomatedTesting
             IWebElement botonSiguiente = driver.FindElement(By.Id("siguiente_calendario"));
             inputCantidadAdultosNacional.Clear();
             inputCantidadAdultosNacional.SendKeys("1"); // Cambia valor del input
-            botonSiguiente.Click();
+            IJavaScriptExecutor jsExecutor = (IJavaScriptExecutor)driver;
+            jsExecutor.ExecuteScript("arguments[0].click();", botonSiguiente);
         }
 
         public void CompletarPaginaCalendario()
