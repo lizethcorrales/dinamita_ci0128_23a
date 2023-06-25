@@ -24,7 +24,7 @@ namespace JunquillalUserSystem.Handlers
                     Poblacion = Convert.ToString(columna["Poblacion"]),
                     Actividad = Convert.ToString(columna["Actividad"]),
                     Precio = Convert.ToDouble(columna["Precio"]),
-                    Esta_Vigente = (Convert.ToBoolean(columna["Esta_Vigente"])) ? "Tarifa vigente" : "Tarifa no vigente"
+                    Esta_Vigente = (Convert.ToBoolean(columna["Esta_Vigente"])) ? "Vigente" : "No vigente"
                 });
             }
             return tarifas;
@@ -85,7 +85,7 @@ namespace JunquillalUserSystem.Handlers
             if (TarifaNoNula(tarifa))
             {
                 string consulta = "DELETE Tarifa  WHERE Tarifa.Nacionalidad = '"+tarifa.Nacionalidad+
-                    "' AND Tarifa.Poblacion = '"+tarifa.Nacionalidad+ "' AND Tarifa.Actividad = '"+tarifa.Actividad+"';";
+                    "' AND Tarifa.Poblacion = '"+tarifa.Poblacion+ "' AND Tarifa.Actividad = '"+tarifa.Actividad+"';";
                 SqlCommand comandoParaConsulta = new SqlCommand(consulta, conexion);
                 try
                 {
