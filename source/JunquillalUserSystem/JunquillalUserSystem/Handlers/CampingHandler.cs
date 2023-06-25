@@ -82,9 +82,7 @@ namespace JunquillalUserSystem.Handlers
         public void InsertarEnBaseDatos(HospederoModelo hospedero , ReservacionModelo reservacion)
         {
             //llama al método para insertar un hospedero
-            insertarHospedero(hospedero);
-            //obtiene la cantidad total de personas en la reserva 
-            int cantidadPersonas = sacarCantidadPersonasTotal(reservacion);
+            insertarHospedero(hospedero);   
 
             //llama al método para insertar una reserva
             insertarReserva(reservacion, hospedero, "0");
@@ -110,7 +108,6 @@ namespace JunquillalUserSystem.Handlers
             insertarHospederoRealiza(hospedero, reservacion, identificadorPago);
 
         }
-
     }
 
 }

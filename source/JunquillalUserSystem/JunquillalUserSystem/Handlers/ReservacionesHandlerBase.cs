@@ -51,23 +51,24 @@ namespace JunquillalUserSystem.Handlers
         recibe el identificador de la reserva y la cantidad de personas de cada población*/
         public void insertar_PrecioReservacion(ReservacionModelo reservacion)
         {
-            //se indica el procedimiento almacenado a ejecutarse
-            string consulta = "insertar_PrecioReservacion";
-            SqlCommand comandoParaConsulta = new SqlCommand(consulta, conexion);
-            comandoParaConsulta.CommandType = CommandType.StoredProcedure;
-            //se agregan los parámetros que recibe el procedimiento
-            comandoParaConsulta.Parameters.AddWithValue("@identificador_Reserva", reservacion.Identificador);
-            comandoParaConsulta.Parameters.AddWithValue("@adulto_nacional", reservacion.cantTipoPersona[0]);
-            comandoParaConsulta.Parameters.AddWithValue("@ninno_nacional_mayor6", reservacion.cantTipoPersona[1]);
-            comandoParaConsulta.Parameters.AddWithValue("@ninno_nacional_menor6", reservacion.cantTipoPersona[2]);
-            comandoParaConsulta.Parameters.AddWithValue("@adulto_mayor_nacional", reservacion.cantTipoPersona[3]);
-            comandoParaConsulta.Parameters.AddWithValue("@adulto_extranjero", reservacion.cantTipoPersona[4]);
-            comandoParaConsulta.Parameters.AddWithValue("@ninno_extranjero", reservacion.cantTipoPersona[5]);
-            comandoParaConsulta.Parameters.AddWithValue("@adulto_mayor_extranjero", reservacion.cantTipoPersona[6]);
-            comandoParaConsulta.Parameters.AddWithValue("@tipoActividad", reservacion.TipoActividad);
-            conexion.Open();
-            comandoParaConsulta.ExecuteNonQuery();
-            conexion.Close();
+            foreach (var tarifa in reservacion.tarifas) {
+                if (tarifa.Cantidad > 0)
+                {
+                    //se indica el procedimiento almacenado a ejecutarse
+                    string consulta = "insertar_PrecioReservacionNuevo";
+                    SqlCommand comandoParaConsulta = new SqlCommand(consulta, conexion);
+                    comandoParaConsulta.CommandType = CommandType.StoredProcedure;
+                    //se agregan los parámetros que recibe el procedimiento
+                    comandoParaConsulta.Parameters.AddWithValue("@identificador_Reserva", reservacion.Identificador);
+                    comandoParaConsulta.Parameters.AddWithValue("@cantidad", tarifa.Cantidad);
+                    comandoParaConsulta.Parameters.AddWithValue("@poblacion", tarifa.Poblacion);
+                    comandoParaConsulta.Parameters.AddWithValue("@nacionalidad", tarifa.Nacionalidad);
+                    comandoParaConsulta.Parameters.AddWithValue("@tipoActividad", reservacion.TipoActividad);
+                    conexion.Open();
+                    comandoParaConsulta.ExecuteNonQuery();
+                    conexion.Close();
+                }
+            }
         }
 
 
@@ -111,9 +112,9 @@ namespace JunquillalUserSystem.Handlers
         public int sacarCantidadPersonasTotal(ReservacionModelo reservacion)
         {
             int cantidadPersonas = 0;
-            for (int i = 0; i < reservacion.cantTipoPersona.Count(); i++)
+            for (int i = 0; i < reservacion.tarifas.Count(); i++)
             {
-                cantidadPersonas += reservacion.cantTipoPersona[i];
+                cantidadPersonas += reservacion.tarifas[i].Cantidad;
             }
             return cantidadPersonas;
         }
@@ -271,6 +272,36 @@ namespace JunquillalUserSystem.Handlers
             }
 
             return new string(result);
+        }
+
+        public List<TarifaModelo> cargarTarifasCamping(string opcion)
+        {
+            List<TarifaModelo> tarifas = new List<TarifaModelo>();
+
+            string consultaBaseDatos = "";
+
+            if (opcion == "Camping")
+            {
+                consultaBaseDatos = "SELECT * FROM Tarifa where Actividad = 'Camping' AND Esta_Vigente = 1;";
+            }
+            else
+            {
+                consultaBaseDatos = "SELECT * FROM Tarifa where Actividad = 'Picnic' AND Esta_Vigente = 1;";
+            }
+            DataTable tablaDeTarifas = CrearTablaConsulta(consultaBaseDatos);
+            foreach (DataRow columna in tablaDeTarifas.Rows)
+            {
+                tarifas.Add(
+                new TarifaModelo
+                {
+                    Nacionalidad = Convert.ToString(columna["Nacionalidad"]),
+                    Poblacion = Convert.ToString(columna["Poblacion"]),
+                    Actividad = Convert.ToString(columna["Actividad"]),
+                    Precio = Convert.ToDouble(columna["Precio"]),
+                    Esta_Vigente = (Convert.ToBoolean(columna["Esta_Vigente"])) ? "Tarifa vigente" : "Tarifa no vigente"
+                });
+            }
+            return tarifas;
         }
 
     }

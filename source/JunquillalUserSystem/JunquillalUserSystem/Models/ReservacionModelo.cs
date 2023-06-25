@@ -1,4 +1,6 @@
-﻿namespace JunquillalUserSystem.Models
+﻿using JunquillalUserSystem.Models;
+
+namespace JunquillalUserSystem.Models
 
 {
     public class ReservacionModelo
@@ -16,6 +18,7 @@
 
         public Dictionary<string, Tuple<int, String>> tipoPersona;
 		public HospederoModelo hospedero { get; set; }
+        public  List<TarifaModelo> tarifas { get; set; }
 
 
 
@@ -25,6 +28,7 @@
 			cantTipoPersona = new List<int>();
             placasVehiculos = new List<string>();
             hospedero = new HospederoModelo();
+            tarifas = new List<TarifaModelo>();
 
         }
 
@@ -35,12 +39,16 @@
 			cantTipoPersona = new List<int>();
 			placasVehiculos = new List<string>();
             hospedero = new HospederoModelo();
+            tarifas = new List<TarifaModelo>();
+
+
+
         }
 
-		/*
+        /*
         * Obtiene la informacion importante del form y la guarda en el modelo reserva
         */
-		public ReservacionModelo LlenarPlacasResarva(ReservacionModelo reservacion, IFormCollection form)
+        public ReservacionModelo LlenarPlacasResarva(ReservacionModelo reservacion, IFormCollection form)
         {
 
             if (form["placa1"] != "")
@@ -77,16 +85,16 @@
          */
         public ReservacionModelo LlenarCantidadPersonas(ReservacionModelo reservacion, IFormCollection form)
         {
-
-            reservacion.cantTipoPersona.Add(int.Parse(form["cantidad_Adultos_Nacional"]));
-            reservacion.cantTipoPersona.Add(int.Parse(form["cantidad_Ninnos_Nacional_mayor6"]));
-            reservacion.cantTipoPersona.Add(int.Parse(form["cantidad_Ninnos_Nacional_menor6"]));
-            reservacion.cantTipoPersona.Add(int.Parse(form["cantidad_adulto_mayor"]));
-            reservacion.cantTipoPersona.Add(int.Parse(form["cantidad_Adultos_Extranjero"]));
-            reservacion.cantTipoPersona.Add(int.Parse(form["cantidad_ninnos_extranjero"]));
-            reservacion.cantTipoPersona.Add(int.Parse(form["cantidad_adultoMayor_extranjero"]));
-
-
+            int i = 0;
+            foreach (var key in form.Keys)
+            {
+                
+                if (int.TryParse(form[key], out int value))
+                {
+                    reservacion.tarifas[i].Cantidad = value;
+                    i++;
+                }
+            }
             return reservacion;
         }
 
