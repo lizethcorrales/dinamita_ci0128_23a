@@ -59,6 +59,8 @@ namespace JunquillalAutomatedTesting
                 IWebElement mensajeErrorIdentificacion = driver.FindElement(By.Id("errorMessage"));
                 Assert.That(mensajeErrorIdentificacion.Text, Is.EqualTo("Formato de fecha inválido. Utiliza el formato yyyy-mm-dd"));
             }
+
+            TearDown();
         }
     }
 
