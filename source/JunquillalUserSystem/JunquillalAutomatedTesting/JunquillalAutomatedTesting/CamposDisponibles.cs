@@ -31,7 +31,7 @@ namespace JunquillalAutomatedTesting
         [TearDown]
         public void tearDown()
         {
-            driver.Quit();
+            //driver.Quit();
         }
 
         [Test]
@@ -43,6 +43,27 @@ namespace JunquillalAutomatedTesting
             IWebElement mensajeErrorCampos = driver.FindElement(By.Id("mensajeErrorCampos"));
             Assert.AreEqual("Debe de ingresar una fecha válida", mensajeErrorCampos.Text);
         }
+        [Test]
+        public void CamposDisponibles_BusquedaDeFormaCorrecta()
+        {
+            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+            IWebElement inputFechaEntrada = wait.Until(e => e.FindElement(By.Id("fecha-entrada")));
+            IWebElement botonBuscar = wait.Until(e => e.FindElement(By.Id("buscar")));
+           
+            
+            inputFechaEntrada.Click();
+            
+            IWebElement fechaEntradaIngresada = driver.FindElement(By.LinkText("28"));
+            fechaEntradaIngresada.Click();
+
+            botonBuscar.Click();
+            IWebElement mensajeErrorCampos = driver.FindElement(By.Id("mensajeErrorCampos"));
+            Assert.IsEmpty(mensajeErrorCampos.Text);
+
+
+        }
+
+
 
     }
 }
