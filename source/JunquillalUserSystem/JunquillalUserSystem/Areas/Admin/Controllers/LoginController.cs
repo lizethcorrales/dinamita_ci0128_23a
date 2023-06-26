@@ -32,11 +32,10 @@ namespace JunquillalUserSystem.Areas.Admin.Controllers
                     string hashLogin = empleadoLogin.HashearContrasena($"{empleadoLogin.Contrasena}{empleadoLogin.Sal}");
                     if (String.Equals(hashLogin, hashLocal, StringComparison.OrdinalIgnoreCase))
                     {
-                        //datos a enviar a Home
+                        //Iniciamos la sesion con ciertos datos
                         HttpContext.Session.SetString(SessionKeyNombre, (string)empleado2.Nombre);
-                        var nombre = HttpContext.Session.GetString(SessionKeyNombre);
-
-                        //var puesto = HttpContext.Session.GetInt32(SessionKeyAge).ToString();
+                        HttpContext.Session.SetString(SessionKeyPuesto, (string)empleado2.Puesto);
+                        //var nombre = HttpContext.Session.GetString(SessionKeyNombre);
                         var direccion = RedirectToAction("Index", "Home", new { area = "Admin" });
                        return direccion;
                     } else

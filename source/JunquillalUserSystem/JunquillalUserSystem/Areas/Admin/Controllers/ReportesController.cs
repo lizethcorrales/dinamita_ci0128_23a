@@ -38,6 +38,7 @@ namespace JunquillalUserSystem.Areas.Admin.Controllers
 
         public IActionResult Reportes()
         {
+            ViewData["Puesto"] = HttpContext.Session.GetString("_Puesto");
             return View();
         }
 

@@ -12,7 +12,7 @@ builder.Services.AddScoped<IMensajeConfirmacionImplementacion,MensajeConfirmacio
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession(options =>
 {
-    options.IdleTimeout = TimeSpan.FromMinutes(15);
+    options.IdleTimeout = TimeSpan.FromMinutes(30);
 
 });
 

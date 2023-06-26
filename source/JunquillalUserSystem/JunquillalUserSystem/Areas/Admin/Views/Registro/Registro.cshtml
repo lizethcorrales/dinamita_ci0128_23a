@@ -1,0 +1,91 @@
+﻿@{
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+@{
+    ViewData["Title"] = "Registro Usuario";
+}
+
+<head>
+    <meta http-equiv="content-type" content="text/html" ; charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>RegistroUsuario</title>
+</head>
+
+<body>
+    <div>
+        <div>
+            <div>
+                <h2> Bienvenido a la seccion de registro, administrador </h2>
+                <h4>Introduzca los datos del usuario que desea registrar en el sistema</h4>
+            </div>
+            <div>
+                <form id="infoUsuarioNuevo">
+                    <div class="UsuarioNuevo" id="divUsuarioNuevo">
+
+                        <label for="UsuarioNombre"> Nombre: </label>
+                        <br>
+                        <input placeholder="" type="text" id="nombre" name="Nombre" maxlength="20" />
+                        <br>
+
+                        <label for="UsuarioApellidoP"> Primer Apellido: </label>
+                        <br>
+                        <input placeholder="" type="text" id="papellido" name="PApellido" maxlength="30" />
+                        <br>
+
+                        <label for="UsuarioApellidoS"> Segundo Apellido: </label>
+                        <br>
+                        <input placeholder="" type="text" id="sapellido" name="SApellido" maxlength="30" />
+                    </div>
+
+                    <div class="cedula" id="divCedula">
+
+                        <label for=»cedula»> Cedula: </label>
+                        <br>
+
+                        <input type="text" id="cedula" name="Cedula">
+                        <br>
+                        <p class="datoError" id="cedulaError"></p>
+                    </div>
+
+                    <div class="contra" id="divCorreo">
+
+                        <label for=»correo»> Correo: </label>
+                        <br>
+
+                        <input type="text" id="correo" name="Correo">
+                        <br>
+                        <p class="datoError" id="correoError"></p>
+                    </div>
+
+                    <div class="contra" id="divContrasena">
+
+                        <label for=»contrasena»> Contraseña: </label>
+                        <br>
+
+                        <input type="password" id="contrasena" name="Contrasena">
+                        <br>
+                        <label for=»contrasenaDN»> Digite de nuevo la contraseña: </label>
+                        <br>
+
+                        <input type="password" id="contrasenaDN" name="ContrasenaDN">
+                        <p class="datoError" id="contraError"></p>
+                    </div>
+
+
+                    <div class="puesto" id="divPuesto">
+                        <p> Puesto: </p>
+                        <input type="radio" id="Administrador" name="puesto" value="Administrador" checked>
+                        <label for="Administrador">Administrador</label>
+                        <input type="radio" id="Operativo" name="puesto" value="Operativo">
+                        <label for="Operativo">Extranjero</label><br>
+
+                    </div>
+
+                    <p class="datoError" id="usuarioError"></p>
+                </form>
+                <br>
+                <button id="botonContinuar" class="botonContinuar" type="button">Iniciar Sesion</button>
+            </div>
+        </div>
+    </div>
+</body>

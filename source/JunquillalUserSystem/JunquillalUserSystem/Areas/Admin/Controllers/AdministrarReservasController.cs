@@ -14,18 +14,21 @@ namespace JunquillalUserSystem.Areas.Admin.Controllers
         public IActionResult Reservas()
         {
             List<ReservacionModelo> listaReservas = new List<ReservacionModelo>();
+            ViewData["Puesto"] = HttpContext.Session.GetString("_Puesto");
             return View(listaReservas);
         }
 
         public IActionResult ReservasPorFecha(string fecha)
         {
             List<ReservacionModelo> listaReservas = administrarHandler.ObtenerReservas(fecha,"fecha");
+            ViewData["Puesto"] = HttpContext.Session.GetString("_Puesto");
             return View("Reservas", listaReservas);
         }
 
         public IActionResult ReservasPorIdentificador(string identificador)
         {
             List<ReservacionModelo> listaReservas = administrarHandler.ObtenerReservas(identificador,"identificador");
+            ViewData["Puesto"] = HttpContext.Session.GetString("_Puesto");
             return View("Reservas", listaReservas);
         }
 

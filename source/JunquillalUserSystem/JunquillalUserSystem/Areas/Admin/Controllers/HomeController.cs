@@ -10,11 +10,14 @@ namespace JunquillalUserSystem.Areas.Admin.Controllers
     public class HomeController : Controller
     {
         private string usuario = "";
+        private string puesto = "";
         public IActionResult Index()
         {
             usuario = HttpContext.Session.GetString("_Nombre");
+            puesto = HttpContext.Session.GetString("_Puesto");
             TempData["IsAdminArea"] = "Admin"; // O establece el valor según corresponda
             ViewData["Nombre"] = usuario;
+            ViewData["Puesto"] = puesto;
             return View();
         }
     }
