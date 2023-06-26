@@ -19,8 +19,8 @@ namespace JunquillalUserSystem.Areas.Admin.Controllers
                 TempData["Mensaje"] = "Recuerde completar todos los solicitados";
             } else
             {
-                List<PrecioReservacionDesglose> listaCamping = reportesHandler.obtenerReporte(Request.Form, "Camping");
-                List<PrecioReservacionDesglose> listaPicnic = reportesHandler.obtenerReporte(Request.Form, "Picnic");
+                List<ReportesModel> listaCamping = reportesHandler.obtenerReporte(Request.Form, "Camping");
+                List<ReportesModel> listaPicnic = reportesHandler.obtenerReporte(Request.Form, "Picnic");
 
                 listaCamping.AddRange(listaPicnic);            
 

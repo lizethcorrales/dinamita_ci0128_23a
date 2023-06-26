@@ -17,7 +17,7 @@ namespace JunquillalUserSystem.Areas.Admin.Controllers.Handlers
     {
         public ReportesHandler() { }
 
-        public List<PrecioReservacionDesglose> obtenerReporte(IFormCollection form, string actividad)
+        public List<ReportesModel> obtenerReporte(IFormCollection form, string actividad)
         {
             string primerDia = form["fecha-entrada"];
             string ultimoDia = "";
@@ -31,31 +31,39 @@ namespace JunquillalUserSystem.Areas.Admin.Controllers.Handlers
             {
                 ultimoDia = form["fecha-salida"];
             }
-            List<PrecioReservacionDesglose> precioReservacion = new List<PrecioReservacionDesglose>();
+            List<ReportesModel> reportes = new List<ReportesModel>();
 
-            string consultaBaseDatos = @"SELECT P.Nacionalidad, P.Poblacion, P.Actividad, SUM(P.Cantidad) AS Cantidad_Total, SUM(P.Cantidad*P.PrecioAlHacerReserva) AS Ventas_Totales
-	                                    FROM PrecioReservacion AS P JOIN Reservacion AS R ON P.IdentificadorReserva = R.IdentificadorReserva
-	                                    WHERE R.Estado != '2' AND R.PrimerDia >= '" + primerDia + "' AND R.UltimoDia <= '" + ultimoDia + "' AND P.Actividad = '" + actividad + "' GROUP BY  P.Nacionalidad, P.Poblacion, P.Actividad";
+            string consultaBaseDatos = @"SELECT R.PrimerDia, P.Nacionalidad,PR.NombreProvincia, TN.NombrePais, P.Poblacion, P.Actividad, SUM(P.Cantidad) AS Cantidad_Total, SUM(P.Cantidad*P.PrecioAlHacerReserva) AS Ventas_Totales
+                                        FROM PrecioReservacion AS P LEFT JOIN Reservacion AS R ON P.IdentificadorReserva = R.IdentificadorReserva 
+                                        LEFT JOIN ProvinciaReserva AS PR ON PR.IdentificadorReserva = R.IdentificadorReserva LEFT JOIN TieneNacionalidad AS TN 
+                                        ON TN.IdentificadorReserva = R.IdentificadorReserva
+                                        WHERE R.Estado != '2' AND R.PrimerDia >= '" + primerDia + "' AND R.UltimoDia <= '" 
+                                        + ultimoDia + "' AND P.Actividad = '" + actividad + "' " +
+                                        "GROUP BY  R.IdentificadorReserva, P.Nacionalidad, P.Poblacion, P.Actividad, R.PrimerDia, PR.NombreProvincia, TN.NombrePais ORDER BY R.PrimerDia;";
 
             DataTable tablaDeReporte = CrearTablaConsulta(consultaBaseDatos);
             foreach (DataRow columna in tablaDeReporte.Rows)
             {
-                precioReservacion.Add(
-                new PrecioReservacionDesglose
+                reportes.Add(
+                new ReportesModel
                 {
+                    PrimerDia = Convert.ToString(columna["PrimerDia"]).Substring(0, 9),
                     Nacionalidad = Convert.ToString(columna["Nacionalidad"]),
+                    NombreProvincia = Convert.ToString(columna["NombreProvincia"]),
+                    NombrePais = Convert.ToString(columna["NombrePais"]),
                     Poblacion = Convert.ToString(columna["Poblacion"]),
                     Actividad = Convert.ToString(columna["Actividad"]),
                     Cantidad = Convert.ToInt32(columna["Cantidad_Total"]),
-                    PrecioAlHacerReserva = Convert.ToDouble(columna["Ventas_Totales"])
-                });
+                    VentasTotales = Convert.ToDouble(columna["Ventas_Totales"])
+                }) ;
+                System.Diagnostics.Debug.WriteLine(columna["PrimerDia"]);
             }
 
-            return precioReservacion;
+            return reportes;
         }
 
 
-        public bool escribirCSV(List<PrecioReservacionDesglose> precioReservacion, IFormCollection form)
+        public bool escribirCSV(List<ReportesModel> reportes, IFormCollection form)
         {
             string primerDia = form["fecha-entrada"];
             string ultimoDia = "";
@@ -78,10 +86,10 @@ namespace JunquillalUserSystem.Areas.Admin.Controllers.Handlers
             StringBuilder salida = new StringBuilder();
             List<string> lista = new List<string>();
 
-            string cadena = "Nacionalidad" + separador + "Poblacion" + separador + "Actividad" + separador + "Cantidad" + separador + "Ventas" + "\n";
+            string cadena = "Fecha" + separador + "Nacionalidad" + separador + "Nombre Provincia"+ separador + "Nombre Pais" + separador + "Poblacion" + separador + "Actividad" + separador + "Cantidad" + separador + "Ventas" + "\n";
             try
             {
-                foreach (PrecioReservacionDesglose item in precioReservacion)
+                foreach (ReportesModel item in reportes)
                 {
                     cadena += agregarDato(item, separador);
                     cadena += "\n";
@@ -103,12 +111,13 @@ namespace JunquillalUserSystem.Areas.Admin.Controllers.Handlers
             }
         }
 
-        public string agregarDato(PrecioReservacionDesglose precio, string separador)
+        public string agregarDato(ReportesModel reporte, string separador)
         {
             try
             {
-                return (precio.Nacionalidad + separador + precio.Poblacion + separador + precio.Actividad
-                    + separador + precio.Cantidad + separador + precio.PrecioAlHacerReserva);
+                return (reporte.PrimerDia + separador +reporte.Nacionalidad + separador +reporte.NombreProvincia + separador + 
+                    reporte.NombrePais + separador+ reporte.Poblacion + separador + reporte.Actividad
+                    + separador + reporte.Cantidad + separador + reporte.VentasTotales);
             } catch (NullReferenceException ex)
             {
                 return null;
