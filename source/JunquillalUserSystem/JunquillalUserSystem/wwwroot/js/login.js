@@ -2,7 +2,7 @@
 var usuario = document.getElementById("usuario");
 const divContrasena = document.querySelector("#divContrasena");
 var contrasena = document.getElementById("contrasena");
-const cedulaValida = new RegExp("[1-9][1-9]{8}");
+const cedulaValida = new RegExp("[1-9][0-9]{8}");
 var botonContinuar = document.getElementById("botonContinuar");
 var puesto = document.getElementById("Puesto");
 var form = document.getElementById("infoUsuario");

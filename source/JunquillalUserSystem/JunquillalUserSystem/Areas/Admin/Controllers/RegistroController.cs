@@ -13,6 +13,14 @@ namespace JunquillalUserSystem.Areas.Admin.Controllers
 
         public IActionResult Registro()
         {
+            ViewData["Puesto"] = HttpContext.Session.GetString("_Puesto");
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Registro(TrabajadorModelo empleado)
+        {
+            ViewData["Puesto"] = HttpContext.Session.GetString("_Puesto");
             return View();
         }
     }
