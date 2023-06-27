@@ -14,6 +14,23 @@ BEGIN
 	Update Reservacion Set Estado = 2 Where  IdentificadorReserva IN (SELECT IdentificadorReserva FROM DELETED);
 END;
 
-
+drop trigger eliminarTarifa;
 GO
+CREATE TRIGGER eliminarTarifa
+ON Tarifa INSTEAD OF DELETE 
+AS 
+BEGIN 
+
+	DECLARE @Nacionalidad AS VARCHAR(30);
+	DECLARE @Poblacion AS VARCHAR(30);
+	DECLARE @Actividad AS VARCHAR(30);
+
+	SELECT @Nacionalidad = deleted.Nacionalidad, @Poblacion = deleted.Poblacion, @Actividad = deleted.Actividad
+	FROM deleted;
+
+	UPDATE Tarifa
+	SET Tarifa.Esta_Vigente = 0
+	WHERE Tarifa.Nacionalidad = @Nacionalidad AND Tarifa.Poblacion = @Poblacion AND Tarifa.Actividad = @Actividad;
+
+END;
 
