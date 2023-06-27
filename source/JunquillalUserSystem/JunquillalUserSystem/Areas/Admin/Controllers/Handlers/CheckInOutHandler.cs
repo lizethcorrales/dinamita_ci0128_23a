@@ -56,6 +56,24 @@ namespace JunquillalUserSystem.Handlers
             return parcelas;
         }
 
+        public void CheckOutReserva(string identificador)
+        {
+            string consulta = $"Update  Reservacion Set Estado = 3 Where  IdentificadorReserva  = '{identificador}'";
+            SqlCommand comandoParaConsulta = new SqlCommand(consulta, conexion);
+
+            try
+            {
+                conexion.Open();
+                comandoParaConsulta.ExecuteNonQuery();
+                conexion.Close();
+  
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error al ejecutar la consulta: " + ex.Message);
+            }
+        }
+
 
     }
 

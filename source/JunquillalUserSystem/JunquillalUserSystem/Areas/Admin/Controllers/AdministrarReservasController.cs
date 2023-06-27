@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using JunquillalUserSystem.Models;
 using JunquillalUserSystem.Areas.Admin.Controllers.Handlers;
-
+using JunquillalUserSystem.Handlers;
 
 namespace JunquillalUserSystem.Areas.Admin.Controllers
 {
@@ -10,7 +10,7 @@ namespace JunquillalUserSystem.Areas.Admin.Controllers
     {
 
         private AdministrarReservasHandler administrarHandler = new AdministrarReservasHandler();
-
+        private CheckInOutHandler checkInOutHandler  = new CheckInOutHandler();
         public IActionResult Reservas()
         {
             List<ReservacionModelo> listaReservas = new List<ReservacionModelo>();
@@ -32,6 +32,14 @@ namespace JunquillalUserSystem.Areas.Admin.Controllers
         public IActionResult EliminarReserva(string identificador)
         {
             administrarHandler.EliminarReservacion(identificador);
+            return RedirectToAction("Reservas");
+
+        }
+
+        public IActionResult CheckOutReserva(string identificador)
+        {
+          
+            checkInOutHandler.CheckOutReserva(identificador);
             return RedirectToAction("Reservas");
 
         }

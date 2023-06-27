@@ -10,6 +10,8 @@ namespace JunquillalUserSystem.Models
 		public string TipoActividad { get; set; }
 		public string UltimoDia { get; set; }
 
+        public int Estado { get; set; }
+
         public string Identificador { get; set; }
 
         public List<int> cantTipoPersona { get; set; }
