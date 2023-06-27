@@ -22,7 +22,7 @@ namespace JunquillalAutomatedTesting
         {
             driver = new ChromeDriver();
         }
-        [SetUp]
+    
         public void Setup()
         {
             driver.Navigate().GoToUrl("https://localhost:7042/Visita/FormularioCantidadPersonas");
@@ -31,12 +31,12 @@ namespace JunquillalAutomatedTesting
         }
         public void tearDown()
         {
-            // driver.Quit();
+            driver.Quit();
         }
-        [Test]
+        [Test, Order(1)]
         public void HacerUnaVisita_FormaIncorrectaNoSeAgregaNingunDato()
         {
-
+            Setup();
             WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
             IWebElement botonSiguiente = wait.Until(e => e.FindElement(By.Id("siguiente_calendario")));
             IJavaScriptExecutor jsExecutor = (IJavaScriptExecutor)driver;
@@ -47,7 +47,7 @@ namespace JunquillalAutomatedTesting
                 IWebElement mensajeError = driver.FindElement(By.Id("error"));
                 Assert.That(mensajeError.Text, Is.EqualTo("Revise que haya al menos una persona"));
             }
-
+            tearDown();
         }
 
     }

@@ -8,10 +8,10 @@ using System.Xml.Linq;
 namespace JunquillalAutomatedTesting
 {
     [TestFixture]
-    public class Tests
+    public class TestsDatos
     {
         IWebDriver driver = null;
-        public Tests()
+        public TestsDatos()
         {
             driver = new ChromeDriver();
         }
