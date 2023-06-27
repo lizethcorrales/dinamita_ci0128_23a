@@ -10,6 +10,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Data;
 using System.Text.RegularExpressions;
+using Spire.Xls;
 
 namespace JunquillalUserSystem.Areas.Admin.Controllers.Handlers
 {
@@ -47,7 +48,7 @@ namespace JunquillalUserSystem.Areas.Admin.Controllers.Handlers
                 reportes.Add(
                 new ReportesModel
                 {
-                    PrimerDia = Convert.ToString(columna["PrimerDia"]).Substring(0, 9),
+                    PrimerDia = DateOnly.FromDateTime(Convert.ToDateTime(columna["PrimerDia"])).ToString(),
                     Nacionalidad = Convert.ToString(columna["Nacionalidad"]),
                     NombreProvincia = Convert.ToString(columna["NombreProvincia"]),
                     NombrePais = Convert.ToString(columna["NombrePais"]),
@@ -86,6 +87,7 @@ namespace JunquillalUserSystem.Areas.Admin.Controllers.Handlers
             StringBuilder salida = new StringBuilder();
             List<string> lista = new List<string>();
 
+            string header = @"<div>Prueba</div>";
             string cadena = "Fecha" + separador + "Nacionalidad" + separador + "Nombre Provincia"+ separador + "Nombre Pais" + separador + "Poblacion" + separador + "Actividad" + separador + "Cantidad" + separador + "Ventas" + "\n";
             try
             {
@@ -98,6 +100,7 @@ namespace JunquillalUserSystem.Areas.Admin.Controllers.Handlers
             {
                 return false;
             }
+            lista.Add(header);
             lista.Add(cadena);
             try { 
                 for (int i = 0; i < lista.Count; ++i)
@@ -122,6 +125,89 @@ namespace JunquillalUserSystem.Areas.Admin.Controllers.Handlers
             {
                 return null;
             }            
+        }
+
+        public bool escribirXLS(List<ReportesModel> reportes, IFormCollection form)
+        {
+            bool resultado = true;
+            string primerDia = form["fecha-entrada"];
+            string ultimoDia = "";
+
+            var tipoReporte = form["reportes"];
+
+            if (tipoReporte == "diario")
+            {
+                ultimoDia = primerDia;
+            }
+            else
+            {
+                ultimoDia = form["fecha-salida"];
+            }
+            //Create a Workbook instance
+            Workbook workbook = new Workbook();
+            //Remove default worksheets
+            workbook.Worksheets.Clear();
+            //Add a worksheet and name it
+            var dateNow = "del_" + primerDia + "_a_" + ultimoDia;
+            string archivo = "reporte_" + dateNow + ".xlsx";
+            Worksheet worksheet = workbook.Worksheets.Add(archivo);
+            //Create a one-dimensional array
+            string[] nombreColumnas = new string[] { "Fecha", "Tipo de Visitante", "Lugar de Procedencia", "Estatus", "Tipo de Visita", "Cantidad" };
+            //Create a two-dimensional array
+            string[,] contenidoDeExcel = new string[reportes.Count, nombreColumnas.Length];
+            string nacionalidad = ""                ;
+            string NACIONAL = "Nacional";
+
+
+            for (int fila = 0; fila < reportes.Count; ++fila)
+            {
+
+                for (int columna = 0; columna < nombreColumnas.Length; ++columna)
+                {
+                    if (fila == 0) { 
+                        contenidoDeExcel[fila, columna] = nombreColumnas[columna];
+                    } else {
+                        if (columna == 0)
+                        {
+                            contenidoDeExcel[fila, columna] = reportes[fila].PrimerDia;
+                        } else if (columna == 1)
+                        {
+                            nacionalidad = reportes[fila].Nacionalidad;
+                            contenidoDeExcel[fila, columna] = nacionalidad;
+                        }
+                        else if (columna == 2)
+                        {
+                            if (nacionalidad.Equals(NACIONAL))
+                            {
+                                contenidoDeExcel[fila, columna] = reportes[fila].NombreProvincia;
+                            } else
+                            {
+                                contenidoDeExcel[fila, columna] = reportes[fila].NombrePais;
+                            }
+                            
+                        }
+                        else if (columna == 3)
+                        {
+                            contenidoDeExcel[fila, columna] = reportes[fila].Poblacion;
+                        }
+                        else if (columna == 4)
+                        {
+                            contenidoDeExcel[fila, columna] = reportes[fila].Actividad;
+                        }
+                        else if (columna == 5)
+                        {
+                            contenidoDeExcel[fila, columna] = reportes[fila].Cantidad.ToString();
+                        }
+                    }
+                }
+            }
+            //Write the array to the worksheet starting from the cell A3
+            worksheet.InsertArray(contenidoDeExcel, 1, 1);
+            //Auto fit column width in the located range
+            worksheet.AllocatedRange.AutoFitColumns();
+            //Save to an Excel file
+            workbook.SaveToFile(archivo, ExcelVersion.Version2016);
+            return resultado;
         }
 
     }

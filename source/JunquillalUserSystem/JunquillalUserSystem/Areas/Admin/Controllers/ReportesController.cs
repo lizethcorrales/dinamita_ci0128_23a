@@ -24,7 +24,7 @@ namespace JunquillalUserSystem.Areas.Admin.Controllers
 
                 listaCamping.AddRange(listaPicnic);            
 
-                bool exito = reportesHandler.escribirCSV(listaCamping, Request.Form);
+                bool exito = reportesHandler.escribirXLS(listaCamping, Request.Form);
                 if (exito)
                 {
                     TempData["Mensaje"] = "El reporte fue creado exitosamente";
