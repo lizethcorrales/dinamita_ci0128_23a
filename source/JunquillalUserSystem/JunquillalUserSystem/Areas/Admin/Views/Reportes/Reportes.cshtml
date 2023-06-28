@@ -32,19 +32,19 @@
             <label for="diario">Diario</label>
             <input type="radio" id="visitas" name="reportes" value="visitas">
             <label for="visitas">Rango específico</label><br>
-        </div>
-
-
-        <div class="contorno gray"> 
-
+            <h5>Elija el reporte a generar</h5>
             <input type="radio" id="visitacion" name="tipoReporte" value="visitacion" checked>
             <label for="visitacion">Reporte de Visitación</label>
             <input type="radio" id="liquidacion" name="tipoReporte" value="liquidacion">
             <label for="liquidacion">Reporte de Liquidación</label>
+        </div>
+        <br>
+
+        <div class="contorno gray"> 
+
 
             <form id="fechas" action="Reservaciones" method="POST">
                 <div class="centrar">
-
                     <div class="flex">
                         <div id="calendarioDiario">
                             <label class="centrar" id="label-fecha-entrada" for="fecha-entrada">Fecha de Inicial:</label><br><br>

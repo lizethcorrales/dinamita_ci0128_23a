@@ -13,6 +13,8 @@ using System.Text.RegularExpressions;
 using Spire.Xls;
 using System.ComponentModel;
 using System.Drawing;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using Spire.Xls.Core;
 
 namespace JunquillalUserSystem.Areas.Admin.Controllers.Handlers
 {
@@ -134,6 +136,9 @@ namespace JunquillalUserSystem.Areas.Admin.Controllers.Handlers
             fusionarCeldas(archivo, "A1:" + letra+"1");
             int cantidadFilas = contenidoDeExcel.GetLength(0);
             alinearCeldasHaciaIzquierda(archivo, "A2:" + letra + cantidadFilas);
+            cambiarFontColor(archivo, "A2:" + letra + "2");
+            agregarBold(archivo, "A1:" + letra + "2");
+            agregarBordeACeldas(archivo, "A1:" + letra + cantidadFilas);
             return resultado;
         }
 
@@ -296,6 +301,47 @@ namespace JunquillalUserSystem.Areas.Admin.Controllers.Handlers
             Worksheet sheet = workbook.Worksheets[0];
             CellRange range = sheet.Range[rangoCeldas];
             range.Style.HorizontalAlignment = HorizontalAlignType.Left;
+            workbook.SaveToFile(nombreArchivo, ExcelVersion.Version2016);
+        }
+
+        public void agregarBold(string nombreArchivo, string rangoCeldas)
+        {
+            Workbook workbook = new Workbook();
+            workbook.LoadFromFile(nombreArchivo);
+            Worksheet sheet = workbook.Worksheets[0];
+            CellRange range = sheet.Range[rangoCeldas];
+            range.Style.Font.IsBold = true;
+            workbook.SaveToFile(nombreArchivo, ExcelVersion.Version2016);            
+        }
+
+        public void cambiarFontColor(string nombreArchivo, string rangoCeldas)
+        {
+            Workbook workbook = new Workbook();
+            workbook.LoadFromFile(nombreArchivo);
+            Worksheet sheet = workbook.Worksheets[0];
+            CellRange range = sheet.Range[rangoCeldas];
+            range.Style.Color = Color.FromArgb(153, 204, 204);
+            workbook.SaveToFile(nombreArchivo, ExcelVersion.Version2016);
+        }
+
+        public void agregarBordeACeldas(string nombreArchivo, string rangoCeldas)
+        {
+            Workbook workbook = new Workbook();
+            workbook.LoadFromFile(nombreArchivo);
+            Worksheet sheet = workbook.Worksheets[0];
+            CellRange range = sheet.Range[rangoCeldas];
+            IBorder leftBorder = range.Borders[BordersLineType.EdgeLeft];            
+            leftBorder.LineStyle = LineStyleType.Thin;
+            leftBorder.Color = Color.Black;
+            IBorder rightBorder = range.Borders[BordersLineType.EdgeRight];            
+            rightBorder.LineStyle = LineStyleType.Thin;
+            rightBorder.Color = Color.Black;
+            IBorder topBorder = range.Borders[BordersLineType.EdgeTop];            
+            topBorder.LineStyle = LineStyleType.Thin;
+            topBorder.Color = Color.Black;
+            IBorder bottomBorder = range.Borders[BordersLineType.EdgeBottom];
+            bottomBorder.LineStyle = LineStyleType.Thin;
+            bottomBorder.Color = Color.Black;
             workbook.SaveToFile(nombreArchivo, ExcelVersion.Version2016);
         }
 
