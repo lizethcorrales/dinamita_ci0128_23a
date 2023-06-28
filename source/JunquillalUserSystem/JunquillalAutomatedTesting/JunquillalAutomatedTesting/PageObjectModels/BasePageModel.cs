@@ -15,7 +15,5 @@ namespace JunquillalAutomatedTesting.PageObjectModels
         {
             this.driver = driver;
         }
-
-        abstract public void LlenarDatosPagina();
     }
 }

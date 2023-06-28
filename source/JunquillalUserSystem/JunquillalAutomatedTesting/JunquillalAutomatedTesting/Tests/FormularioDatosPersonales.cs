@@ -32,17 +32,42 @@ namespace JunquillalAutomatedTesting.Tests
         }
 
         [Test, Order(1)]
-        public void ComprobarValidacionCampos()
+        public void ComprobarQueSeGeneranMensajesDeErrorAlEnviarFomularioVacio()
         {
             Setup();
+            formDatosPersonales.darleClickAlBotonContinuarConFormularioEnBlanco();
             List<IWebElement> mensajesDeError = formDatosPersonales.ObtenerMensajesDeError();
             Assert.True(mensajesDeError.Count == 3);
-            Assert.AreEqual("Nombre NO válido", mensajesDeError[0].Text);
-            Assert.AreEqual("Apellido NO válido", mensajesDeError[1].Text);
-            Assert.AreEqual("Identificación NO válido", mensajesDeError[2].Text);
         }
 
         [Test, Order(2)]
+        public void ComprobarQueSeGeneraMensajeDeErrorEnCampoNombreCuandoEsteSeEnviaVacio()
+        {
+            Setup();
+            formDatosPersonales.CompletarPaginaDatosPersonalesConDatosDePruebaPeroSinNombre();
+            List<IWebElement> mensajesDeError = formDatosPersonales.ObtenerMensajesDeError();
+            Assert.AreEqual("Nombre NO válido", mensajesDeError[0].Text);
+        }
+
+        [Test, Order(3)]
+        public void ComprobarQueSeGeneraMensajeDeErrorEnCampoPrimerApellidoCuandoEsteSeEnviaVacio()
+        {
+            Setup();
+            formDatosPersonales.CompletarPaginaDatosPersonalesConDatosDePruebaPeroSinPrimerApellido();
+            List<IWebElement> mensajesDeError = formDatosPersonales.ObtenerMensajesDeError();
+            Assert.AreEqual("Apellido NO válido", mensajesDeError[0].Text);
+        }
+
+        [Test, Order(4)]
+        public void ComprobarQueSeGeneraMensajeDeErrorEnCampoIDCuandoEsteSeEnviaVacio()
+        {
+            Setup();
+            formDatosPersonales.CompletarPaginaDatosPersonalesConDatosDePruebaPeroSinID();
+            List<IWebElement> mensajesDeError = formDatosPersonales.ObtenerMensajesDeError();
+            Assert.AreEqual("Identificación NO válido", mensajesDeError[0].Text);
+        }
+
+        [Test, Order(5)]
         public void ComprobarQueExisteProvinciaConIdentificacionNacional()
         {
             Setup();
@@ -50,7 +75,7 @@ namespace JunquillalAutomatedTesting.Tests
             Assert.True(dropDownProvincia.Count == 1);
         }
 
-        [Test, Order(3)]
+        [Test, Order(6)]
         public void ComprobarQueDesapareceProvinciaConIdentificacionExtranjera()
         {
             Setup();

@@ -10,7 +10,6 @@ namespace JunquillalAutomatedTesting.PageObjectModels
 {
     public class FormDatosPersonales : BasePage
     {
-        private FormCantidadPersonas formCantidadPersonas;
         private FormCalendarioPage formCalendarioPage;
         private By inputNombreBy;
         private By inputPrimerApellidoBy;
@@ -33,7 +32,7 @@ namespace JunquillalAutomatedTesting.PageObjectModels
         public FormDatosPersonales(IWebDriver driver) : base(driver) 
         {
             formCalendarioPage = new(driver);
-            formCalendarioPage.LlenarDatosPagina();
+            formCalendarioPage.ElegirFechaEntradaYSalidaYDarleSiguiente();
             inputNombreBy = By.Id("nombre");
             inputPrimerApellidoBy = By.Id("primerApellido");
             inputSegundaApellidoBy = By.Id("segundoApellido");
@@ -53,13 +52,49 @@ namespace JunquillalAutomatedTesting.PageObjectModels
             mensajeErrorIDBy = By.Id("mensajeErrorIdent");
         }
 
-        public override void LlenarDatosPagina()
+        public void CompletarPaginaDatosPersonalesConDatosDePrueba()
         {
             llenarInput("Ana", inputNombreBy);
             llenarInput("Robles", inputPrimerApellidoBy);
             llenarInput("Vargas", inputSegundaApellidoBy);
             llenarInput("88884444", inputTelefonoBy);
             llenarInput("111110011", inputIdentificacionBy);
+            llenarInput("ARV@outlook.com", inputEmailBy);
+            IWebElement botonContinuar = driver.FindElement(botonContinuarBy);
+            IJavaScriptExecutor jsExecutor = (IJavaScriptExecutor)driver;
+            jsExecutor.ExecuteScript("arguments[0].click();", botonContinuar);
+        }
+
+        public void CompletarPaginaDatosPersonalesConDatosDePruebaPeroSinNombre()
+        {
+            llenarInput("Robles", inputPrimerApellidoBy);
+            llenarInput("Vargas", inputSegundaApellidoBy);
+            llenarInput("88884444", inputTelefonoBy);
+            llenarInput("111110011", inputIdentificacionBy);
+            llenarInput("ARV@outlook.com", inputEmailBy);
+            IWebElement botonContinuar = driver.FindElement(botonContinuarBy);
+            IJavaScriptExecutor jsExecutor = (IJavaScriptExecutor)driver;
+            jsExecutor.ExecuteScript("arguments[0].click();", botonContinuar);
+        }
+
+        public void CompletarPaginaDatosPersonalesConDatosDePruebaPeroSinPrimerApellido()
+        {
+            llenarInput("Ana", inputNombreBy);
+            llenarInput("Vargas", inputSegundaApellidoBy);
+            llenarInput("88884444", inputTelefonoBy);
+            llenarInput("111110011", inputIdentificacionBy);
+            llenarInput("ARV@outlook.com", inputEmailBy);
+            IWebElement botonContinuar = driver.FindElement(botonContinuarBy);
+            IJavaScriptExecutor jsExecutor = (IJavaScriptExecutor)driver;
+            jsExecutor.ExecuteScript("arguments[0].click();", botonContinuar);
+        }
+
+        public void CompletarPaginaDatosPersonalesConDatosDePruebaPeroSinID()
+        {
+            llenarInput("Ana", inputNombreBy);
+            llenarInput("Robles", inputPrimerApellidoBy);
+            llenarInput("Vargas", inputSegundaApellidoBy);
+            llenarInput("88884444", inputTelefonoBy);
             llenarInput("ARV@outlook.com", inputEmailBy);
             IWebElement botonContinuar = driver.FindElement(botonContinuarBy);
             IJavaScriptExecutor jsExecutor = (IJavaScriptExecutor)driver;
@@ -75,16 +110,26 @@ namespace JunquillalAutomatedTesting.PageObjectModels
             input.SendKeys(valor); // Cambia valor del input
         }
 
-        public List<IWebElement> ObtenerMensajesDeError()
+        public void darleClickAlBotonContinuarConFormularioEnBlanco()
         {
-            List<IWebElement> listaMensajesError = new();
             WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
             IWebElement botonContinuar = wait.Until(e => e.FindElement(botonContinuarBy));
             IJavaScriptExecutor jsExecutor = (IJavaScriptExecutor)driver;
             jsExecutor.ExecuteScript("arguments[0].click();", botonContinuar);
-            listaMensajesError.Add(driver.FindElement(mensajeErrorNombreBy));
-            listaMensajesError.Add(driver.FindElement(mensajeErrorPrimerApellidoBy));
-            listaMensajesError.Add(driver.FindElement(mensajeErrorIDBy));
+        }
+
+        public List<IWebElement> ObtenerMensajesDeError()
+        {
+            List<IWebElement> listaMensajesError = new();
+            IWebElement ErrorDeNombre = driver.FindElement(mensajeErrorNombreBy);
+            IWebElement ErrorDePrimerApellido = driver.FindElement(mensajeErrorPrimerApellidoBy);
+            IWebElement ErrorDeID = driver.FindElement(mensajeErrorIDBy);
+            if (ErrorDeNombre.Displayed) 
+                listaMensajesError.Add(ErrorDeNombre);
+            if (ErrorDePrimerApellido.Displayed)
+                    listaMensajesError.Add(ErrorDePrimerApellido);
+            if (ErrorDeID.Displayed)
+                listaMensajesError.Add(ErrorDeID);
             return listaMensajesError;
         }
 

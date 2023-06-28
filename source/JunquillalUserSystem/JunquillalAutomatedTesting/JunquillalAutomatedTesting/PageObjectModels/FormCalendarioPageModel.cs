@@ -21,7 +21,7 @@ namespace JunquillalAutomatedTesting.PageObjectModels
         public FormCalendarioPage(IWebDriver driver) : base(driver) 
         {
             formCantidadPersonas = new(driver);
-            formCantidadPersonas.LlenarDatosPagina();
+            formCantidadPersonas.CompletarPaginaCantidadPersonasYDarleSiguiente();
             inputFechaEntradaBy = By.Name("fecha-entrada");
             inputFechaSalidaBy = By.Name("fecha-salida");
             botonSiguienteBy = By.Id("btn-siguiente");
@@ -30,7 +30,7 @@ namespace JunquillalAutomatedTesting.PageObjectModels
             fechaSalidaElegidaBy = By.LinkText("24");
         }
 
-        public override void LlenarDatosPagina()
+        public void ElegirFechaEntradaYSalidaYDarleSiguiente()
         {         
             IWebElement inputFechaEntrada = driver.FindElement(inputFechaEntradaBy);
             IWebElement inputFechaSalida = driver.FindElement(inputFechaSalidaBy);
