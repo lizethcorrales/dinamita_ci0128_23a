@@ -16,8 +16,6 @@ namespace JunquillalUserSystem.Areas.Admin.Controllers
             usuario = HttpContext.Session.GetString("_Nombre");
             puesto = HttpContext.Session.GetString("_Puesto");
             TempData["IsAdminArea"] = "Admin"; // O establece el valor según corresponda
-            ViewData["Nombre"] = usuario;
-            ViewData["Puesto"] = puesto;
             return View();
         }
     }

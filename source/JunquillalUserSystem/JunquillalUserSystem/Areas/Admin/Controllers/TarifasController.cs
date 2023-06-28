@@ -12,7 +12,6 @@ namespace JunquillalUserSystem.Controllers
         {
             TarifasHandler tarifasHandler = new TarifasHandler();
             var tarifas = tarifasHandler.obtenerTarifasActuales();
-            ViewData["Puesto"] = HttpContext.Session.GetString("_Puesto");
             return View(tarifas);
         }
 

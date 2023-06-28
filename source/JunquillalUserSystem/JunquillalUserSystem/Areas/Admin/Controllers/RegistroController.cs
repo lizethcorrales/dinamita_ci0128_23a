@@ -9,18 +9,37 @@ namespace JunquillalUserSystem.Areas.Admin.Controllers
     [Area("Admin")]
     public class RegistroController : Controller
     {
-        //private LoginHandler handlerLogin = new LoginHandler();
+        private RegistroHandler handlerRegistro = new RegistroHandler();
 
         public IActionResult Registro()
         {
-            ViewData["Puesto"] = HttpContext.Session.GetString("_Puesto");
             return View();
         }
 
         [HttpPost]
-        public IActionResult Registro(TrabajadorModelo empleado)
+        public IActionResult Registro(TrabajadorModelo empleadoNuevo)
         {
-            ViewData["Puesto"] = HttpContext.Session.GetString("_Puesto");
+            try
+            {
+                string salNueva = empleadoNuevo.crearSal();
+                empleadoNuevo.Sal = salNueva;
+                string contraHash = empleadoNuevo.HashearContrasena(empleadoNuevo.Contrasena+empleadoNuevo.Sal);
+                empleadoNuevo.Contrasena = contraHash;
+
+                int resultado = handlerRegistro.registrarEmpleadoNuevo(empleadoNuevo);
+                if (resultado == 1)
+                {
+                    ViewData["Mensaje"] = "Usuario Registrado Exitosamente";
+                }
+                else
+                {
+                    ViewData["Mensaje"] = "No fue posible registrar el Usuario";
+                }
+            }
+            catch (NullReferenceException)
+            {
+                ViewData["Mensaje"] = "Hubo un problema en el sistema";
+            }
             return View();
         }
     }

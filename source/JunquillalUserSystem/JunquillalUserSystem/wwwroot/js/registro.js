@@ -36,8 +36,12 @@ botonRegistrar.addEventListener("click", (e) => {
 	//e.preventDefault();
 	divError.lastElementChild.textContent = "";
 	
-	if (nombre.value == "" || primerApellido.value == "" || segundoApellido.value == "") {
+	if (nombre.value == "" || primerApellido.value == "") {
 		datosValido = -1;
+	}
+
+	if (segundoApellido.value == "") {
+		segundoApellido.value = "NA";
 	}
 
 	if (cedula.value == "") {

@@ -1,11 +1,13 @@
 ﻿@{
     Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+    var puesto = Context.Session.GetString("_Puesto");
+    var Nombre = Context.Session.GetString("_Nombre");
 }
 
 <h3>Bienvenido al módulo Admin</h3>
 <div class="bienvenida">
 
-    <h4> Hola @ViewData["Puesto"] @ViewData["Nombre"], que tenga un buen dia</h4>
+    <h4> Hola @puesto @Nombre, que tenga un buen dia</h4>
 
 </div>
 

@@ -35,7 +35,6 @@ namespace JunquillalUserSystem.Controllers
             ViewBag.TipoTurista = "reserva";
             ViewData["IsAdminArea"] = TempData["IsAdminArea"] ;
             TempData["IsAdminArea"] = TempData["IsAdminArea"];
-            ViewData["Puesto"] = HttpContext.Session.GetString("_Puesto");
             return View();
         }
 
@@ -50,7 +49,6 @@ namespace JunquillalUserSystem.Controllers
             ViewBag.reservedDates = reservedDates;
             ViewData["IsAdminArea"] = TempData["IsAdminArea"];
             TempData["IsAdminArea"] = TempData["IsAdminArea"];
-            ViewData["Puesto"] = HttpContext.Session.GetString("_Puesto");
             ViewBag.Tipo = "Camping";
             return View();
         }
@@ -64,7 +62,6 @@ namespace JunquillalUserSystem.Controllers
             TempData["Reservacion"] = JsonSerializer.Serialize(reservacion);
             ViewData["IsAdminArea"] = TempData["IsAdminArea"];
             TempData["IsAdminArea"] = TempData["IsAdminArea"];
-            ViewData["Puesto"] = HttpContext.Session.GetString("_Puesto");
             return View();
         }
 
@@ -82,7 +79,6 @@ namespace JunquillalUserSystem.Controllers
             ViewBag.mensaje = new HtmlString(confirmacion);
             //_emailService.EnviarEmail(confirmacion, hospedero.Email);
             ViewBag.costoTotal = reservacionHandler.CostoTotal(reservacion.Identificador).ToString();
-            ViewData["Puesto"] = HttpContext.Session.GetString("_Puesto");
 
 
             ViewData["IsAdminArea"] = TempData["IsAdminArea"];
