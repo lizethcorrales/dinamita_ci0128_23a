@@ -35,7 +35,13 @@
         </div>
 
 
-        <div class="contorno gray">
+        <div class="contorno gray"> 
+
+            <input type="radio" id="visitacion" name="tipoReporte" value="visitacion" checked>
+            <label for="visitacion">Reporte de Visitación</label>
+            <input type="radio" id="liquidacion" name="tipoReporte" value="liquidacion">
+            <label for="liquidacion">Reporte de Liquidación</label>
+
             <form id="fechas" action="Reservaciones" method="POST">
                 <div class="centrar">
 
@@ -60,8 +66,7 @@
                     }
                     <div class="centrar1">
                         <button class="button2" id="boton-limpiar" type="button" onclick="limpiar()"> Limpiar </button>
-                        <button type="submit" method="POST" class="button1" id="btn-siguiente" asp-controller="Reportes" asp-action="GenerarReporte"> Generar </button>
-                    
+                        <button type="submit" method="POST" class="button1" id="reporte" name="reporte" asp-controller="Reportes" asp-action="GenerarReporte"> Generar reporte</button>
                     </div>
                 </div>
 

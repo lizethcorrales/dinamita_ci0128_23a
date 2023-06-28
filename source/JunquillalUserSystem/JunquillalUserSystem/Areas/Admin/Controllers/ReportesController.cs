@@ -19,12 +19,15 @@ namespace JunquillalUserSystem.Areas.Admin.Controllers
                 TempData["Mensaje"] = "Recuerde completar todos los solicitados";
             } else
             {
+                
                 List<ReportesModel> listaCamping = reportesHandler.obtenerReporte(Request.Form, "Camping");
                 List<ReportesModel> listaPicnic = reportesHandler.obtenerReporte(Request.Form, "Picnic");
 
-                listaCamping.AddRange(listaPicnic);            
+                listaCamping.AddRange(listaPicnic);
 
-                bool exito = reportesHandler.escribirXLS(listaCamping, Request.Form);
+                bool reporte = esReporteLiquidacion(Request.Form);
+
+                bool exito = reportesHandler.escribirXLS(listaCamping, Request.Form, reporte);
                 if (exito)
                 {
                     TempData["Mensaje"] = "El reporte fue creado exitosamente";
@@ -60,6 +63,20 @@ namespace JunquillalUserSystem.Areas.Admin.Controllers
                 }
             }
             return false;
+        }
+
+        public bool esReporteLiquidacion(IFormCollection form)
+        {
+            string reporteLiquidacion = Request.Form["tipoReporte"];
+            System.Diagnostics.Debug.WriteLine(reporteLiquidacion);
+
+            if (reporteLiquidacion == "liquidacion")
+            {
+                return true;
+            } else
+            {
+                return false;
+            }
         }
 
         public bool StringVacio(string valor)

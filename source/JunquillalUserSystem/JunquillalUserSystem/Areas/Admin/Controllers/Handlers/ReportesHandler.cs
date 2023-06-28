@@ -16,7 +16,7 @@ using System.Drawing;
 
 namespace JunquillalUserSystem.Areas.Admin.Controllers.Handlers
 {
-    enum Columna
+    enum ColumnaVisitacion
     {
         fecha,
         tipoDeVisitante,
@@ -26,6 +26,17 @@ namespace JunquillalUserSystem.Areas.Admin.Controllers.Handlers
         cantidad,
         motivo
     }
+
+    enum ColumnaVentas
+    {
+        fecha,
+        tipoDeVisitante,
+        estatus,
+        tipoDeVisita,
+        cantidad,
+        ventasTotales
+    }
+
 
     public class ReportesHandler : HandlerBase
     {
@@ -78,7 +89,8 @@ namespace JunquillalUserSystem.Areas.Admin.Controllers.Handlers
             return reportes;
         }
 
-        public bool escribirXLS(List<ReportesModel> reportes, IFormCollection form)
+        //si bool es 0 se hace visitacion y si es 1 se hace ventas
+        public bool escribirXLS(List<ReportesModel> reportes, IFormCollection form, bool tipoReporteParaHacer)
         {
             bool resultado = true;
             string primerDia = form["fecha-entrada"];
@@ -100,10 +112,20 @@ namespace JunquillalUserSystem.Areas.Admin.Controllers.Handlers
             workbook.Worksheets.Clear();
             //Add a worksheet and name it
             var dateNow = "del_" + primerDia + "_a_" + ultimoDia;
-            string archivo = "reporte_" + dateNow + ".xlsx";
-            Worksheet worksheet = workbook.Worksheets.Add(archivo);
+            string archivo;
             string header = "AREA DE CONSERVACION GUANACASTE";
-            string[,] contenidoDeExcel = agregarContenidoAExcel(reportes, header);
+            string[,] contenidoDeExcel;
+            if (tipoReporteParaHacer)
+            {
+                archivo = "LiquidacionReporte_" + dateNow + ".xlsx";
+                contenidoDeExcel = agregarContenidoAExcelReporteLiquidacion(reportes, header);
+            }
+            else
+            {
+                archivo = "VisitacionReporte_" + dateNow + ".xlsx";
+                contenidoDeExcel = agregarContenidoAExcelReporteVisitacion(reportes, header);
+            }
+            Worksheet worksheet = workbook.Worksheets.Add(archivo);
             worksheet.InsertArray(contenidoDeExcel, 1, 1);
             worksheet.AllocatedRange.AutoFitColumns();
             workbook.SaveToFile(archivo, ExcelVersion.Version2016);
@@ -115,12 +137,16 @@ namespace JunquillalUserSystem.Areas.Admin.Controllers.Handlers
             return resultado;
         }
 
-        public string[,] agregarContenidoAExcel(List<ReportesModel> reportes, string header)
+        public string[,] agregarContenidoAExcelReporteLiquidacion(List<ReportesModel> reportes, string header)
         {
-            string[] nombreColumnas = new string[] { "Fecha", "Tipo de Visitante", "Lugar de Procedencia", "Estatus", "Tipo de Visita", "Cantidad", "Motivo" };
+            string[] nombreColumnas = new string[] { "FECHA", "TIPO DE VISITANTE", "ESTATUS", "TIPO DE VISITA", "CANTIDAD", "VENTAS TOTALES" };
             string[,] contenidoDeExcel = new string[reportes.Count+2, nombreColumnas.Length];
-            string nacionalidad = "";
+            string NINNOMAYOR = "Niño";
+            string NINNOMENOR = "Niño menor 6 años";
             string NACIONAL = "Nacional";
+            string nacionalidad = "";
+            string COLONES = "₡";
+            string DOLARES = "US$";
             for (int fila = 0; fila < reportes.Count + 2; ++fila)
             {
 
@@ -136,40 +162,123 @@ namespace JunquillalUserSystem.Areas.Admin.Controllers.Handlers
                     }
                     else
                     {
-                        if (columna == (int)Columna.fecha)
+                        if (columna == (int)ColumnaVentas.fecha)
                         {
                             contenidoDeExcel[fila, columna] = reportes[fila-2].PrimerDia;
                         }
-                        else if (columna == (int)Columna.tipoDeVisitante)
+                        else if (columna == (int)ColumnaVentas.tipoDeVisitante)
                         {
-                            nacionalidad = reportes[fila-2].Nacionalidad;
+                            nacionalidad = reportes[fila - 2].Nacionalidad;
                             contenidoDeExcel[fila, columna] = nacionalidad;
                         }
-                        else if (columna == (int)Columna.lugarDeProcedencia)
+                        else if (columna == (int)ColumnaVentas.estatus)
                         {
-                            if (nacionalidad.Equals(NACIONAL))
+                            if (reportes[fila - 2].Poblacion == NINNOMAYOR)
                             {
-                                contenidoDeExcel[fila, columna] = reportes[fila-2].NombreProvincia;
+                                contenidoDeExcel[fila, columna] = "Niño mayor de 6 años";
                             }
-                            else
+                            else if (reportes[fila - 2].Poblacion == NINNOMENOR)
                             {
-                                contenidoDeExcel[fila, columna] = reportes[fila-2].NombrePais;
+                                contenidoDeExcel[fila, columna] = "Niño menor de 6 años";
+                            } else
+                            {
+                                contenidoDeExcel[fila, columna] = reportes[fila - 2].Poblacion;
                             }
                         }
-                        else if (columna == (int)Columna.estatus)
-                        {
-                            contenidoDeExcel[fila, columna] = reportes[fila-2].Poblacion;
-                        }
-                        else if (columna == (int)Columna.tipoDeVisita)
+                        else if (columna == (int)ColumnaVentas.tipoDeVisita)
                         {
                             contenidoDeExcel[fila, columna] = reportes[fila-2].Actividad;
 
                         }
-                        else if (columna == (int)Columna.cantidad)
+                        else if (columna == (int)ColumnaVentas.cantidad)
                         {
                             contenidoDeExcel[fila, columna] = reportes[fila-2].Cantidad.ToString();
                         }
-                        else if (columna == (int)Columna.motivo)
+                        else if (columna == (int)ColumnaVentas.ventasTotales)
+                        {
+                            if (nacionalidad.Equals(NACIONAL))
+                            {
+                                contenidoDeExcel[fila, columna] = COLONES + reportes[fila - 2].VentasTotales.ToString();
+                            }
+                            else
+                            {
+                                contenidoDeExcel[fila, columna] = DOLARES + reportes[fila - 2].VentasTotales.ToString();
+                            }
+                        }
+                    }
+                }
+            }
+            return contenidoDeExcel;
+        }
+
+        public string[,] agregarContenidoAExcelReporteVisitacion(List<ReportesModel> reportes, string header)
+        {
+            string[] nombreColumnas = new string[] { "FECHA", "TIPO DE VISITANTE", "LUGAR DE PROCEDENCIA", "ESTATUS", "TIPO DE VISITA", "CANTIDAD", "MOTIVO" };
+            string[,] contenidoDeExcel = new string[reportes.Count + 2, nombreColumnas.Length];
+            string nacionalidad = "";
+            string NACIONAL = "Nacional";
+            string NINNOMAYOR = "Niño";
+            string NINNOMENOR = "Niño menor 6 años";
+            for (int fila = 0; fila < reportes.Count + 2; ++fila)
+            {
+
+                for (int columna = 0; columna < nombreColumnas.Length; ++columna)
+                {
+                    if (fila == 0)
+                    {
+                        contenidoDeExcel[fila, columna] = header;
+                    }
+                    else if (fila == 1)
+                    {
+                        contenidoDeExcel[fila, columna] = nombreColumnas[columna];
+                    }
+                    else
+                    {
+                        if (columna == (int)ColumnaVisitacion.fecha)
+                        {
+                            contenidoDeExcel[fila, columna] = reportes[fila - 2].PrimerDia;
+                        }
+                        else if (columna == (int)ColumnaVisitacion.tipoDeVisitante)
+                        {
+                            nacionalidad = reportes[fila - 2].Nacionalidad;
+                            contenidoDeExcel[fila, columna] = nacionalidad;
+                        }
+                        else if (columna == (int)ColumnaVisitacion.lugarDeProcedencia)
+                        {
+                            if (nacionalidad.Equals(NACIONAL))
+                            {
+                                contenidoDeExcel[fila, columna] = reportes[fila - 2].NombreProvincia;
+                            }
+                            else
+                            {
+                                contenidoDeExcel[fila, columna] = reportes[fila - 2].NombrePais;
+                            }
+                        }
+                        else if (columna == (int)ColumnaVisitacion.estatus)
+                        {
+                            if (reportes[fila - 2].Poblacion == NINNOMAYOR)
+                            {
+                                contenidoDeExcel[fila, columna] = "Niño mayor de 6 años";
+                            }
+                            else if (reportes[fila - 2].Poblacion == NINNOMENOR)
+                            {
+                                contenidoDeExcel[fila, columna] = "Niño menor de 6 años";
+                            }
+                            else
+                            {
+                                contenidoDeExcel[fila, columna] = reportes[fila - 2].Poblacion;
+                            }
+                        }
+                        else if (columna == (int)ColumnaVisitacion.tipoDeVisita)
+                        {
+                            contenidoDeExcel[fila, columna] = reportes[fila - 2].Actividad;
+
+                        }
+                        else if (columna == (int)ColumnaVisitacion.cantidad)
+                        {
+                            contenidoDeExcel[fila, columna] = reportes[fila - 2].Cantidad.ToString();
+                        }
+                        else if (columna == (int)ColumnaVisitacion.motivo)
                         {
                             contenidoDeExcel[fila, columna] = reportes[fila - 2].Motivo;
                         }
@@ -178,6 +287,7 @@ namespace JunquillalUserSystem.Areas.Admin.Controllers.Handlers
             }
             return contenidoDeExcel;
         }
+
 
         public void alinearCeldasHaciaIzquierda(string nombreArchivo, string rangoCeldas)
         {
