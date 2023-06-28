@@ -20,6 +20,7 @@ namespace JunquillalAutomatedTesting.PageObjectModels
         private By inputCantidadNinosNacionalMayores6By;
         private By inputCantidadNinosNacionalMenores6By;
         private By botonSiguienteBy;
+        private By errorBy;
 
         public FormCantidadPersonas(IWebDriver driver) : base(driver) 
         {
@@ -32,7 +33,7 @@ namespace JunquillalAutomatedTesting.PageObjectModels
             inputCantidadAdultosMayores50NacionalBy = By.Name("Adultomayorde50Nacional");
             inputCantidadNinosNacionalMayores6By = By.Name("NiñoNacional");
             inputCantidadNinosNacionalMenores6By = By.Name("Niñomenor6añosNacional");
-
+            errorBy = By.Id("error");
             botonSiguienteBy = By.Id("siguiente_calendario");
         }
 
@@ -63,6 +64,38 @@ namespace JunquillalAutomatedTesting.PageObjectModels
             rellenarCampoCantidadPoblacion(valor, inputCantidadAdultosMayores50NacionalBy);
             rellenarCampoCantidadPoblacion(valor, inputCantidadNinosNacionalMayores6By);
             rellenarCampoCantidadPoblacion(valor, inputCantidadNinosNacionalMenores6By);
+        }
+
+        public IWebElement ObtenerMensajeDeError()
+        {
+            IWebElement errorEnElFormularioCantidadPersonas = driver.FindElement(errorBy);
+   
+            return errorEnElFormularioCantidadPersonas;
+        }
+
+        public void CompletarPaginaConDatosDePruebaDondeTodosLosCamposSon0()
+        {
+            IWebElement botonSiguiente = driver.FindElement(botonSiguienteBy);
+            IJavaScriptExecutor jsExecutor = (IJavaScriptExecutor)driver;
+            jsExecutor.ExecuteScript("arguments[0].click();", botonSiguiente);
+        }
+
+        public void CompletarPaginaConDatosDePruebaDondeLaCantidadTotalExcedeLaMaxima()
+        {
+            IWebElement botonSiguiente = driver.FindElement(botonSiguienteBy);
+            rellenarCampoCantidadPoblacion("35", inputCantidadAdultosExtranjeroBy);
+            rellenarCampoCantidadPoblacion("30", inputCantidadAdultosMayorExtranjeroBy);
+            rellenarCampoCantidadPoblacion("15", inputCantidadNinosExtranjeroBy);
+            IJavaScriptExecutor jsExecutor = (IJavaScriptExecutor)driver;
+            jsExecutor.ExecuteScript("arguments[0].click();", botonSiguiente);
+        }
+
+        public void CompletarPaginaConDatosDePruebaDondeSoloHayNinnos()
+        {
+            IWebElement botonSiguiente = driver.FindElement(botonSiguienteBy);
+            rellenarCampoCantidadPoblacion("1", inputCantidadNinosExtranjeroBy);
+            IJavaScriptExecutor jsExecutor = (IJavaScriptExecutor)driver;
+            jsExecutor.ExecuteScript("arguments[0].click();", botonSiguiente);
         }
     }
 }
