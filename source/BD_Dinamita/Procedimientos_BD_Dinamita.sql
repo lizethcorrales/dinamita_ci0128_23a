@@ -569,11 +569,13 @@ RETURN
 DECLARE @Identificacion  VARCHAR(10) = '211118888'
 
 --Para los reportes se usa el siguiente codigo
-
-	SELECT P.Nacionalidad, P.Poblacion, P.Actividad, SUM(P.Cantidad) AS Cantidad_Total, SUM(P.Cantidad*P.PrecioAlHacerReserva) AS Ventas_Totales
-	FROM PrecioReservacion AS P JOIN Reservacion AS R ON P.IdentificadorReserva = R.IdentificadorReserva
-	WHERE R.Estado != '2' AND R.PrimerDia >= @primerDia AND R.UltimoDia <= @ultimoDia AND P.Actividad = @actividad
-	GROUP BY  P.Nacionalidad, P.Poblacion, P.Actividad
+SELECT R.PrimerDia, P.Nacionalidad,PR.NombreProvincia, TN.NombrePais, P.Poblacion, P.Actividad, SUM(P.Cantidad) AS Cantidad_Total, SUM(P.Cantidad*P.PrecioAlHacerReserva) AS Ventas_Totales
+FROM PrecioReservacion AS P LEFT JOIN Reservacion AS R ON P.IdentificadorReserva = R.IdentificadorReserva 
+ LEFT JOIN ProvinciaReserva AS PR ON PR.IdentificadorReserva = R.IdentificadorReserva LEFT JOIN TieneNacionalidad AS TN 
+ON TN.IdentificadorReserva = R.IdentificadorReserva
+WHERE R.Estado != '2' AND R.PrimerDia >= primerDia AND R.UltimoDia <= ultimoDia AND P.Actividad = actividad
+GROUP BY  R.IdentificadorReserva, P.Nacionalidad, P.Poblacion, P.Actividad, R.PrimerDia, PR.NombreProvincia, TN.NombrePais
+ORDER BY R.PrimerDia;
 
 SELECT *
 FROM dbo.ObtenerCredencialesTrabajador(@Identificacion)

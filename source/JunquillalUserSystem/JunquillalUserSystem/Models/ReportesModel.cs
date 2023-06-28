@@ -69,6 +69,12 @@ namespace JunquillalUserSystem.Models
             set { fechaReporte = value; }
         }
 
+        private string motivo;
+        public string Motivo
+        {
+            get { return motivo; }
+            set { motivo = value; }
+        }
     }
 }
 

@@ -12,6 +12,7 @@ using System.Data;
 using System.Text.RegularExpressions;
 using Spire.Xls;
 using System.ComponentModel;
+using System.Drawing;
 
 namespace JunquillalUserSystem.Areas.Admin.Controllers.Handlers
 {
@@ -22,7 +23,8 @@ namespace JunquillalUserSystem.Areas.Admin.Controllers.Handlers
         lugarDeProcedencia,
         estatus,
         tipoDeVisita,
-        cantidad
+        cantidad,
+        motivo
     }
 
     public class ReportesHandler : HandlerBase
@@ -46,13 +48,13 @@ namespace JunquillalUserSystem.Areas.Admin.Controllers.Handlers
             }
             List<ReportesModel> reportes = new List<ReportesModel>();
 
-            string consultaBaseDatos = @"SELECT R.PrimerDia, P.Nacionalidad,PR.NombreProvincia, TN.NombrePais, P.Poblacion, P.Actividad, SUM(P.Cantidad) AS Cantidad_Total, SUM(P.Cantidad*P.PrecioAlHacerReserva) AS Ventas_Totales
+            string consultaBaseDatos = @"SELECT R.PrimerDia, P.Nacionalidad,PR.NombreProvincia, TN.NombrePais, P.Poblacion, P.Actividad, SUM(P.Cantidad) AS Cantidad_Total, R.Motivo, SUM(P.Cantidad*P.PrecioAlHacerReserva) AS Ventas_Totales
                                         FROM PrecioReservacion AS P LEFT JOIN Reservacion AS R ON P.IdentificadorReserva = R.IdentificadorReserva 
                                         LEFT JOIN ProvinciaReserva AS PR ON PR.IdentificadorReserva = R.IdentificadorReserva LEFT JOIN TieneNacionalidad AS TN 
                                         ON TN.IdentificadorReserva = R.IdentificadorReserva
                                         WHERE R.Estado != '2' AND R.PrimerDia >= '" + primerDia + "' AND R.UltimoDia <= '"
                                         + ultimoDia + "' AND P.Actividad = '" + actividad + "' " +
-                                        "GROUP BY  R.IdentificadorReserva, P.Nacionalidad, P.Poblacion, P.Actividad, R.PrimerDia, PR.NombreProvincia, TN.NombrePais ORDER BY R.PrimerDia;";
+                                        "GROUP BY  R.IdentificadorReserva, P.Nacionalidad, P.Poblacion, P.Actividad, R.PrimerDia, PR.NombreProvincia, TN.NombrePais, R.Motivo ORDER BY R.PrimerDia;";
 
             DataTable tablaDeReporte = CrearTablaConsulta(consultaBaseDatos);
             foreach (DataRow columna in tablaDeReporte.Rows)
@@ -67,81 +69,13 @@ namespace JunquillalUserSystem.Areas.Admin.Controllers.Handlers
                     Poblacion = Convert.ToString(columna["Poblacion"]),
                     Actividad = Convert.ToString(columna["Actividad"]),
                     Cantidad = Convert.ToInt32(columna["Cantidad_Total"]),
+                    Motivo= Convert.ToString(columna["Motivo"]),
                     VentasTotales = Convert.ToDouble(columna["Ventas_Totales"])
                 });
                 System.Diagnostics.Debug.WriteLine(columna["PrimerDia"]);
             }
 
             return reportes;
-        }
-
-
-        public bool escribirCSV(List<ReportesModel> reportes, IFormCollection form)
-        {
-            string primerDia = form["fecha-entrada"];
-            string ultimoDia = "";
-
-            var tipoReporte = form["reportes"];
-
-            if (tipoReporte == "diario")
-            {
-                ultimoDia = primerDia;
-            }
-            else
-            {
-                ultimoDia = form["fecha-salida"];
-            }
-
-            var dateNow = "del_" + primerDia + "_a_" + ultimoDia;
-            string archivo = "reporte_" + dateNow + ".csv";
-            string ruta = @"wwwroot/ReportesCSV" + archivo;
-            string separador = "\t";
-            StringBuilder salida = new StringBuilder();
-            List<string> lista = new List<string>();
-
-            string header = @"<div>Prueba</div>";
-            string cadena = "Fecha" + separador + "Nacionalidad" + separador + "Nombre Provincia" + separador + "Nombre Pais" + separador + "Poblacion" + separador + "Actividad" + separador + "Cantidad" + separador + "Ventas" + "\n";
-            try
-            {
-                foreach (ReportesModel item in reportes)
-                {
-                    cadena += agregarDato(item, separador);
-                    cadena += "\n";
-                }
-            }
-            catch (NullReferenceException ex)
-            {
-                return false;
-            }
-            lista.Add(header);
-            lista.Add(cadena);
-            try
-            {
-                for (int i = 0; i < lista.Count; ++i)
-                {
-                    salida.AppendLine(string.Join(separador, lista[i]));
-                    File.AppendAllText(ruta, salida.ToString(), Encoding.Unicode);
-                }
-                return true;
-            }
-            catch (Exception e)
-            {
-                return false;
-            }
-        }
-
-        public string agregarDato(ReportesModel reporte, string separador)
-        {
-            try
-            {
-                return (reporte.PrimerDia + separador + reporte.Nacionalidad + separador + reporte.NombreProvincia + separador +
-                    reporte.NombrePais + separador + reporte.Poblacion + separador + reporte.Actividad
-                    + separador + reporte.Cantidad + separador + reporte.VentasTotales);
-            }
-            catch (NullReferenceException ex)
-            {
-                return null;
-            }
         }
 
         public bool escribirXLS(List<ReportesModel> reportes, IFormCollection form)
@@ -173,21 +107,21 @@ namespace JunquillalUserSystem.Areas.Admin.Controllers.Handlers
             worksheet.InsertArray(contenidoDeExcel, 1, 1);
             worksheet.AllocatedRange.AutoFitColumns();
             workbook.SaveToFile(archivo, ExcelVersion.Version2016);
-            fusionarCeldas(archivo, "A1:F1");
-            int cantidadFilas = contenidoDeExcel.GetLength(0);
             int cantidadColumnas = contenidoDeExcel.GetLength(1);
             char letra = (char)(64 + cantidadColumnas);
+            fusionarCeldas(archivo, "A1:" + letra+"1");
+            int cantidadFilas = contenidoDeExcel.GetLength(0);
             alinearCeldasHaciaIzquierda(archivo, "A2:" + letra + cantidadFilas);
             return resultado;
         }
 
         public string[,] agregarContenidoAExcel(List<ReportesModel> reportes, string header)
         {
-            string[] nombreColumnas = new string[] { "Fecha", "Tipo de Visitante", "Lugar de Procedencia", "Estatus", "Tipo de Visita", "Cantidad" };
-            string[,] contenidoDeExcel = new string[reportes.Count+1, nombreColumnas.Length];
+            string[] nombreColumnas = new string[] { "Fecha", "Tipo de Visitante", "Lugar de Procedencia", "Estatus", "Tipo de Visita", "Cantidad", "Motivo" };
+            string[,] contenidoDeExcel = new string[reportes.Count+2, nombreColumnas.Length];
             string nacionalidad = "";
             string NACIONAL = "Nacional";
-            for (int fila = 0; fila < reportes.Count + 1; ++fila)
+            for (int fila = 0; fila < reportes.Count + 2; ++fila)
             {
 
                 for (int columna = 0; columna < nombreColumnas.Length; ++columna)
@@ -204,36 +138,40 @@ namespace JunquillalUserSystem.Areas.Admin.Controllers.Handlers
                     {
                         if (columna == (int)Columna.fecha)
                         {
-                            contenidoDeExcel[fila, columna] = reportes[fila%nombreColumnas.Length+1].PrimerDia;
+                            contenidoDeExcel[fila, columna] = reportes[fila-2].PrimerDia;
                         }
                         else if (columna == (int)Columna.tipoDeVisitante)
                         {
-                            nacionalidad = reportes[fila % nombreColumnas.Length+1].Nacionalidad;
+                            nacionalidad = reportes[fila-2].Nacionalidad;
                             contenidoDeExcel[fila, columna] = nacionalidad;
                         }
                         else if (columna == (int)Columna.lugarDeProcedencia)
                         {
                             if (nacionalidad.Equals(NACIONAL))
                             {
-                                contenidoDeExcel[fila, columna] = reportes[fila % nombreColumnas.Length + 1].NombreProvincia;
+                                contenidoDeExcel[fila, columna] = reportes[fila-2].NombreProvincia;
                             }
                             else
                             {
-                                contenidoDeExcel[fila, columna] = reportes[fila % nombreColumnas.Length + 1].NombrePais;
+                                contenidoDeExcel[fila, columna] = reportes[fila-2].NombrePais;
                             }
-
                         }
                         else if (columna == (int)Columna.estatus)
                         {
-                            contenidoDeExcel[fila, columna] = reportes[fila % nombreColumnas.Length + 1].Poblacion;
+                            contenidoDeExcel[fila, columna] = reportes[fila-2].Poblacion;
                         }
                         else if (columna == (int)Columna.tipoDeVisita)
                         {
-                            contenidoDeExcel[fila, columna] = reportes[fila % nombreColumnas.Length + 1].Actividad;
+                            contenidoDeExcel[fila, columna] = reportes[fila-2].Actividad;
+
                         }
                         else if (columna == (int)Columna.cantidad)
                         {
-                            contenidoDeExcel[fila, columna] = reportes[fila % nombreColumnas.Length + 1].Cantidad.ToString();
+                            contenidoDeExcel[fila, columna] = reportes[fila-2].Cantidad.ToString();
+                        }
+                        else if (columna == (int)Columna.motivo)
+                        {
+                            contenidoDeExcel[fila, columna] = reportes[fila - 2].Motivo;
                         }
                     }
                 }
