@@ -93,12 +93,17 @@
                                   
                                     @foreach (var tipoCantidadPersona in item.tipoPersona)
                                     {
-
+                                        var moneda = "$";
                                         <div>
                                             <h5>@tipoCantidadPersona.Key</h5>
                                             <span>  </span>
                                             <span>Cantidad: @tipoCantidadPersona.Value.Item1   </span>
-                                            <span>Precio total: @tipoCantidadPersona.Value.Item2</span>
+
+                                            @if(tipoCantidadPersona.Key.IndexOf("Extranjero") == -1) {
+                                                moneda = "₡";
+                                            }
+
+                                            <span>Precio total: @moneda@tipoCantidadPersona.Value.Item2</span>
                                         </div>
                                       
                                     }
