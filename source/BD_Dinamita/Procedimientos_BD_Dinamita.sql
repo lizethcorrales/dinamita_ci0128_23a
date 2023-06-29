@@ -579,3 +579,24 @@ BEGIN
 END;
 
 select * from PrecioReservacion
+
+ -- Se crea procedimiento que actualiza el valor del dólar
+GO
+CREATE PROCEDURE actualizarValorDolar(
+	@nuevo_valor AS FLOAT
+) AS
+BEGIN
+	SELECT CambioDolar.ValorDolar
+		FROM CambioDolar
+
+	IF @@ROWCOUNT = 0
+		BEGIN
+			INSERT INTO CambioDolar 
+			VALUES(@nuevo_valor)
+		END;
+
+	BEGIN 
+	UPDATE CambioDolar
+	SET ValorDolar = @nuevo_valor
+	END;		
+END;

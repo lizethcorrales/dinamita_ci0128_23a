@@ -332,3 +332,8 @@ PRIMARY KEY(IdentificadorReserva, NombreProvincia),
 FOREIGN KEY(IdentificadorReserva) REFERENCES Reservacion(IdentificadorReserva),
 FOREIGN KEY(NombreProvincia) REFERENCES Provincia(NombreProvincia)
 )
+
+CREATE TABLE CambioDolar
+(
+    ValorDolar FLOAT
+);
