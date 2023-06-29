@@ -81,7 +81,6 @@ namespace JunquillalUserSystem.Controllers
             ViewBag.costoTotal = reservacionHandler.CostoTotal(reservacion.Identificador).ToString();
 
 
-
             ViewData["IsAdminArea"] = TempData["IsAdminArea"];
             TempData["IsAdminArea"] = TempData["IsAdminArea"];
             return View();

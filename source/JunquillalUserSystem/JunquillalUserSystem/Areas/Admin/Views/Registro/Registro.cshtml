@@ -1,0 +1,99 @@
+﻿@{
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+    ViewData["Title"] = "Registro Usuario";
+}
+
+<head>
+    <meta http-equiv="content-type" content="text/html" ; charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>RegistroUsuario</title>
+    <link rel="stylesheet" href="~/css/Registro.css" />
+    <script defer src="~/js/registro.js"></script>
+</head>
+
+<body>
+    <div>
+        <div>
+            <div>
+                <h2> Bienvenido a la seccion de registro, administrador </h2>
+                <h4>Introduzca los datos del usuario que desea registrar en el sistema</h4>
+            </div>
+            <div>
+                <form id="infoUsuarioNuevo" @Url.Action("Registro","Registro") method="POST">
+                    <div class="UsuarioNuevo" id="divUsuarioNuevo">
+
+                        <label for="UsuarioNombre"> Nombre: </label>
+                        <br>
+                        <input placeholder="" type="text" id="nombre" name="Nombre" maxlength="20" />
+                    </div>
+
+                    <div class="UsuarioApellidoP" id="divUsuarioApellidoP">
+
+                        <label for="UsuarioApellidoP"> Primer Apellido: </label>
+                        <br>
+                        <input placeholder="" type="text" id="papellido" name="Apellido1" maxlength="30" />
+                    </div>
+
+                    <div class="UsuarioApellidoS" id="divUsuarioApellidoS">
+                        <label for="UsuarioApellidoS"> Segundo Apellido: </label>
+                        <br>
+                        <input placeholder="" type="text" id="sapellido" name="Apellido2" maxlength="30" />
+                    </div>
+
+                    <div class="cedula" id="divCedula">
+                        <label for=»cedula»> Cedula: </label>
+                        <br>
+
+                        <input type="text" id="cedula" name="ID" maxlength="9" />
+                        <p class="datoError" id="cedulaError"> </p>
+                    </div>
+
+                    <div class="correo" id="divCorreo">
+                        <label for=»correo»> Correo: </label>
+                        <br>
+
+                        <input type="text" id="correo" name="Correo"/>
+                        <p class="datoError" id="correoError"> </p>
+                    </div>
+
+                    <div class="contra" id="divContrasena">
+                        <label for=»contrasena»> Contraseña: </label>
+                        <br>
+
+                        <input type="password" id="contrasena" name="Contrasena"/>
+                        
+                    </div>
+
+                    <div class="contraDN" id="divContrasenaDN">
+                        <label for=»contrasenaDN»> Digite de nuevo la contraseña: </label>
+                        <br>
+                        <input type="password" id="contrasenaDN" name="ContrasenaDN"/>
+                    </div>
+
+                    <p> Puesto: </p>
+                    <select name="Puesto" id="Puesto">
+                        <option value="Administrador">Administrador</option>
+                        <option value="Operativo">Operativo</option>
+                    </select>
+
+                    
+                </form>
+                <br>
+                <div id="divError">
+                    <p class="datoError" id="Error"> </p>
+                </div>
+
+                <button id="botonRegistrar" class="botonRegistrar" type="button">Registrar Usuario</button>
+
+                <br />
+            </div>
+
+            @if (ViewData["Mensaje"] != null)
+            {
+                <div class="advertencia">
+                    @ViewData["Mensaje"]
+                </div>
+            }
+        </div>
+    </div>
+</body>
