@@ -1,0 +1,20 @@
+﻿@model JunquillalUserSystem.Models.CambioDolarModel;
+
+@{
+    ViewBag.Title = "Cambio Dólar";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+
+}
+<html>
+<head>
+</head>
+<body>
+    <div class="form-horizontal">
+        <div class="form-group">
+        @Html.Label("Cambio actual del dólar")
+        @Html.TextBoxFor(model => model.ValorDolar, new {@readonly = "readonly", @class = "form-control"})
+        @Html.ActionLink("Editar", "EditarCambioDolar", new { cambioDolar = Model.ValorDolar}, new {@class = "btn btn alert-info", @onclick = "return confirm('¿Desea editar el valor del dólar?')"})
+        </div>
+    </div>
+</body>
+</html>

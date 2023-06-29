@@ -5,7 +5,7 @@ using Microsoft.CodeAnalysis.Options;
 var builder = WebApplication.CreateBuilder(args);
 
 
-// Registrar las dependencias y la inyección de dependencias
+// Registrar las dependencias y la inyecciï¿½n de dependencias
 builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<IEmailService, SmtpEmailService>();
 builder.Services.AddScoped<IMensajeConfirmacionImplementacion,MensajeConfirmacionImplementacionHTML>();

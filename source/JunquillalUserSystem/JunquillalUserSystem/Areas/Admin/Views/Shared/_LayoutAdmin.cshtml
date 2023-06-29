@@ -50,7 +50,10 @@
                              <ul class="nav-item submenu-content">
                                   <li><a href="@Url.Action("Reservas","AdministrarReservas" , new { area = "Admin" })">Reservas</a></li>
                                   <li><a href="@Url.Action("Tarifas","Tarifas" , new { area = "Admin" })">Tarifas</a></li>
-                              </ul>
+                                @if (puesto == "Administrador") {
+                                  <li><a href="@Url.Action("CambioDolar","CambioDolar" , new { area = "Admin" })">Cambio del Dolar</a></li>
+                                }
+                             </ul>
 
                         </li>
                         <li class="nav-item">
