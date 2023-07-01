@@ -133,13 +133,16 @@ namespace JunquillalUserSystem.Areas.Admin.Controllers
 
         private List<string> GetFiles()
         {
-            var dir = new DirectoryInfo(Path.Combine(Directory.GetCurrentDirectory(), "Reportes"));
-            System.IO.FileInfo[] fileNames = dir.GetFiles("*.*");
-
+            string nombreDirectorioArchivo = Path.Combine(Directory.GetCurrentDirectory(), "Reportes");
+            var directorioArchivo = new DirectoryInfo(nombreDirectorioArchivo);
             List<string> items = new List<string>();
-            foreach (var file in fileNames)
+            if (Directory.Exists(nombreDirectorioArchivo))
             {
-                items.Add(file.Name);
+                System.IO.FileInfo[] fileNames = directorioArchivo.GetFiles("*.*");
+                foreach (var file in fileNames)
+                {
+                    items.Add(file.Name);
+                }
             }
             return items;
         }
