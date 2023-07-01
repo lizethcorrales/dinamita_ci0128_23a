@@ -33,6 +33,7 @@ namespace JunquillalUserSystem.Areas.Admin.Controllers
                     TempData["Mensaje"] = "Error: hubo un problema al intentar crear el archivo";
                 } else {
                     TempData["Mensaje"] = "El reporte fue creado exitosamente";
+                    TempData["ListarReportes"] = true;
                 }
             }
 
@@ -41,7 +42,8 @@ namespace JunquillalUserSystem.Areas.Admin.Controllers
 
         public IActionResult Reportes()
         {
-            return View();
+            var items = GetFiles();
+            return View(items);
         }
 
         public bool CamposFaltantes(IFormCollection form)
@@ -80,6 +82,66 @@ namespace JunquillalUserSystem.Areas.Admin.Controllers
         public bool StringVacio(string valor)
         {
             return valor == null || valor.Length == 0 ? true : false;
-        }  
+        }
+
+        [HttpGet]
+        public IActionResult DeleteFile(string FileName)
+        {
+            string folderPath = Path.Combine(Directory.GetCurrentDirectory(), "Reportes");
+            string filePath = Path.Combine(folderPath, Path.GetFileName(FileName));
+
+            if (System.IO.File.Exists(filePath))
+            {
+                System.IO.File.Delete(filePath);
+            }
+            TempData["ListarReportes"] = true;
+            return RedirectToAction("Reportes");
+        }
+
+        [HttpGet]
+        public IActionResult DeleteFiles(List<string> FileNames)
+        {
+            string folderPath = Path.Combine(Directory.GetCurrentDirectory(), "Reportes");
+            string filePath;
+            foreach(var file in FileNames)
+            {
+                filePath = Path.Combine(folderPath, Path.GetFileName(file));
+                if (System.IO.File.Exists(filePath))
+                {
+                    System.IO.File.Delete(filePath);
+                }
+            }
+            TempData["ListarReportes"] = true;  
+            return RedirectToAction("Reportes");
+        }
+
+        [HttpGet("download")]
+        public IActionResult Download(string FileName)
+        {
+            string folderPath = Path.Combine(Directory.GetCurrentDirectory(), "Reportes");
+            string filePath = Path.Combine(folderPath, Path.GetFileName(FileName));
+            // Verifica si el archivo existe en la ruta especificada
+            if (System.IO.File.Exists(filePath))
+            {
+                // Devuelve el archivo para su descarga
+                var resultado = PhysicalFile(filePath, "application/force-download", FileName);
+                return resultado;
+            }
+            // Si el archivo no existe, redirige o muestra un mensaje de error
+            return RedirectToAction("Reportes");
+        }
+
+        private List<string> GetFiles()
+        {
+            var dir = new DirectoryInfo(Path.Combine(Directory.GetCurrentDirectory(), "Reportes"));
+            System.IO.FileInfo[] fileNames = dir.GetFiles("*.*");
+
+            List<string> items = new List<string>();
+            foreach (var file in fileNames)
+            {
+                items.Add(file.Name);
+            }
+            return items;
+        }
     }
 }

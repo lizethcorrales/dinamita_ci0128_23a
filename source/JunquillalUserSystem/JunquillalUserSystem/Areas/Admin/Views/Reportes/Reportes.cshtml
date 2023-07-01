@@ -1,7 +1,8 @@
-﻿@model JunquillalUserSystem.Models.ReportesModel;
+﻿@model List<string>
 @{
     ViewData["Title"] = "Reportes";
     Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+    bool listarArchivos = (TempData["ListarReportes"] as bool?) ?? false;
 }
 
 
@@ -41,8 +42,6 @@
         <br>
 
         <div class="contorno gray"> 
-
-
             <form id="fechas" action="Reservaciones" method="POST">
                 <div class="centrar">
                     <div class="flex">
@@ -72,6 +71,35 @@
 
             </form>
         </div>
+
+        @if (listarArchivos)
+        {
+            <div class="contorno gray">
+                <h2>Lista de Reportes</h2>
+                @if (Model.Count != 0)
+                {
+                    <table>
+                        <tr>
+                            <th>Reporte</th>
+                            <th>Link</th>
+                            <th>Eliminar del Servidor</th>
+                        </tr>
+                        @for (var i = 0; i <= Model.Count - 1; i++)
+                        {
+                            <tr>
+                                <td>@Model[i].ToString() </td>
+                                <td>@Html.ActionLink("Descargar", "Download", new { FileName = @Model[i].ToString() }, new {@class = "btn btn alert-info", @onclick = "return confirm('¿Desea descargar este reporte?')"}) </td>
+                                <td>@Html.ActionLink("Eliminar", "DeleteFile", new { FileName = @Model[i].ToString() }, new {@class = "btn btn alert-danger", @onclick = "return confirm('¿Desea eliminar este reporte?')"}) </td>
+                            </tr>
+                        }
+                    </table>
+                    @Html.ActionLink("Borrar Reportes", "DeleteFiles", new { FileNames = @Model}, new {@class = "btn btn alert-danger", @onclick = "return confirm('¿Desea eliminar todos los reportes?')"})
+                } else {
+                    <p>No existen archivos por mostrar</p>
+                }
+            </div>
+        }
+
         @section Scripts{
 
             <script>
