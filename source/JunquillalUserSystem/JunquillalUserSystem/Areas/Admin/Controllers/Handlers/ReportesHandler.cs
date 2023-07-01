@@ -15,6 +15,7 @@ using System.ComponentModel;
 using System.Drawing;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Spire.Xls.Core;
+using Spire.Pdf.Exporting.XPS.Schema;
 
 namespace JunquillalUserSystem.Areas.Admin.Controllers.Handlers
 {
@@ -85,16 +86,14 @@ namespace JunquillalUserSystem.Areas.Admin.Controllers.Handlers
                     Motivo= Convert.ToString(columna["Motivo"]),
                     VentasTotales = Convert.ToDouble(columna["Ventas_Totales"])
                 });
-                System.Diagnostics.Debug.WriteLine(columna["PrimerDia"]);
             }
 
             return reportes;
         }
 
         //si bool es 0 se hace visitacion y si es 1 se hace ventas
-        public bool escribirXLS(List<ReportesModel> reportes, IFormCollection form, bool tipoReporteParaHacer)
+        public string escribirXLS(List<ReportesModel> reportes, IFormCollection form, bool tipoReporteParaHacer)
         {
-            bool resultado = true;
             string primerDia = form["fecha-entrada"];
             string ultimoDia = "";
 
@@ -108,15 +107,13 @@ namespace JunquillalUserSystem.Areas.Admin.Controllers.Handlers
             {
                 ultimoDia = form["fecha-salida"];
             }
-            //Create a Workbook instance
             Workbook workbook = new Workbook();
-            //Remove default worksheets
             workbook.Worksheets.Clear();
-            //Add a worksheet and name it
             var dateNow = "del_" + primerDia + "_a_" + ultimoDia;
             string archivo;
             string header = "AREA DE CONSERVACION GUANACASTE";
             string[,] contenidoDeExcel;
+            string directorioArchivo = "";
             if (tipoReporteParaHacer)
             {
                 archivo = "LiquidacionReporte_" + dateNow + ".xlsx";
@@ -127,19 +124,31 @@ namespace JunquillalUserSystem.Areas.Admin.Controllers.Handlers
                 archivo = "VisitacionReporte_" + dateNow + ".xlsx";
                 contenidoDeExcel = agregarContenidoAExcelReporteVisitacion(reportes, header);
             }
-            Worksheet worksheet = workbook.Worksheets.Add(archivo);
-            worksheet.InsertArray(contenidoDeExcel, 1, 1);
-            worksheet.AllocatedRange.AutoFitColumns();
-            workbook.SaveToFile(archivo, ExcelVersion.Version2016);
-            int cantidadColumnas = contenidoDeExcel.GetLength(1);
-            char letra = (char)(64 + cantidadColumnas);
-            fusionarCeldas(archivo, "A1:" + letra+"1");
-            int cantidadFilas = contenidoDeExcel.GetLength(0);
-            alinearCeldasHaciaIzquierda(archivo, "A2:" + letra + cantidadFilas);
-            cambiarFontColor(archivo, "A2:" + letra + "2");
-            agregarBold(archivo, "A1:" + letra + "2");
-            agregarBordeACeldas(archivo, "A1:" + letra + cantidadFilas);
-            return resultado;
+            directorioArchivo = System.IO.Path.Combine(Directory.GetCurrentDirectory(), "Reportes");
+            try { 
+                if (!Directory.Exists(directorioArchivo))
+                {
+                    Directory.CreateDirectory(directorioArchivo);
+                }
+                directorioArchivo = System.IO.Path.Combine(directorioArchivo, archivo);
+                Worksheet worksheet = workbook.Worksheets.Add(archivo);
+                worksheet.InsertArray(contenidoDeExcel, 1, 1);
+                worksheet.AllocatedRange.AutoFitColumns();
+                workbook.SaveToFile(directorioArchivo, ExcelVersion.Version2016);
+                int cantidadColumnas = contenidoDeExcel.GetLength(1);
+                char letra = (char)(64 + cantidadColumnas);
+                fusionarCeldas(directorioArchivo, "A1:" + letra+"1");
+                int cantidadFilas = contenidoDeExcel.GetLength(0);
+                alinearCeldasHaciaIzquierda(directorioArchivo, "A2:" + letra + cantidadFilas);
+                cambiarFontColor(directorioArchivo, "A2:" + letra + "2");
+                agregarBold(directorioArchivo, "A1:" + letra + "2");
+                agregarBordeACeldas(directorioArchivo, "A1:" + letra + cantidadFilas);
+            } catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine("Se generó el error: " +ex.Message);
+                return archivo;
+            }
+            return archivo;
         }
 
         public string[,] agregarContenidoAExcelReporteLiquidacion(List<ReportesModel> reportes, string header)

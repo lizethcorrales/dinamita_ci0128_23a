@@ -27,12 +27,12 @@ namespace JunquillalUserSystem.Areas.Admin.Controllers
 
                 bool reporte = esReporteLiquidacion(Request.Form);
 
-                bool exito = reportesHandler.escribirXLS(listaCamping, Request.Form, reporte);
-                if (exito)
+                string nombreArchivo = reportesHandler.escribirXLS(listaCamping, Request.Form, reporte);
+                if (nombreArchivo.Equals(String.Empty))
                 {
-                    TempData["Mensaje"] = "El reporte fue creado exitosamente";
-                } else {
                     TempData["Mensaje"] = "Error: hubo un problema al intentar crear el archivo";
+                } else {
+                    TempData["Mensaje"] = "El reporte fue creado exitosamente";
                 }
             }
 
@@ -68,8 +68,6 @@ namespace JunquillalUserSystem.Areas.Admin.Controllers
         public bool esReporteLiquidacion(IFormCollection form)
         {
             string reporteLiquidacion = Request.Form["tipoReporte"];
-            System.Diagnostics.Debug.WriteLine(reporteLiquidacion);
-
             if (reporteLiquidacion == "liquidacion")
             {
                 return true;
@@ -82,8 +80,6 @@ namespace JunquillalUserSystem.Areas.Admin.Controllers
         public bool StringVacio(string valor)
         {
             return valor == null || valor.Length == 0 ? true : false;
-        }
-
-
+        }  
     }
 }
