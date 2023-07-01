@@ -1,17 +1,20 @@
 ﻿@model JunquillalUserSystem.Models.ReservacionModelo;
 
 @{
-    ViewBag.Title = "Eliminar Tarifa";
+    ViewBag.Title = "Agregar Parcela";
     Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
   }
 <html>
 <head>
 </head>
 <body>
-    @using (Html.BeginForm("RealizarCheckIn", "AdministrarReserva", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    <div class="centrar" style="margin-top: -10px;">
+        <img src="~/img/NumeroParcelas.jpg" alt="Parcelas" width="850">
+    </div>
+    @using (Html.BeginForm("RealizarCheckIn", "AdministrarReservas", FormMethod.Post, new { enctype = "multipart/form-data" }))
     {
         @Html.AntiForgeryToken()
-        <h1>Asignar parcela para realizar Check In</h1>
+        <h1>Asignar parcela a una reserva para realizar check in</h1>
         <div class="form-horizontal">
             <div class="form-group">
                 @Html.LabelFor(model => model.Identificador)
@@ -21,16 +24,16 @@
             <div class="form-group">
 
                 @Html.LabelFor(model => model.hospedero.Email)
-                @Html.TextBoxFor(model => model.hospedero.Email, new { @class = "form-control" })
+                @Html.TextBoxFor(model => model.hospedero.Email, new { @class = "form-control", @readonly = "readonly" })
                 @Html.ValidationMessageFor(model => model.hospedero.Email, "", new { @class = "text-danger" })
 
             </div>
             <div class="formInput" id="divNombre">
                 <label for="NumeroParcela">Número de parcela:</label><br>
-                <input type="text" id="numeroParcela" name="numeroParcela" placeholder="Ingrese su nombre" size="50">
+                <input type="text" id="numeroParcela" name="numeroParcela" placeholder="Ingrese número de parcela" size="50">
                 
             </div>
-            <input type="submit" class="btn btn-success" value="Eliminar Tarifa" />
+            <input type="submit" class="btn btn-success" value="Asignar Parcela" />
         </div>
     }
 </body>
