@@ -9,10 +9,12 @@ namespace JunquillalUserSystem.Areas.Admin.Controllers
     [Area("Admin")]
     public class ReportesController : Controller
     {
+     
         [HttpPost]
         public IActionResult GenerarReporte()
         {
             ReportesHandler reportesHandler = new ReportesHandler();
+            GeneradorDeReportes generadorDeReportes =  new GeneradorDeReportes();
             
             if (CamposFaltantes(Request.Form))
             {
@@ -27,7 +29,7 @@ namespace JunquillalUserSystem.Areas.Admin.Controllers
 
                 bool reporte = esReporteLiquidacion(Request.Form);
 
-                string nombreArchivo = reportesHandler.escribirXLS(listaCamping, Request.Form, reporte);
+                string nombreArchivo = generadorDeReportes.escribirXLS(listaCamping, Request.Form, reporte);
                 if (nombreArchivo.Equals(String.Empty))
                 {
                     TempData["Mensaje"] = "Error: hubo un problema al intentar crear el archivo";
