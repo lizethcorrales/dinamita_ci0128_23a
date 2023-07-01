@@ -39,24 +39,32 @@ namespace JunquillalUserSystem.Areas.Admin.Controllers
         public IActionResult CheckOutReserva(string identificador)
         {
           
-            checkInOutHandler.CheckOutReserva(identificador);
+            checkInOutHandler.CheckInOutReserva(identificador,"CheckOut");
             return RedirectToAction("Reservas");
 
         }
 
-        public IActionResult CheckInReserva(ReservacionModelo reservacion)
+        public IActionResult CheckInReserva(string identificador)
         {
 
-            
+            List<ReservacionModelo> listaReservas = administrarHandler.ObtenerReservas(identificador, "identificador");
+            ReservacionModelo reservacion = listaReservas.Find(model => model.Identificador == identificador);
+
             return View(reservacion);
 
         }
 
-        public IActionResult RealizarCheckIn(ReservacionModelo reservacion)
+        public IActionResult RealizarCheckIn()
         {
+            int numeroParcela = int.Parse(Request.Form["numeroParcela"]);
+            string identificador = Request.Form["identificador"];
+
+            checkInOutHandler.CheckInOutReserva(identificador, "CheckIn");
+            checkInOutHandler.insertarHospedaje(identificador, numeroParcela);
+            
 
 
-            return View(reservacion);
+            return RedirectToAction("Reservas");
 
         }
 

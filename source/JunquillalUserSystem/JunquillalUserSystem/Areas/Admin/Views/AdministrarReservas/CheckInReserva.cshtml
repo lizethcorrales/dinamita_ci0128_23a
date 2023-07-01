@@ -11,31 +11,26 @@
     <div class="centrar" style="margin-top: -10px;">
         <img src="~/img/NumeroParcelas.jpg" alt="Parcelas" width="850">
     </div>
-    @using (Html.BeginForm("RealizarCheckIn", "AdministrarReservas", FormMethod.Post, new { enctype = "multipart/form-data" }))
-    {
-        @Html.AntiForgeryToken()
+
+    <form id="Parcela" action="RealizarCheckIn" method="POST">
         <h1>Asignar parcela a una reserva para realizar check in</h1>
         <div class="form-horizontal">
-            <div class="form-group">
-                @Html.LabelFor(model => model.Identificador)
-                @Html.TextBoxFor(model => model.Identificador, new { @class = "form-control", @readonly = "readonly" })
-                @Html.ValidationMessageFor(model => model.Identificador, "", new {@class = "text-danger"})
+            <div class="formInput" id="divIdentificador">
+                <label for="NumeroIdentificador">Identificador reservación:</label><br>
+                <input type="text" id="identificador" name="identificador" value="@Model.Identificador" class = "form-control" readonly = "readonly">
             </div>
             <div class="form-group">
-
                 @Html.LabelFor(model => model.hospedero.Email)
                 @Html.TextBoxFor(model => model.hospedero.Email, new { @class = "form-control", @readonly = "readonly" })
                 @Html.ValidationMessageFor(model => model.hospedero.Email, "", new { @class = "text-danger" })
-
             </div>
-            <div class="formInput" id="divNombre">
+            <div class="formInput" id="divparcela">
                 <label for="NumeroParcela">Número de parcela:</label><br>
-                <input type="text" id="numeroParcela" name="numeroParcela" placeholder="Ingrese número de parcela" size="50">
-                
+                <input type="number" id="numeroParcela" name="numeroParcela" placeholder="Número de parcela" size="50">     
             </div>
             <input type="submit" class="btn btn-success" value="Asignar Parcela" />
         </div>
-    }
+      </form>
 </body>
 
 </html>

@@ -672,14 +672,14 @@ BEGIN
 END;
 
 GO 
-CREATE PROCEDURE insertarHospedajeReservacion(
+ Alter PROCEDURE insertarHospedajeReservacion(
 	@identificadorReserva AS VARCHAR(10),
-	@numeroParcela AS SMALLINT
+	@numeroParcela AS INT
 )AS
 BEGIN 
 	SELECT Parcela.NumeroParcela
 	FROM Parcela
-	WHERE Parcela.Capacidad = @numeroParcela;
+	WHERE Parcela.NumeroParcela = @numeroParcela;
 
 	IF @@ROWCOUNT >= 1
 	BEGIN 
@@ -694,3 +694,5 @@ BEGIN
 		END;
 	END;
 END;
+go
+

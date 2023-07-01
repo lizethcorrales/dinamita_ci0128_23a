@@ -1,4 +1,6 @@
 ﻿using JunquillalUserSystem.Models;
+using System.ComponentModel.DataAnnotations;
+using System.Xml.Linq;
 
 namespace JunquillalUserSystem.Models
 
@@ -12,6 +14,7 @@ namespace JunquillalUserSystem.Models
 
         public int Estado { get; set; }
 
+        [Display(Name = "Identificador de la reservación")]
         public string Identificador { get; set; }
 
         public List<int> cantTipoPersona { get; set; }

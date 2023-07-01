@@ -20,13 +20,14 @@ namespace JunquillalUserSystem.Handlers
         {
         }
 
-        public void insertarHospedaje(ReservacionModelo reservacion, int numeroParcela)
+        public void insertarHospedaje(string identificador, int numeroParcela)
         {
-            string consulta = "insertarHospedajeReservacion";
+            string consulta = "insertarHospedajeReservacion"; // Nombre del procedimiento almacenado
             SqlCommand comandoParaConsulta = new SqlCommand(consulta, conexion);
             comandoParaConsulta.CommandType = CommandType.StoredProcedure;
-            comandoParaConsulta.Parameters.AddWithValue("@identificadorReserva", reservacion.Identificador);
+            comandoParaConsulta.Parameters.AddWithValue("@identificadorReserva", identificador);
             comandoParaConsulta.Parameters.AddWithValue("@numeroParcela", numeroParcela);
+
             try
             {
                 conexion.Open();
@@ -37,7 +38,9 @@ namespace JunquillalUserSystem.Handlers
             {
                 Console.WriteLine("Error al ejecutar la consulta: " + ex.Message);
             }
+   
         }
+
 
         public List<Parcela> obtenerParcelas()
         {
@@ -56,9 +59,14 @@ namespace JunquillalUserSystem.Handlers
             return parcelas;
         }
 
-        public void CheckOutReserva(string identificador)
+        public void CheckInOutReserva(string identificador , string opcion)
         {
-            string consulta = $"Update  Reservacion Set Estado = 3 Where  IdentificadorReserva  = '{identificador}'";
+            string  consulta = $"Update  Reservacion Set Estado = 1 Where  IdentificadorReserva  = '{identificador}'";
+            if (opcion == "CheckOut")
+            {
+                consulta = $"Update  Reservacion Set Estado = 3 Where  IdentificadorReserva  = '{identificador}'";
+            } 
+          
             SqlCommand comandoParaConsulta = new SqlCommand(consulta, conexion);
 
             try
