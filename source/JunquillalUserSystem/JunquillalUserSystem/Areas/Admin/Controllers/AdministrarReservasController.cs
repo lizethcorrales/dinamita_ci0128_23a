@@ -44,5 +44,21 @@ namespace JunquillalUserSystem.Areas.Admin.Controllers
 
         }
 
+        public IActionResult CheckInReserva(ReservacionModelo reservacion)
+        {
+
+            
+            return View(reservacion);
+
+        }
+
+        public IActionResult RealizarCheckIn(ReservacionModelo reservacion)
+        {
+
+
+            return View(reservacion);
+
+        }
+
     }
 }

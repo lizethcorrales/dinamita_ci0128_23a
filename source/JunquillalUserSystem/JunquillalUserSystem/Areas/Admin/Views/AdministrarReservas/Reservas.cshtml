@@ -37,6 +37,7 @@
                 <th>Fecha Salida</th>
                 <th>Tipo de reserva</th>
                 <th>Detalles</th>
+                <th>Check In</th>
                 <th>Check Out</th>
                 <th>Eliminar</th>
             </tr>
@@ -63,13 +64,37 @@
                                 {
                                     <span>Finalizada</span>
                                 }
-                                else if (item.Estado == 0)
+                                else if ((item.Estado == 1 && item.TipoActividad == "Camping")
+                                || (item.Estado == 0 && item.TipoActividad == "Picnic"))
+                                {
+                                    <span>Ingresado</span>
+                                }
+                                else
+                                {
+                                    @Html.ActionLink("Check In", "CheckInReserva",
+                        new { reservacion = item },
+                        new { @class =  "btn btn alert-danger ", @onclick = "return confirm('Desea hacer  check out a esta reservación?')" })
+
+                                }
+                            }
+                    </td>
+                    <td>
+                            @{
+                                if (item.Estado == 2)
+                                {
+                                    <span>Cancelada</span>
+                                }
+                                else if (item.Estado == 3)
+                                {
+                                    <span>Finalizada</span>
+                                }
+                                else if (item.Estado == 0 && item.TipoActividad == "Camping")
                                 {
                                     <span>No han ingresado</span>
                                 }  else
                                 {
                                     @Html.ActionLink("Check Out", "CheckOutReserva",
-                                       new { identificador = item.Identificador },
+                                       new { reservacion = item },
                                        new { @class =  "btn btn alert-danger ", @onclick = "return confirm('Desea hacer  check out a esta reservación?')" })
                                     
                                 }
