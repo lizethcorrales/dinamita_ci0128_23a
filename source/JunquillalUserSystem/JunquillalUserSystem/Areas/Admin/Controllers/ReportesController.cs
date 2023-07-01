@@ -9,12 +9,20 @@ namespace JunquillalUserSystem.Areas.Admin.Controllers
     [Area("Admin")]
     public class ReportesController : Controller
     {
-     
+
+        private readonly ReportesHandler reportesHandler;
+        private GeneradorDeReportes generadorDeReportes;
+
+        public ReportesController(ReportesHandler handler)
+        {
+            reportesHandler = handler;
+            generadorDeReportes = new GeneradorDeReportes();
+        }
+
         [HttpPost]
         public IActionResult GenerarReporte()
         {
-            ReportesHandler reportesHandler = new ReportesHandler();
-            GeneradorDeReportes generadorDeReportes =  new GeneradorDeReportes();
+            
             
             if (CamposFaltantes(Request.Form))
             {

@@ -9,7 +9,13 @@ namespace JunquillalUserSystem.Areas.Admin.Controllers
     [Area("Admin")]
     public class LoginController : Controller
     {
-        private LoginHandler handlerLogin = new LoginHandler();
+        private readonly LoginHandler handlerLogin;
+
+        public LoginController(LoginHandler handler)
+        {
+            handlerLogin = handler;
+        }
+
         public IActionResult Login()
         {
             return View();

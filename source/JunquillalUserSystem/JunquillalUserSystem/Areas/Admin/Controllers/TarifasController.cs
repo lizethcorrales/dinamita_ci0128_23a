@@ -9,9 +9,14 @@ namespace JunquillalUserSystem.Controllers
     [Area("Admin")]
     public class TarifasController : Controller
     {
+        private readonly TarifasHandler tarifasHandler;
+        public TarifasController(TarifasHandler handler) 
+        { 
+            tarifasHandler = handler;
+        }
+
         public IActionResult Tarifas()
         {
-            TarifasHandler tarifasHandler = new TarifasHandler();
             var tarifas = tarifasHandler.obtenerTarifasActuales();
             return View(tarifas);
         }
@@ -30,7 +35,6 @@ namespace JunquillalUserSystem.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    var tarifasHandler = new TarifasHandler();
                     ViewBag.ExitoAlCrear = tarifasHandler.insertarNuevaTarifa(tarifa);
                     if (ViewBag.ExitoAlCrear)
                     {
@@ -57,7 +61,6 @@ namespace JunquillalUserSystem.Controllers
             ActionResult vista;
             try
             {
-                var tarifasHandler = new TarifasHandler();
                 var tarifa = tarifasHandler.obtenerTarifasActuales().Find(model => model.Nacionalidad == nacionalidad && model.Poblacion == poblacion && model.Actividad == actividad);
                 if (tarifa == null)
                 {
@@ -81,7 +84,6 @@ namespace JunquillalUserSystem.Controllers
         {
             try
             {
-                var tarifasHandler = new TarifasHandler();
                 tarifasHandler.actualizarPrecioTarifas(tarifa);
                 return RedirectToAction("Tarifas", "Tarifas");
             }
@@ -97,7 +99,6 @@ namespace JunquillalUserSystem.Controllers
             ActionResult vista;
             try
             {
-                var tarifasHandler = new TarifasHandler();
                 var tarifa = tarifasHandler.obtenerTarifasActuales().Find(model => model.Nacionalidad == nacionalidad && model.Poblacion == poblacion && model.Actividad == actividad);
                 if (tarifa == null)
                 {
@@ -121,7 +122,6 @@ namespace JunquillalUserSystem.Controllers
         {
             try
             {
-                var tarifasHandler = new TarifasHandler();
                 tarifasHandler.borrarTarifa(tarifa);
                 return RedirectToAction("Tarifas", "Tarifas");
             }
