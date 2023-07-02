@@ -1,5 +1,6 @@
 --PROCEDIMIENTOS DE LA BASE DE DATOS
 -- Este procedimiento devuelve el costo total de la reserva a partir de la información contenida en la tabla PrecioReservacion.
+Drop proc calcularCostoTotalReserva;
 GO
 CREATE PROCEDURE calcularCostoTotalReserva (
                @identificador_Reserva AS VARCHAR(10),
@@ -9,6 +10,7 @@ BEGIN
 			DECLARE @primerDia AS DATE;
 			DECLARE @ultimoDia AS DATE;
 			DECLARE @cantidadDias AS INT;
+			DECLARE @cambioDolar AS DOUBLE PRECISION;
 			SET @costo_Total = 0;
 
 			SELECT @primerDia = Reservacion.PrimerDia, @ultimoDia = Reservacion.UltimoDia
@@ -21,12 +23,19 @@ BEGIN
 			END;
 			ELSE
 			BEGIN
-				SET @cantidadDias = DATEDIFF(DAY, @primerDia, @ultimoDia);
+				SET @cantidadDias = DATEDIFF(DAY, @primerDia, @ultimoDia) + 1;
 			END;
+
+			SELECT @cambioDolar = CambioDolar.ValorDolar
+			FROM CambioDolar;
 
 			IF @@ROWCOUNT > 0
 			BEGIN
-				SELECT @costo_Total = SUM(PrecioReservacion.Cantidad * PrecioReservacion.PrecioAlHacerReserva * @cantidadDias)
+				SELECT @costo_Total = SUM(PrecioReservacion.Cantidad * 
+				(CASE 
+					WHEN PrecioReservacion.Nacionalidad = 'Extranjero' THEN PrecioReservacion.PrecioAlHacerReserva * @cantidadDias * @cambioDolar
+					ELSE PrecioReservacion.PrecioAlHacerReserva * @cantidadDias
+					END))
 				FROM PrecioReservacion JOIN Reservacion ON PrecioReservacion.IdentificadorReserva = Reservacion.IdentificadorReserva
 				WHERE PrecioReservacion.IdentificadorReserva = @identificador_Reserva AND Reservacion.Estado != '2'
 				GROUP BY PrecioReservacion.IdentificadorReserva;
