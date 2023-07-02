@@ -34,3 +34,9 @@ BEGIN
 
 END;
 
+
+Update  Reservacion Set Estado = 3 Where  IdentificadorReserva  = '1GLUCl4lKv'
+
+
+
+

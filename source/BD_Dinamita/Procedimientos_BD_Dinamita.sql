@@ -639,3 +639,29 @@ BEGIN
 		VALUES (@nacionalidad, @poblacion, @actividad, @precio, '1');
 	END;
 END;
+
+GO 
+ Alter PROCEDURE insertarHospedajeReservacion(
+	@identificadorReserva AS VARCHAR(10),
+	@numeroParcela AS INT
+)AS
+BEGIN 
+	SELECT Parcela.NumeroParcela
+	FROM Parcela
+	WHERE Parcela.NumeroParcela = @numeroParcela;
+
+	IF @@ROWCOUNT >= 1
+	BEGIN 
+		SELECT Hospedaje.IdentificadorReserva
+		FROM Hospedaje
+		WHERE Hospedaje.IdentificadorReserva = @identificadorReserva;
+
+		IF @@ROWCOUNT <= 0 
+		BEGIN 
+			INSERT INTO Hospedaje
+			VALUES (@identificadorReserva, @numeroParcela);
+		END;
+	END;
+END;
+go
+
