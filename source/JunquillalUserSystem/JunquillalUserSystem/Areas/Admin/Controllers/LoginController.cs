@@ -9,12 +9,9 @@ namespace JunquillalUserSystem.Areas.Admin.Controllers
     [Area("Admin")]
     public class LoginController : Controller
     {
-        private readonly LoginHandler handlerLogin;
-
-        public LoginController(LoginHandler handler)
-        {
-            handlerLogin = handler;
-        }
+        private LoginHandler handlerLogin = new LoginHandler();
+        private const string SessionKeyNombre = "_Nombre";
+        private const string SessionKeyPuesto = "_Puesto";
 
         public IActionResult Login()
         {
