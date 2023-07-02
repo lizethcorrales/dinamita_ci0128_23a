@@ -9,45 +9,44 @@ using System.Diagnostics;
 using System.Xml.Linq;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium;
+using JunquillalAutomatedTesting.PageObjectModels;
 
-
-namespace JunquillalAutomatedTesting
+namespace JunquillalAutomatedTesting.Tests
 {
     public class HacerUnaVisitaTest
     {
 
         IWebDriver driver = null;
-        private IJavaScriptExecutor js;
+        FormVisitaCantidadPersonas paginaVisitaCantidadPersonas;
+
         public HacerUnaVisitaTest()
         {
             driver = new ChromeDriver();
+            paginaVisitaCantidadPersonas = new(driver);
         }
-    
+
         public void Setup()
         {
             driver.Navigate().GoToUrl("https://localhost:7042/Visita/FormularioCantidadPersonas");
-            js = (IJavaScriptExecutor)driver;
             driver.Manage().Window.Maximize();
         }
-        public void tearDown()
+
+        public void TearDown()
         {
             driver.Quit();
         }
+
         [Test, Order(1)]
         public void HacerUnaVisita_FormaIncorrectaNoSeAgregaNingunDato()
         {
+            // Arrange
             Setup();
-            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
-            IWebElement botonSiguiente = wait.Until(e => e.FindElement(By.Id("siguiente_calendario")));
-            IJavaScriptExecutor jsExecutor = (IJavaScriptExecutor)driver;
-            jsExecutor.ExecuteScript("arguments[0].click();", botonSiguiente);
-
-            {
-
-                IWebElement mensajeError = driver.FindElement(By.Id("error"));
-                Assert.That(mensajeError.Text, Is.EqualTo("Revise que haya al menos una persona"));
-            }
-            tearDown();
+            // Act
+            paginaVisitaCantidadPersonas.CompletarPaginaConDatosDePruebaDondeTodosLosCamposSon0();
+            var mensajeError = paginaVisitaCantidadPersonas.ObtenerMensajeDeError();
+            // Assert
+            Assert.That(mensajeError.Text, Is.EqualTo("Revise que haya al menos una persona"));
+            TearDown();
         }
 
     }
