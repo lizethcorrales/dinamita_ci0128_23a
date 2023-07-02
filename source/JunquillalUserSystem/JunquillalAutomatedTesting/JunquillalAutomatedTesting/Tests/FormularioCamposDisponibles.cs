@@ -9,16 +9,19 @@ using System.Diagnostics;
 using System.Xml.Linq;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium;
+using JunquillalAutomatedTesting.PageObjectModels;
 
-namespace JunquillalAutomatedTesting
+namespace JunquillalAutomatedTesting.Tests
 {
     [TestFixture]
     public class CamposDisponiblesTests
     {
         IWebDriver driver = null;
+        FormCamposDisponiblesPage paginaCamposDisponibles;
         public CamposDisponiblesTests()
         {
             driver = new ChromeDriver();
+            paginaCamposDisponibles = new(driver);
         }
 
         public void Setup()
@@ -34,33 +37,27 @@ namespace JunquillalAutomatedTesting
         [Test, Order(1)]
         public void CamposDisponibles_BuscarCamposSinFechaEntrada()
         {
+            // Arrange
             Setup();
-            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
-            IWebElement botonBuscar = wait.Until(e => e.FindElement(By.Id("buscar")));
-            botonBuscar.Click();
-            IWebElement mensajeErrorCampos = driver.FindElement(By.Id("mensajeErrorCampos"));
+            // Act
+            paginaCamposDisponibles.PresionarBotonBuscar();
+            IWebElement mensajeErrorCampos = paginaCamposDisponibles.obtenerMensajeDeError();
+            // Assert
             Assert.AreEqual("Debe de ingresar una fecha válida", mensajeErrorCampos.Text);
-            
+
         }
         [Test, Order(2)]
         public void CamposDisponibles_BusquedaDeFormaCorrecta()
         {
+            // Arrange
             Setup();
-            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
-            IWebElement inputFechaEntrada = wait.Until(e => e.FindElement(By.Id("fecha-entrada")));
-            IWebElement botonBuscar = wait.Until(e => e.FindElement(By.Id("buscar")));
-           
-            
-            inputFechaEntrada.Click();
-            
-            IWebElement fechaEntradaIngresada = driver.FindElement(By.LinkText("28"));
-            fechaEntradaIngresada.Click();
-
-            botonBuscar.Click();
-            IWebElement mensajeErrorCampos = driver.FindElement(By.Id("mensajeErrorCampos"));
+            // Act
+            paginaCamposDisponibles.elegirNumeroDeDia("28");
+            paginaCamposDisponibles.PresionarBotonBuscar();
+            IWebElement mensajeErrorCampos = paginaCamposDisponibles.obtenerMensajeDeError();
+            // Assert
             Assert.IsEmpty(mensajeErrorCampos.Text);
             tearDown();
-
         }
 
 
