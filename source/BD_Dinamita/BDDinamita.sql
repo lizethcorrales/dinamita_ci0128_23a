@@ -339,3 +339,9 @@ ADD Esta_Vigente BIT;
 --1 significa que la tarifa esta vigente, 0 significa que la tarifa esta cancelada y ya no se usa
 UPDATE Tarifa
 set Tarifa.Esta_Vigente = 1;
+)
+
+CREATE TABLE CambioDolar
+(
+    ValorDolar FLOAT
+);

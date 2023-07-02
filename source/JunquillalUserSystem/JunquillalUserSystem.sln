@@ -5,7 +5,7 @@ VisualStudioVersion = 17.4.33213.308
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JunquillalUserSystem", "JunquillalUserSystem\JunquillalUserSystem.csproj", "{B9DFC948-6BB2-4CED-9802-D4943E4B190B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JunquillalUserSystemTest", "JunquillalUserSystemTest\JunquillalUserSystemTest.csproj", "{A397F987-2F8E-42F7-9DCF-E36A71BE2F70}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JunquillalUserSystemTest", "JunquillalUserSystemTest\JunquillalUserSystemTest.csproj", "{A397F987-2F8E-42F7-9DCF-E36A71BE2F70}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

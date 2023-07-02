@@ -1,7 +1,15 @@
 ﻿@{
     Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+    var puesto = Context.Session.GetString("_Puesto");
+    var Nombre = Context.Session.GetString("_Nombre");
 }
 
+<h3>Bienvenido al módulo Admin</h3>
+<div class="bienvenida">
+
+    <h4> Hola @puesto @Nombre, que tenga un buen dia</h4>
+
+</div>
 
 <!DOCTYPE html>
 <html>
@@ -13,8 +21,6 @@
     </head>
 
     <body>
-
-        <h3>Bienvenido al módulo Admin</h3>
         <br>
         <br>
         <h4>Funcionalidades que tiene este  módulo :</h4>
@@ -80,7 +86,7 @@
             </tr>
 
             <tr>
-                <td class="funcion">Establecer permisos del sistema</td>
+                <td class="funcion">Registrar empleados nuevos</td>
                 <td><img src="~/img/check.png" width="25" height="25"></td>
                 <td><img src="~/img/equiz.png" width="25" height="25"></td>
             </tr>

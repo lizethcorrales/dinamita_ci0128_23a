@@ -17,6 +17,7 @@ namespace JunquillalUserSystem.Controllers
 
             ViewBag.camposDisponibles = TempData["camposDisponibles"];
 
+            //ViewBag.camposDisponibles = resultado.ToString();
             ViewData["IsAdminArea"] = TempData["IsAdminArea"];
             TempData["IsAdminArea"] = TempData["IsAdminArea"];
             return View();
