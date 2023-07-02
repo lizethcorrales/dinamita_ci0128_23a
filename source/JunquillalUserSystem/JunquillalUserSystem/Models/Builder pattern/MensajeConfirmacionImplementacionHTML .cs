@@ -82,40 +82,51 @@ namespace JunquillalUserSystem.Models.Patron_Bridge
 
             sb.Append("<h6>Cantidad de personas: " + cantidadPersonas + "</h6>");
             sb.Append("<ul>");
+            string tipoDeMoneda = "";
+            string nacionalidad = "";
 
             for (int i = 0; i < desglose.Count; i++)
             {
+                nacionalidad = desglose[i].Nacionalidad;
+                if (esExtranjero(nacionalidad))
+                    tipoDeMoneda = "$";
+                else
+                    tipoDeMoneda = "₡";
                 if (desglose[i].Poblacion == "Niño menor 6 años")
                 {
-                    sb.Append("<li> Niño menor de 6 años " + desglose[i].Nacionalidad + ": " + desglose[i].Cantidad + " Precio por persona: "
+                    sb.Append("<li> Niño menor de 6 años " + nacionalidad + ": " + desglose[i].Cantidad + " Precio por persona: " + tipoDeMoneda
                    + desglose[i].PrecioAlHacerReserva + "</li>");
                 }
                 else if (desglose[i].Poblacion == "Niño")
                 {
-                    sb.Append("<li> Niño mayor de 6 años " + desglose[i].Nacionalidad + ": " + desglose[i].Cantidad + " Precio por persona: "
+                    sb.Append("<li> Niño mayor de 6 años " + nacionalidad + ": " + desglose[i].Cantidad + " Precio por persona: " + tipoDeMoneda
                   + desglose[i].PrecioAlHacerReserva + "</li>");
                 }
                 else
                 {
-                    sb.Append("<li>" + desglose[i].Poblacion + " " + desglose[i].Nacionalidad + ": " + desglose[i].Cantidad + " Precio por persona: "
+                    sb.Append("<li>" + desglose[i].Poblacion + " " + nacionalidad + ": " + desglose[i].Cantidad + " Precio por persona: " + tipoDeMoneda
                     + desglose[i].PrecioAlHacerReserva + "</li>");
                 }
             }
-
-            sb.Append("</ul><br>");
-            sb.Append("<h6>Placas de vehículos:</h6>");
-            sb.Append("<ul>");
-
-            foreach (string placa in reservacion.placasVehiculos)
+            if (reservacion.placasVehiculos.Count > 0)
             {
-                sb.Append("<li>Placa: " + placa + "</li>");
+                sb.Append("</ul><br>");
+                sb.Append("<h6>Placas de vehículos:</h6>");
+                sb.Append("<ul>");
+
+                foreach (string placa in reservacion.placasVehiculos)
+                {
+                    sb.Append("<li>Placa: " + placa + "</li>");
+                }
             }
-
-
-
             // Agregar más detalles de la reserva y desglose de precios si es necesario
 
             return sb.ToString();
+        }
+
+        public bool esExtranjero(string nacionalidad)
+        {
+            return nacionalidad == "Extranjero";
         }
     }
 

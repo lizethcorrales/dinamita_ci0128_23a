@@ -83,7 +83,7 @@ namespace JunquillalUserSystem.Controllers
             string confirmacion = _mensajeConfirmacionImplementacion.CrearConfirmacionMensaje(reservacion, hospedero, desglose);
             ViewBag.mensaje = new HtmlString(confirmacion);
             //_emailService.EnviarEmail(confirmacion, hospedero.Email);
-            ViewBag.costoTotal = reservacionHandler.CostoTotal(reservacion.Identificador).ToString();
+            ViewBag.costoTotal = "₡" + reservacionHandler.CostoTotal(reservacion.Identificador).ToString();
 
 
             ViewData["IsAdminArea"] = TempData["IsAdminArea"];
