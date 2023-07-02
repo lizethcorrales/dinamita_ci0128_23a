@@ -19,9 +19,9 @@ namespace JunquillalUserSystem.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public IActionResult Login(TrabajadorModelo empleado)
+        public IActionResult Login(TrabajadorModelo empleado, int GuardarSesion)
         {
-            try
+            if(empleado != null)
             {
                 TrabajadorModelo empleado2 = handlerLogin.ObtenerCredencialesTrabajador(empleado.ID);
                 string hashLocal = empleado2.Contrasena;
@@ -33,11 +33,14 @@ namespace JunquillalUserSystem.Areas.Admin.Controllers
                     if (String.Equals(hashLogin, hashLocal, StringComparison.OrdinalIgnoreCase))
                     {
                         //Iniciamos la sesion con ciertos datos
-                        HttpContext.Session.SetString(SessionKeyNombre, (string)empleado2.Nombre);
-                        HttpContext.Session.SetString(SessionKeyPuesto, (string)empleado2.Puesto);
+                        if(GuardarSesion == 1)
+                        {
+                            HttpContext.Session.SetString(SessionKeyNombre, (string)empleado2.Nombre);
+                            HttpContext.Session.SetString(SessionKeyPuesto, (string)empleado2.Puesto);
+                        }
                         //var nombre = HttpContext.Session.GetString(SessionKeyNombre);
                         var direccion = RedirectToAction("Index", "Home", new { area = "Admin" });
-                       return direccion;
+                        return direccion;
                     } else
                     {
                         ViewData["Mensaje"] = "La contraseña es incorrecta";
@@ -49,7 +52,7 @@ namespace JunquillalUserSystem.Areas.Admin.Controllers
                     return View();
                 }
             }
-            catch (NullReferenceException)
+            else
             {
                 ViewData["Mensaje"] = "Hubo un problema en el sistema";
                 return View();

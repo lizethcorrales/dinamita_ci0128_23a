@@ -10,6 +10,8 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using JunquillalUserSystem.Areas.Admin.Controllers.Handlers;
 using JunquillalUserSystem.Areas.Admin.Controllers;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Routing;
 
 namespace JunquillalUserSystemTest.Controllers
 {
@@ -24,7 +26,7 @@ namespace JunquillalUserSystemTest.Controllers
         {
             // Arrange
             LoginController controller = new LoginController();
-            TrabajadorModelo empleadoExistente = new();
+            TrabajadorModelo empleadoExistente = new TrabajadorModelo();
             empleadoExistente.ID = "211118888";
             empleadoExistente.Contrasena = "1";
             empleadoExistente.Puesto = "Administrador";
@@ -32,7 +34,7 @@ namespace JunquillalUserSystemTest.Controllers
             string controladorEsperado = "Home";
 
             //Act
-            var resultado = controller.Login(empleadoExistente) as RedirectToActionResult;
+            var resultado = controller.Login(empleadoExistente,0) as RedirectToActionResult;
 
 
             // Assert
@@ -53,7 +55,7 @@ namespace JunquillalUserSystemTest.Controllers
             controller.ViewData["Mensaje"] = mensajeEsperado;
 
             // Act
-            var resultado = controller.Login(empleadoPI) as ViewResult;
+            var resultado = controller.Login(empleadoPI,0) as ViewResult;
 
             // Assert
             Assert.AreEqual(mensajeEsperado, resultado.ViewData["Mensaje"]);
@@ -71,7 +73,7 @@ namespace JunquillalUserSystemTest.Controllers
             controller.ViewData["Mensaje"] = mensajeEsperado;
 
             // Act
-            var resultado = controller.Login(empleadoCI) as ViewResult;
+            var resultado = controller.Login(empleadoCI,0) as ViewResult;
 
             // Assert
             Assert.AreEqual(mensajeEsperado, resultado.ViewData["Mensaje"]);
@@ -89,7 +91,7 @@ namespace JunquillalUserSystemTest.Controllers
             controller.ViewData["Mensaje"] = mensajeEsperado;
 
             // Act
-            var resultado = controller.Login(empleadoUV) as ViewResult;
+            var resultado = controller.Login(empleadoUV,0) as ViewResult;
 
             // Assert
             Assert.AreEqual(mensajeEsperado, resultado.ViewData["Mensaje"]);
@@ -105,7 +107,7 @@ namespace JunquillalUserSystemTest.Controllers
             controller.ViewData["Mensaje"] = mensajeEsperado;
 
             // Act
-            var resultado = controller.Login(nulo) as ViewResult;
+            var resultado = controller.Login(nulo,0) as ViewResult;
 
             // Assert
             Assert.AreEqual(mensajeEsperado, resultado.ViewData["Mensaje"]);
@@ -121,7 +123,7 @@ namespace JunquillalUserSystemTest.Controllers
             controller.ViewData["Mensaje"] = mensajeEsperado;
 
             // Act
-            var resultado = controller.Login(empleadoVacio) as ViewResult;
+            var resultado = controller.Login(empleadoVacio,0) as ViewResult;
 
             // Assert
             Assert.AreEqual(mensajeEsperado, resultado.ViewData["Mensaje"]);

@@ -90,9 +90,8 @@
 
             @if (ViewData["Mensaje"] != null)
             {
-                <div class="advertencia">
-                    @ViewData["Mensaje"]
-                </div>
+                var mensaje = ViewData["Mensaje"];
+                <p id="mensaje"> @mensaje</p>
             }
         </div>
     </div>
