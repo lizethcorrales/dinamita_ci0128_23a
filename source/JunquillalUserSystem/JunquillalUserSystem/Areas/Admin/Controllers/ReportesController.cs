@@ -58,9 +58,9 @@ namespace JunquillalUserSystem.Areas.Admin.Controllers
 
         public bool CamposFaltantes(IFormCollection form)
         {
-            string fechaInicial = Request.Form["fecha-entrada"];
-            string fechaFinal = Request.Form["fecha-salida"];
-            string reporteSeleccionado = Request.Form["reportes"];
+            string fechaInicial = form["fecha-entrada"];
+            string fechaFinal = form["fecha-salida"];
+            string reporteSeleccionado = form["reportes"];
             if (StringVacio(fechaInicial))
             {
                 return true;
@@ -79,7 +79,7 @@ namespace JunquillalUserSystem.Areas.Admin.Controllers
 
         public bool esReporteLiquidacion(IFormCollection form)
         {
-            string reporteLiquidacion = Request.Form["tipoReporte"];
+            string reporteLiquidacion = form["tipoReporte"];
             if (reporteLiquidacion == "liquidacion")
             {
                 return true;
@@ -141,7 +141,7 @@ namespace JunquillalUserSystem.Areas.Admin.Controllers
             return RedirectToAction("Reportes");
         }
 
-        private List<string> GetFiles()
+        public List<string> GetFiles()
         {
             string nombreDirectorioArchivo = Path.Combine(Directory.GetCurrentDirectory(), "Reportes");
             var directorioArchivo = new DirectoryInfo(nombreDirectorioArchivo);
