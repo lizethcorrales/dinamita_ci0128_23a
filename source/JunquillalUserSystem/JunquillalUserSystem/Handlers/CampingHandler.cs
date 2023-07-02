@@ -82,17 +82,18 @@ namespace JunquillalUserSystem.Handlers
         public void InsertarEnBaseDatos(HospederoModelo hospedero , ReservacionModelo reservacion)
         {
             //llama al método para insertar un hospedero
-            insertarHospedero(hospedero);
-            //obtiene la cantidad total de personas en la reserva 
-            int cantidadPersonas = sacarCantidadPersonasTotal(reservacion);
+            insertarHospedero(hospedero);   
 
             //llama al método para insertar una reserva
             insertarReserva(reservacion, hospedero, "0");
 
             insertarTieneNacionalidad(hospedero, reservacion);
-            System.Diagnostics.Debug.WriteLine(hospedero.Provincia);
-            insertarProvincia(reservacion, hospedero);
 
+            if(hospedero.Nacionalidad == "Costa Rica")
+            {
+                insertarProvincia(reservacion, hospedero);
+            }
+           
             //se encarga de llamar al método de insertar las placas de los vehículos dependiendo de la 
             //cantidad de placas que haya introducido el usuario
             insertarPlacasDelFormulario(reservacion);
@@ -110,7 +111,6 @@ namespace JunquillalUserSystem.Handlers
             insertarHospederoRealiza(hospedero, reservacion, identificadorPago);
 
         }
-
     }
 
 }

@@ -1,17 +1,38 @@
 --PROCEDIMIENTOS DE LA BASE DE DATOS
 -- Este procedimiento devuelve el costo total de la reserva a partir de la información contenida en la tabla PrecioReservacion.
+GO
 CREATE PROCEDURE calcularCostoTotalReserva (
                @identificador_Reserva AS VARCHAR(10),
                @costo_Total AS DOUBLE PRECISION OUTPUT
 ) AS 
 BEGIN 
+			DECLARE @primerDia AS DATE;
+			DECLARE @ultimoDia AS DATE;
+			DECLARE @cantidadDias AS INT;
 			SET @costo_Total = 0;
-            SELECT @costo_Total = SUM(PrecioReservacion.Cantidad * PrecioReservacion.PrecioAlHacerReserva)
-            FROM PrecioReservacion JOIN Reservacion ON PrecioReservacion.IdentificadorReserva = Reservacion.IdentificadorReserva
-			WHERE PrecioReservacion.IdentificadorReserva = @identificador_Reserva AND Reservacion.Estado != '2'
-            GROUP BY PrecioReservacion.IdentificadorReserva;
 
+			SELECT @primerDia = Reservacion.PrimerDia, @ultimoDia = Reservacion.UltimoDia
+			FROM Reservacion
+			WHERE Reservacion.IdentificadorReserva = @identificador_Reserva;
+
+			IF @primerDia = @ultimoDia
+			BEGIN 
+				SET @cantidadDias = 1;
+			END;
+			ELSE
+			BEGIN
+				SET @cantidadDias = DATEDIFF(DAY, @primerDia, @ultimoDia);
+			END;
+
+			IF @@ROWCOUNT > 0
+			BEGIN
+				SELECT @costo_Total = SUM(PrecioReservacion.Cantidad * PrecioReservacion.PrecioAlHacerReserva * @cantidadDias)
+				FROM PrecioReservacion JOIN Reservacion ON PrecioReservacion.IdentificadorReserva = Reservacion.IdentificadorReserva
+				WHERE PrecioReservacion.IdentificadorReserva = @identificador_Reserva AND Reservacion.Estado != '2'
+				GROUP BY PrecioReservacion.IdentificadorReserva;
+			END;
 END;
+
 
 -- Este procedimiento agrega los datos del hospedero a la tabla Hospedero, según los datos recibidos por parámetro.
 GO
@@ -35,7 +56,6 @@ BEGIN
 END;
 
 
-
 -- Este procedimiento agrega la información de una reserva a la tabla Reservacion
 GO
 CREATE PROCEDURE insertar_Reservacion (
@@ -52,6 +72,28 @@ BEGIN
 		VALUES (@identificacion_entrante, @primerDia_entrante, @ultimoDia_entrante, 
 		@estado_entrante, @cantidad_entrante, @motivo_entrante, @tipoActividad);
 END;
+
+GO
+CREATE PROCEDURE insertar_PrecioReservacionNuevo(
+	@identificador_Reserva AS VARCHAR(10),
+	@cantidad AS SMALLINT ,
+	@poblacion AS VARCHAR(25),
+	@nacionalidad AS VARCHAR(15),
+	@tipoActividad AS VARCHAR(10)
+) AS
+BEGIN
+
+DECLARE @precio AS DOUBLE PRECISION;
+
+SELECT @precio = Tarifa.precio
+		FROM Tarifa
+		WHERE Tarifa.Nacionalidad = @nacionalidad AND Tarifa.Poblacion = @poblacion AND Tarifa.Actividad = @tipoActividad;
+
+		INSERT INTO PrecioReservacion
+		VALUES (@identificador_Reserva, @nacionalidad ,  @poblacion ,@tipoActividad, @cantidad, @precio);
+		
+END;
+GO
 
 -- Este procedimiento agrega a la tabla PrecioReservacion, el precio por cada tipo de población registrada en la reservación.
 GO
@@ -200,6 +242,7 @@ BEGIN
 		INSERT INTO HospederoRealiza
 		VALUES (@identificador_hospedero, @identificador_reserva, @identificador_pago);
 END;
+
 
 -- Este procedimiento calcula la cantidad de reservas realizadas en un día específico
 CREATE PROCEDURE ReservasTotales(
@@ -477,7 +520,7 @@ FROM dbo.ObtenerReservacionesPorFecha(@Fecha)
 go
 --Este procedimiento encuentra los dias no disponibles al momento de elegir el dia d entrada  en el calendario
 -- se toma en cuenta la cantidad de personas que registradas en una visita de Picnic
-CREATE PROCEDURE [dbo].[BuscarDiasNoDisponiblesVisita]
+CREATE PROCEDURE BuscarDiasNoDisponiblesVisita
     @fechas VARCHAR(MAX),
     @cantidadPersonas INT,
     @result VARCHAR(MAX) OUTPUT
@@ -546,18 +589,19 @@ RETURN
 DECLARE @Identificacion  VARCHAR(10) = '211118888'
 
 --Para los reportes se usa el siguiente codigo
-
-	SELECT P.Nacionalidad, P.Poblacion, P.Actividad, SUM(P.Cantidad) AS Cantidad_Total, SUM(P.Cantidad*P.PrecioAlHacerReserva) AS Ventas_Totales
-	FROM PrecioReservacion AS P JOIN Reservacion AS R ON P.IdentificadorReserva = R.IdentificadorReserva
-	WHERE R.Estado != '2' AND R.PrimerDia >= @primerDia AND R.UltimoDia <= @ultimoDia AND P.Actividad = @actividad
-	GROUP BY  P.Nacionalidad, P.Poblacion, P.Actividad
+SELECT R.PrimerDia, P.Nacionalidad,PR.NombreProvincia, TN.NombrePais, P.Poblacion, P.Actividad, SUM(P.Cantidad) AS Cantidad_Total, SUM(P.Cantidad*P.PrecioAlHacerReserva) AS Ventas_Totales
+FROM PrecioReservacion AS P LEFT JOIN Reservacion AS R ON P.IdentificadorReserva = R.IdentificadorReserva 
+ LEFT JOIN ProvinciaReserva AS PR ON PR.IdentificadorReserva = R.IdentificadorReserva LEFT JOIN TieneNacionalidad AS TN 
+ON TN.IdentificadorReserva = R.IdentificadorReserva
+WHERE R.Estado != '2' AND R.PrimerDia >= primerDia AND R.UltimoDia <= ultimoDia AND P.Actividad = actividad
+GROUP BY  R.IdentificadorReserva, P.Nacionalidad, P.Poblacion, P.Actividad, R.PrimerDia, PR.NombreProvincia, TN.NombrePais
+ORDER BY R.PrimerDia;
 
 SELECT *
 FROM dbo.ObtenerCredencialesTrabajador(@Identificacion)
 
   -- Se crea procedimiento que agrega a un trabajador
-GO
-CREATE PROCEDURE insertar_Trabajador(
+  CREATE PROCEDURE insertar_Trabajador (
 	@Cedula_entrante AS VARCHAR(10),
 	@Nombre_entrante AS VARCHAR(50),
 	@Apellido1_entrante AS VARCHAR(50),
@@ -577,6 +621,51 @@ BEGIN
 		 VALUES (@Cedula_entrante, @Nombre_entrante, @Apellido1_entrante, @Apellido2_entrante,
 				 @Correo_entrante, @Puesto_entrante, @Contrasena_entrante, @Salt_entrante);
 END;
+
+
+GO 
+CREATE PROCEDURE insertarNuevaTarifa(
+	@nacionalidad AS VARCHAR(30),
+	@poblacion AS VARCHAR(30),
+	@actividad AS VARCHAR(30),
+	@precio AS DOUBLE PRECISION
+) AS
+BEGIN 
+	SELECT Tarifa.Nacionalidad, Tarifa.Poblacion, Tarifa.Actividad, Tarifa.Precio
+	FROM Tarifa
+	WHERE Tarifa.Nacionalidad = @nacionalidad AND Tarifa.Poblacion = @poblacion AND Tarifa.Actividad = @actividad;
+
+	IF @@ROWCOUNT <= 0
+	BEGIN
+		INSERT INTO Tarifa
+		VALUES (@nacionalidad, @poblacion, @actividad, @precio, '1');
+	END;
+END;
+
+GO 
+ Alter PROCEDURE insertarHospedajeReservacion(
+	@identificadorReserva AS VARCHAR(10),
+	@numeroParcela AS INT
+)AS
+BEGIN 
+	SELECT Parcela.NumeroParcela
+	FROM Parcela
+	WHERE Parcela.NumeroParcela = @numeroParcela;
+
+	IF @@ROWCOUNT >= 1
+	BEGIN 
+		SELECT Hospedaje.IdentificadorReserva
+		FROM Hospedaje
+		WHERE Hospedaje.IdentificadorReserva = @identificadorReserva;
+
+		IF @@ROWCOUNT <= 0 
+		BEGIN 
+			INSERT INTO Hospedaje
+			VALUES (@identificadorReserva, @numeroParcela);
+		END;
+	END;
+END;
+go
 
 select * from PrecioReservacion
 

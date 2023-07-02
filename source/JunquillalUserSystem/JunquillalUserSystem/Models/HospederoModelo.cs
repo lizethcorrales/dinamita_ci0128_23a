@@ -1,4 +1,7 @@
-﻿namespace JunquillalUserSystem.Models
+﻿using System.ComponentModel.DataAnnotations;
+using System.Xml.Linq;
+
+namespace JunquillalUserSystem.Models
 {
 
     public class HospederoModelo
@@ -11,6 +14,8 @@
         public string Provincia { get; set; }
         public int Estado { get; set; }
         public string Telefono { get; set; }
+
+        [Display(Name = "Email del hospedero")]
         public string Email { get; set; }
 
         public string TipoIdentificacion { get; set; }

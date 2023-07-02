@@ -311,7 +311,6 @@ CREATE TABLE Trabajador (
 
 ALTER TABLE Trabajador
 ADD Salt varchar(255);
-);
 
 ALTER TABLE Hospedero
 ADD Telefono VARCHAR(20);
@@ -331,6 +330,15 @@ Cantidad SMALLINT,
 PRIMARY KEY(IdentificadorReserva, NombreProvincia),
 FOREIGN KEY(IdentificadorReserva) REFERENCES Reservacion(IdentificadorReserva),
 FOREIGN KEY(NombreProvincia) REFERENCES Provincia(NombreProvincia)
+)
+
+--Sprint 3
+ALTER TABLE Tarifa
+ADD Esta_Vigente BIT;
+
+--1 significa que la tarifa esta vigente, 0 significa que la tarifa esta cancelada y ya no se usa
+UPDATE Tarifa
+set Tarifa.Esta_Vigente = 1;
 )
 
 CREATE TABLE CambioDolar

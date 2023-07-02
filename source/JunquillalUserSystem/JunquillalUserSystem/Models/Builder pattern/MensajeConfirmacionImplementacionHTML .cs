@@ -73,7 +73,14 @@ namespace JunquillalUserSystem.Models.Patron_Bridge
                 sb.Append("<h6>Fecha de salida: " + reservacion.UltimoDia + "</h6>");
             }
 
-            sb.Append("<h6>Cantidad de personas: " + reservacion.cantTipoPersona.Sum() + "</h6>");
+            int cantidadPersonas = 0;
+
+            foreach(var tarifa in reservacion.tarifas)
+            {
+                cantidadPersonas += tarifa.Cantidad;
+            }
+
+            sb.Append("<h6>Cantidad de personas: " + cantidadPersonas + "</h6>");
             sb.Append("<ul>");
 
             for (int i = 0; i < desglose.Count; i++)
