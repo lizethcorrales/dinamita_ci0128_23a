@@ -18,7 +18,7 @@
 </head>
 <body>
 <div class="search-container">
-    <button class="purple-button" onclick="buscarReservacionesPorFecha()">Buscar por Fecha</button>
+        <button class="purple-buttonFecha" id="purple-buttonFecha" onclick="buscarReservacionesPorFecha()">Buscar por Fecha</button>
     <input type="text" id="fecha-input" placeholder="Fecha (yyyy-mm-dd)">
     <button class="purple-button" onclick="buscarReservacionesPorIdentificador()">Buscar por Identificador</button>
      <input type="text" id="identificador-input" placeholder="Identificador" maxlength="10">
@@ -33,11 +33,12 @@
             <tr>
                 <th>Código Reserva</th>
                 <th>Nombre completo del hospedero</th>
-                <th>Email</th>
                 <th>Fecha entrada</th>
                 <th>Fecha Salida</th>
                 <th>Tipo de reserva</th>
                 <th>Detalles</th>
+                <th>Check In</th>
+                <th>Check Out</th>
                 <th>Eliminar</th>
             </tr>
         </thead>
@@ -47,12 +48,58 @@
                 <tr>
                     <td>@item.Identificador</td>
                     <td>@item.hospedero.Nombre  @item.hospedero.Apellido1 @item.hospedero.Apellido2</td>
-                    <td>@item.hospedero.Email</td>
                     <td>@item.PrimerDia</td>
                     <td>@item.UltimoDia</td>                    
                     <td> @item.TipoActividad</td>
                     <td>
                         <button style="margin-top: 0px;" type="button" class="btn btn alert-info" data-toggle="modal" data-target="#mensajeModal_@item.Identificador">Ver</button>
+                    </td>
+                    <td>
+                            @{
+                                if (item.Estado == 2)
+                                {
+                                    <span>Cancelada</span>
+                                }
+                                else if (item.Estado == 3)
+                                {
+                                    <span>Finalizada</span>
+                                }
+                                else if ((item.Estado == 1 && item.TipoActividad == "Camping")
+                                || (item.Estado == 0 && item.TipoActividad == "Picnic"))
+                                {
+                                    <span>Ingresado</span>
+                                }
+                                else
+                                {
+                                    @Html.ActionLink("Check In", "CheckInReserva",
+                        new { identificador = item.Identificador },
+                        new { @class =  "btn btn alert-danger ", @onclick = "return confirm('Desea hacer  check in a esta reservación?')" })
+
+                                }
+                            }
+                    </td>
+                    <td>
+                            @{
+                                if (item.Estado == 2)
+                                {
+                                    <span>Cancelada</span>
+                                }
+                                else if (item.Estado == 3)
+                                {
+                                    <span>Finalizada</span>
+                                }
+                                else if (item.Estado == 0 && item.TipoActividad == "Camping")
+                                {
+                                    <span>No han ingresado</span>
+                                }  else
+                                {
+                                    @Html.ActionLink("Check Out", "CheckOutReserva",
+                        new { identificador = item.Identificador},
+                                       new { @class =  "btn btn alert-danger ", @onclick = "return confirm('Desea hacer  check out a esta reservación?')" })
+                                    
+                                }
+                            }
+
                     </td>
                     <td >
                             @Html.ActionLink("Borrar", "EliminarReserva",

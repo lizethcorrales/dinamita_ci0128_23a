@@ -56,7 +56,6 @@ BEGIN
 END;
 
 
-
 -- Este procedimiento agrega la información de una reserva a la tabla Reservacion
 GO
 CREATE PROCEDURE insertar_Reservacion (
@@ -73,6 +72,28 @@ BEGIN
 		VALUES (@identificacion_entrante, @primerDia_entrante, @ultimoDia_entrante, 
 		@estado_entrante, @cantidad_entrante, @motivo_entrante, @tipoActividad);
 END;
+
+GO
+CREATE PROCEDURE insertar_PrecioReservacionNuevo(
+	@identificador_Reserva AS VARCHAR(10),
+	@cantidad AS SMALLINT ,
+	@poblacion AS VARCHAR(25),
+	@nacionalidad AS VARCHAR(15),
+	@tipoActividad AS VARCHAR(10)
+) AS
+BEGIN
+
+DECLARE @precio AS DOUBLE PRECISION;
+
+SELECT @precio = Tarifa.precio
+		FROM Tarifa
+		WHERE Tarifa.Nacionalidad = @nacionalidad AND Tarifa.Poblacion = @poblacion AND Tarifa.Actividad = @tipoActividad;
+
+		INSERT INTO PrecioReservacion
+		VALUES (@identificador_Reserva, @nacionalidad ,  @poblacion ,@tipoActividad, @cantidad, @precio);
+		
+END;
+GO
 
 -- Este procedimiento agrega a la tabla PrecioReservacion, el precio por cada tipo de población registrada en la reservación.
 GO
@@ -457,7 +478,6 @@ RETURN
 )
 go
 
-select * from TieneNacionalidad
 --Procedimiento que retorna una lista de placas de acuerdo al identificador de
 -- reservacion que se pasa por parametro
 go
@@ -580,36 +600,6 @@ ORDER BY R.PrimerDia;
 SELECT *
 FROM dbo.ObtenerCredencialesTrabajador(@Identificacion)
 
-
-DECLARE @costoTotal AS DOUBLE PRECISION;
-EXEC calcularCostoTotalReserva 'yxl4cO4lsr', @costo_Total = @costoTotal OUTPUT;
-select @costoTotal;
-
-SELECT * FROM Hospedero WHERE Hospedero.Identificacion = '308970567';
-select * from Reservacion Where Reservacion.IdentificadorReserva = '13t2tdxZ6q';
-delete Hospedero
-where Hospedero.Identificacion = '308970567';
-
-Delete Pais 
-where Pais.Nombre = 'Francia';
-
-delete TieneNacionalidad 
-where TieneNacionalidad.IdentificadorReserva = '3463933048' AND TieneNacionalidad.NombrePais= 'Francia'
-
-delete TieneNacionalidad 
-where TieneNacionalidad.IdentificadorReserva = '2595141556' AND TieneNacionalidad.NombrePais= 'Estados Unidos'
-delete TieneNacionalidad 
-where TieneNacionalidad.IdentificadorReserva = '2595141556' AND TieneNacionalidad.NombrePais= 'Alemania';
-
-delete Reservacion
-where Reservacion.IdentificadorReserva = 'fURHS56lEV';
-
-delete ProvinciaReserva
-where ProvinciaReserva.IdentificadorReserva = '8865933684';
-
-  delete Pago
-  where Pago.Comprobante = 'f8JEHa';
-
   -- Se crea procedimiento que agrega a un trabajador
   CREATE PROCEDURE insertar_Trabajador (
 	@Cedula_entrante AS VARCHAR(10),
@@ -651,3 +641,29 @@ BEGIN
 		VALUES (@nacionalidad, @poblacion, @actividad, @precio, '1');
 	END;
 END;
+
+GO 
+ Alter PROCEDURE insertarHospedajeReservacion(
+	@identificadorReserva AS VARCHAR(10),
+	@numeroParcela AS INT
+)AS
+BEGIN 
+	SELECT Parcela.NumeroParcela
+	FROM Parcela
+	WHERE Parcela.NumeroParcela = @numeroParcela;
+
+	IF @@ROWCOUNT >= 1
+	BEGIN 
+		SELECT Hospedaje.IdentificadorReserva
+		FROM Hospedaje
+		WHERE Hospedaje.IdentificadorReserva = @identificadorReserva;
+
+		IF @@ROWCOUNT <= 0 
+		BEGIN 
+			INSERT INTO Hospedaje
+			VALUES (@identificadorReserva, @numeroParcela);
+		END;
+	END;
+END;
+go
+
