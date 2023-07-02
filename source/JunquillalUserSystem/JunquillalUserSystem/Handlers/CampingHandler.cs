@@ -88,9 +88,12 @@ namespace JunquillalUserSystem.Handlers
             insertarReserva(reservacion, hospedero, "0");
 
             insertarTieneNacionalidad(hospedero, reservacion);
-            System.Diagnostics.Debug.WriteLine(hospedero.Provincia);
-            insertarProvincia(reservacion, hospedero);
 
+            if(hospedero.Nacionalidad == "Costa Rica")
+            {
+                insertarProvincia(reservacion, hospedero);
+            }
+           
             //se encarga de llamar al método de insertar las placas de los vehículos dependiendo de la 
             //cantidad de placas que haya introducido el usuario
             insertarPlacasDelFormulario(reservacion);
