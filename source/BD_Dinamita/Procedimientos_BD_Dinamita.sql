@@ -478,7 +478,6 @@ RETURN
 )
 go
 
-select * from TieneNacionalidad
 --Procedimiento que retorna una lista de placas de acuerdo al identificador de
 -- reservacion que se pasa por parametro
 go
@@ -598,36 +597,6 @@ DECLARE @Identificacion  VARCHAR(10) = '211118888'
 
 SELECT *
 FROM dbo.ObtenerCredencialesTrabajador(@Identificacion)
-
-
-DECLARE @costoTotal AS DOUBLE PRECISION;
-EXEC calcularCostoTotalReserva 'yxl4cO4lsr', @costo_Total = @costoTotal OUTPUT;
-select @costoTotal;
-
-SELECT * FROM Hospedero WHERE Hospedero.Identificacion = '308970567';
-select * from Reservacion Where Reservacion.IdentificadorReserva = '13t2tdxZ6q';
-delete Hospedero
-where Hospedero.Identificacion = '308970567';
-
-Delete Pais 
-where Pais.Nombre = 'Francia';
-
-delete TieneNacionalidad 
-where TieneNacionalidad.IdentificadorReserva = '3463933048' AND TieneNacionalidad.NombrePais= 'Francia'
-
-delete TieneNacionalidad 
-where TieneNacionalidad.IdentificadorReserva = '2595141556' AND TieneNacionalidad.NombrePais= 'Estados Unidos'
-delete TieneNacionalidad 
-where TieneNacionalidad.IdentificadorReserva = '2595141556' AND TieneNacionalidad.NombrePais= 'Alemania';
-
-delete Reservacion
-where Reservacion.IdentificadorReserva = 'fURHS56lEV';
-
-delete ProvinciaReserva
-where ProvinciaReserva.IdentificadorReserva = '8865933684';
-
-  delete Pago
-  where Pago.Comprobante = 'f8JEHa';
 
   -- Se crea procedimiento que agrega a un trabajador
   CREATE PROCEDURE insertar_Trabajador (
