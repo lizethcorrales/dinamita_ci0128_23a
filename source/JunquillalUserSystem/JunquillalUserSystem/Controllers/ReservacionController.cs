@@ -77,7 +77,8 @@ namespace JunquillalUserSystem.Controllers
             reservacion.Identificador = reservacionHandler.crearIdentificador(10);
             reservacion = reservacion.LlenarPlacasResarva(reservacion,Request.Form);
             hospedero = hospedero.LlenarHospedero(Request.Form);
-            reservacionHandler.InsertarEnBaseDatos(hospedero, reservacion);
+            reservacionHandler.transaccionReserva(hospedero, reservacion);
+            reservacionHandler.reuniciarConexion();
             List<PrecioReservacionDesglose> desglose = reservacionHandler.obtenerDesgloseReservaciones(reservacion.Identificador);
             string confirmacion = _mensajeConfirmacionImplementacion.CrearConfirmacionMensaje(reservacion, hospedero, desglose);
             ViewBag.mensaje = new HtmlString(confirmacion);
