@@ -27,11 +27,15 @@ namespace JunquillalUserSystem.Areas.Admin.Controllers
                 empleadoNuevo.Contrasena = contraHash;
 
                 int resultado = handlerRegistro.registrarEmpleadoNuevo(empleadoNuevo);
-                if (resultado == 1)
+                if (resultado == 1 & empleadoNuevo.ID != "")
                 {
                     ViewData["Mensaje"] = "Usuario Registrado Exitosamente";
                 }
-                else
+                else if (resultado == 2)
+                {
+                    ViewData["Mensaje"] = "El usuario ya estaba registrado en el sistema";
+                }
+                else if (resultado == 0 | empleadoNuevo.ID == "")
                 {
                     ViewData["Mensaje"] = "No fue posible registrar el Usuario";
                 }

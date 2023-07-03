@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using JunquillalUserSystem.Areas.Admin.Controllers.Handlers;
 
-namespace JunquillalUserSystemTest.Models
+namespace JunquillalUserSystemTest.Admin.Handlers
 {
     // Pruebas Unitarias de Gabriel Chacón
     [TestClass]
