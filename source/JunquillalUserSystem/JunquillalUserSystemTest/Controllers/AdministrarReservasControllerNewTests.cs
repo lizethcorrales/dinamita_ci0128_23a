@@ -15,7 +15,7 @@ using System.Collections.Generic;
 namespace JunquillalUserSystem.Tests
 {
     [TestClass]
-    public class AdministrarReservasControllerTests
+    public class AdministrarReservasControllerNewTests
     {
         [TestMethod]
         public void Reservas_ReturnsViewWithEmptyList()

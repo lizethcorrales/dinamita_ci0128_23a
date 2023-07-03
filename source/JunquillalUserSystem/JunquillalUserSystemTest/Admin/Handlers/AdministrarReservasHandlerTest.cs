@@ -27,7 +27,7 @@ namespace JunquillalUserSystemTest.Admin.Handlers
         {
             // Arrange
             AdministrarReservasHandler handler = new AdministrarReservasHandler();
-            string datoBusqueda = "2023-07-11";
+            string datoBusqueda = "2023-07-01";
             string tipoBusqueda = "fecha";
 
             // Act
