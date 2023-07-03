@@ -73,6 +73,7 @@ namespace JunquillalAutomatedTesting.Tests
 
             //Assert
             Assert.AreEqual(mensajesRegistro.Text, "Usuario Registrado Exitosamente");
+            TearDown();
         }
 
     }
