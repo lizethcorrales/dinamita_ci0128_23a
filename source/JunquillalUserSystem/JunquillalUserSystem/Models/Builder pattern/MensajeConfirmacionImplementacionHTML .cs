@@ -128,6 +128,11 @@ namespace JunquillalUserSystem.Models.Patron_Bridge
         {
             return nacionalidad == "Extranjero";
         }
+
+        void IMensajeConfirmacionImplementacion.CrearConfirmacionMensaje(ReservacionModelo reservacionModelo, HospederoModelo hospederoModelo, List<PrecioReservacionDesglose> precioReservacionDesgloses)
+        {
+            throw new NotImplementedException();
+        }
     }
 
 }
