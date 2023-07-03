@@ -110,6 +110,24 @@ namespace JunquillalUserSystem.Handlers
             }
             return pagos;
         }
+
+        public List<HospedajePruebas> obtenerParcelaHospedaje (string identificador)
+        {
+            List<HospedajePruebas> hospedaje = new List<HospedajePruebas>();
+            string consulta = "SELECT * FROM Hospedaje WHERE Hospedaje.IdentificadorReserva = '" + identificador + "';";
+            System.Diagnostics.Debug.WriteLine(consulta);
+            DataTable tablaDeHospedaje = CrearTablaConsulta(consulta);
+            foreach (DataRow columna in tablaDeHospedaje.Rows)
+            {
+                hospedaje.Add(
+                new HospedajePruebas
+                {
+                    IdentificadorReserva= Convert.ToString(columna["IdentificadorReserva"]),
+                    NumeroParcela = Convert.ToString(columna["NumeroParcela"]),
+                });
+            }
+            return hospedaje;
+        }
     }
 }
 
