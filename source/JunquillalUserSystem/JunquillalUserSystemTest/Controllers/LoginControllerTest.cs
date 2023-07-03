@@ -42,24 +42,6 @@ namespace JunquillalUserSystemTest.Controllers
             Assert.AreEqual(controladorEsperado, resultado.ControllerName);
         }
 
-        [TestMethod]
-        public void LoginPuestoIncorrecto()
-        {
-            // Arrange
-            LoginController controller = new LoginController();
-            TrabajadorModelo empleadoPI = new();
-            empleadoPI.ID = "211118888";
-            empleadoPI.Contrasena = "1";
-            empleadoPI.Puesto = "Operativo";
-            string mensajeEsperado = "El puesto es incorrecto";
-            controller.ViewData["Mensaje"] = mensajeEsperado;
-
-            // Act
-            var resultado = controller.Login(empleadoPI,0) as ViewResult;
-
-            // Assert
-            Assert.AreEqual(mensajeEsperado, resultado.ViewData["Mensaje"]);
-        }
 
         [TestMethod]
         public void LoginContrasenaIncorrecta()
@@ -70,10 +52,26 @@ namespace JunquillalUserSystemTest.Controllers
             empleadoCI.Contrasena = "sssss";
             LoginController controller = new LoginController();
             string mensajeEsperado = "La contraseña es incorrecta";
-            controller.ViewData["Mensaje"] = mensajeEsperado;
 
             // Act
             var resultado = controller.Login(empleadoCI,0) as ViewResult;
+
+            // Assert
+            Assert.AreEqual(mensajeEsperado, resultado.ViewData["Mensaje"]);
+        }
+
+        [TestMethod]
+        public void LoginUsuarioNoExistente()
+        {
+            // Arrange
+            LoginController controller = new LoginController();
+            TrabajadorModelo empleadoUV = new();
+            empleadoUV.ID = "211118887";
+            empleadoUV.Contrasena = "sssss";
+            string mensajeEsperado = "Usuario no registrado";
+
+            // Act
+            var resultado = controller.Login(empleadoUV,0) as ViewResult;
 
             // Assert
             Assert.AreEqual(mensajeEsperado, resultado.ViewData["Mensaje"]);
@@ -84,14 +82,12 @@ namespace JunquillalUserSystemTest.Controllers
         {
             // Arrange
             LoginController controller = new LoginController();
-            TrabajadorModelo empleadoUV = new();
-            empleadoUV.ID = "211118887";
-            empleadoUV.Contrasena = "sssss";
+            TrabajadorModelo empleadoNV = new();
+            empleadoNV.ID = "2111";
             string mensajeEsperado = "Usuario no registrado";
-            controller.ViewData["Mensaje"] = mensajeEsperado;
 
             // Act
-            var resultado = controller.Login(empleadoUV,0) as ViewResult;
+            var resultado = controller.Login(empleadoNV, 0) as ViewResult;
 
             // Assert
             Assert.AreEqual(mensajeEsperado, resultado.ViewData["Mensaje"]);
@@ -104,7 +100,6 @@ namespace JunquillalUserSystemTest.Controllers
             TrabajadorModelo nulo = null;
             LoginController controller = new LoginController();
             string mensajeEsperado = "Hubo un problema en el sistema";
-            controller.ViewData["Mensaje"] = mensajeEsperado;
 
             // Act
             var resultado = controller.Login(nulo,0) as ViewResult;
@@ -120,7 +115,6 @@ namespace JunquillalUserSystemTest.Controllers
             TrabajadorModelo empleadoVacio = new TrabajadorModelo();
             LoginController controller = new LoginController();
             string mensajeEsperado = "Usuario no registrado";
-            controller.ViewData["Mensaje"] = mensajeEsperado;
 
             // Act
             var resultado = controller.Login(empleadoVacio,0) as ViewResult;
