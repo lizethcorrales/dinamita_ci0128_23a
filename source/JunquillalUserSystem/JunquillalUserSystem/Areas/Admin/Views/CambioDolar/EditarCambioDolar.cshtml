@@ -1,0 +1,27 @@
+﻿@model JunquillalUserSystem.Models.CambioDolarModel;
+
+@{
+    ViewBag.Title = "Cambio Dólar";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+
+}
+<html>
+<head>
+</head>
+<body>
+    @using (Html.BeginForm("EditarCambioDolar", "cambiodolar", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        @Html.AntiForgeryToken()
+        <h1>Formulario de edición del valor del dólar</h1>
+        <div class="form-horizontal">
+            <div class="form-group">
+                @Html.Label("Valor Dólar")
+                @Html.TextBoxFor(model => model.ValorDolar, new { @class = "form-control"})
+                @Html.ValidationMessageFor(model => model.ValorDolar, "", new {@class = "text-danger"})
+            </div>
+            <input type="submit" class="btn btn-success" value="Aplicar Cambios" />
+        </div>
+    }
+</body>
+
+</html>

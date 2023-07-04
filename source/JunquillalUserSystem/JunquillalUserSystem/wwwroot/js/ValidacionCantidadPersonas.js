@@ -1,19 +1,19 @@
 ﻿//Este código sirve para las validaciones del formulario para indicar la cantidad de personas en la reservación
 
 //obtiene los valores de los datos introducidos
-var adultosNacionales = document.getElementById("cantidad_Adultos_Nacional");
+var adultosNacionales = document.getElementById("AdultoNacional");
 //alert(adultosNacionales.value);
-var ninnosNacionales_mayores6 = document.getElementById("cantidad_Ninnos_Nacional_mayor6");
+var ninnosNacionales_mayores6 = document.getElementById("NiñoNacional");
 //alert(ninnosNacionales_mayores6.value);
-var ninnosNacionales_menores6 = document.getElementById("cantidad_Ninnos_Nacional_menor6");
+var ninnosNacionales_menores6 = document.getElementById("Niñomenor6añosNacional");
 //alert(ninnosNacionales_menores6.value);
-var adulto_mayor_nacional = document.getElementById("cantidad_adulto_mayor");
+var adulto_mayor_nacional = document.getElementById("AdultoMayorNacional");
 //alert(adulto_mayor_nacional.value);
-var adultosExtranjeros = document.getElementById("cantidad_Adultos_Extranjero");
+var adultosExtranjeros = document.getElementById("AdultoExtranjero");
 //alert(adultosExtranjeros.value);
-var ninnosExtranjeros = document.getElementById("cantidad_ninnos_extranjero");
+var ninnosExtranjeros = document.getElementById("NiñoExtranjero");
 //alert(ninnosExtranjeros.value);
-var adulto_mayor_extranjero = document.getElementById("cantidad_adultoMayor_extranjero");
+var adulto_mayor_extranjero = document.getElementById("AdultoMayorExtranjero");
 //alert(adulto_mayor_extranjero.value);
 var form = document.getElementById("cantidad");
 var err = document.getElementById("error");

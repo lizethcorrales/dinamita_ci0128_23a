@@ -30,16 +30,19 @@ namespace JunquillalUserSystem.Controllers
         }
         public IActionResult FormularioCantidadPersonas()
         {
-         
+
+            ReservacionModelo reservacion = new ReservacionModelo("Picnic");
+            reservacion.tarifas = visitaHandler.cargarTarifasCamping("Picnic");
+            TempData["Reservacion"] = JsonSerializer.Serialize(reservacion);
             ViewData["IsAdminArea"] = TempData["IsAdminArea"];
             TempData["IsAdminArea"] = TempData["IsAdminArea"];
-            return View();
+            return View(reservacion.tarifas);
         }
 
         [HttpPost]
         public IActionResult Calendario()
         {
-            ReservacionModelo reservacion = new ReservacionModelo("Picnic");
+            ReservacionModelo reservacion = JsonSerializer.Deserialize<ReservacionModelo>((string)TempData["Reservacion"]);
             reservacion = reservacion.LlenarCantidadPersonas(reservacion, Request.Form);
             TempData["Reservacion"] = JsonSerializer.Serialize(reservacion);
 
@@ -71,11 +74,12 @@ namespace JunquillalUserSystem.Controllers
             reservacion.Identificador = visitaHandler.crearIdentificador(10);
             reservacion = reservacion.LlenarPlacasResarva(reservacion, Request.Form);
             hospedero = hospedero.LlenarHospedero(Request.Form);
-            visitaHandler.InsertarEnBaseDatosVisita(hospedero, reservacion);
-            ViewBag.costoTotal = visitaHandler.CostoTotal(reservacion.Identificador).ToString();
+            visitaHandler.transaccionReservaVisita(hospedero, reservacion);
+            visitaHandler.reuniciarConexion();
+            ViewBag.costoTotal = "₡" + visitaHandler.CostoTotal(reservacion.Identificador).ToString();
             List<PrecioReservacionDesglose> desglose = visitaHandler.obtenerDesgloseReservaciones(reservacion.Identificador);
             string confirmacion = _mensajeConfirmacionImplementacion.CrearConfirmacionMensaje(reservacion, hospedero, desglose);
-            _emailService.EnviarEmail(confirmacion, hospedero.Email);
+            //_emailService.EnviarEmail(confirmacion, hospedero.Email);
             ViewBag.mensaje = new HtmlString(confirmacion);
            
 

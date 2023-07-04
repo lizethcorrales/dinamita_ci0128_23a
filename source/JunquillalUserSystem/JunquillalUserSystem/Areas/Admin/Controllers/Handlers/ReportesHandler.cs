@@ -10,52 +10,21 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Data;
 using System.Text.RegularExpressions;
+using Spire.Xls;
+using System.ComponentModel;
+using System.Drawing;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using Spire.Xls.Core;
+using Spire.Pdf.Exporting.XPS.Schema;
 
 namespace JunquillalUserSystem.Areas.Admin.Controllers.Handlers
 {
+
     public class ReportesHandler : HandlerBase
     {
         public ReportesHandler() { }
 
-        public List<PrecioReservacionDesglose> obtenerReporte(IFormCollection form, string actividad)
-        {
-            string primerDia = form["fecha-entrada"];
-            string ultimoDia = "";
-
-            var tipoReporte = form["reportes"];
-
-            if (tipoReporte == "diario")
-            {
-                ultimoDia = primerDia;
-            } else
-            {
-                ultimoDia = form["fecha-salida"];
-            }
-            List<PrecioReservacionDesglose> precioReservacion = new List<PrecioReservacionDesglose>();
-
-            string consultaBaseDatos = @"SELECT P.Nacionalidad, P.Poblacion, P.Actividad, SUM(P.Cantidad) AS Cantidad_Total, SUM(P.Cantidad*P.PrecioAlHacerReserva) AS Ventas_Totales
-	                                    FROM PrecioReservacion AS P JOIN Reservacion AS R ON P.IdentificadorReserva = R.IdentificadorReserva
-	                                    WHERE R.Estado != '2' AND R.PrimerDia >= '" + primerDia + "' AND R.UltimoDia <= '" + ultimoDia + "' AND P.Actividad = '" + actividad + "' GROUP BY  P.Nacionalidad, P.Poblacion, P.Actividad";
-
-            DataTable tablaDeReporte = CrearTablaConsulta(consultaBaseDatos);
-            foreach (DataRow columna in tablaDeReporte.Rows)
-            {
-                precioReservacion.Add(
-                new PrecioReservacionDesglose
-                {
-                    Nacionalidad = Convert.ToString(columna["Nacionalidad"]),
-                    Poblacion = Convert.ToString(columna["Poblacion"]),
-                    Actividad = Convert.ToString(columna["Actividad"]),
-                    Cantidad = Convert.ToInt32(columna["Cantidad_Total"]),
-                    PrecioAlHacerReserva = Convert.ToDouble(columna["Ventas_Totales"])
-                });
-            }
-
-            return precioReservacion;
-        }
-
-
-        public bool escribirCSV(List<PrecioReservacionDesglose> precioReservacion, IFormCollection form)
+        public List<ReportesModel> obtenerReporte(IFormCollection form, string actividad)
         {
             string primerDia = form["fecha-entrada"];
             string ultimoDia = "";
@@ -70,50 +39,35 @@ namespace JunquillalUserSystem.Areas.Admin.Controllers.Handlers
             {
                 ultimoDia = form["fecha-salida"];
             }
+            List<ReportesModel> reportes = new List<ReportesModel>();
 
-            var dateNow = "del_" + primerDia + "_a_" + ultimoDia;
-            string archivo = "reporte_" + dateNow + ".csv";
-            string ruta = @"wwwroot/ReportesCSV" + archivo;
-            string separador = "\t";
-            StringBuilder salida = new StringBuilder();
-            List<string> lista = new List<string>();
+            string consultaBaseDatos = @"SELECT R.PrimerDia, P.Nacionalidad,PR.NombreProvincia, TN.NombrePais, P.Poblacion, P.Actividad, SUM(P.Cantidad) AS Cantidad_Total, R.Motivo, SUM(P.Cantidad*P.PrecioAlHacerReserva) AS Ventas_Totales
+                                        FROM PrecioReservacion AS P LEFT JOIN Reservacion AS R ON P.IdentificadorReserva = R.IdentificadorReserva 
+                                        LEFT JOIN ProvinciaReserva AS PR ON PR.IdentificadorReserva = R.IdentificadorReserva LEFT JOIN TieneNacionalidad AS TN 
+                                        ON TN.IdentificadorReserva = R.IdentificadorReserva
+                                        WHERE R.Estado != '2' AND R.PrimerDia >= '" + primerDia + "' AND R.UltimoDia <= '"
+                                        + ultimoDia + "' AND P.Actividad = '" + actividad + "' " +
+                                        "GROUP BY  R.IdentificadorReserva, P.Nacionalidad, P.Poblacion, P.Actividad, R.PrimerDia, PR.NombreProvincia, TN.NombrePais, R.Motivo ORDER BY R.PrimerDia;";
 
-            string cadena = "Nacionalidad" + separador + "Poblacion" + separador + "Actividad" + separador + "Cantidad" + separador + "Ventas" + "\n";
-            try
+            DataTable tablaDeReporte = CrearTablaConsulta(consultaBaseDatos);
+            foreach (DataRow columna in tablaDeReporte.Rows)
             {
-                foreach (PrecioReservacionDesglose item in precioReservacion)
+                reportes.Add(
+                new ReportesModel
                 {
-                    cadena += agregarDato(item, separador);
-                    cadena += "\n";
-                }
-            } catch (NullReferenceException ex) 
-            {
-                return false;
+                    PrimerDia = DateOnly.FromDateTime(Convert.ToDateTime(columna["PrimerDia"])).ToString(),
+                    Nacionalidad = Convert.ToString(columna["Nacionalidad"]),
+                    NombreProvincia = Convert.ToString(columna["NombreProvincia"]),
+                    NombrePais = Convert.ToString(columna["NombrePais"]),
+                    Poblacion = Convert.ToString(columna["Poblacion"]),
+                    Actividad = Convert.ToString(columna["Actividad"]),
+                    Cantidad = Convert.ToInt32(columna["Cantidad_Total"]),
+                    Motivo= Convert.ToString(columna["Motivo"]),
+                    VentasTotales = Convert.ToDouble(columna["Ventas_Totales"])
+                });
             }
-            lista.Add(cadena);
-            try { 
-                for (int i = 0; i < lista.Count; ++i)
-                {
-                    salida.AppendLine(string.Join(separador, lista[i]));
-                    File.AppendAllText(ruta, salida.ToString(), Encoding.Unicode);
-                }
-                return true;
-            } catch (Exception e) {
-                return false;
-            }
-        }
 
-        public string agregarDato(PrecioReservacionDesglose precio, string separador)
-        {
-            try
-            {
-                return (precio.Nacionalidad + separador + precio.Poblacion + separador + precio.Actividad
-                    + separador + precio.Cantidad + separador + precio.PrecioAlHacerReserva);
-            } catch (NullReferenceException ex)
-            {
-                return null;
-            }            
+            return reportes;
         }
-
     }
 }

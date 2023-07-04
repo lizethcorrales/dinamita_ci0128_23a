@@ -16,6 +16,7 @@ NombrePais VARCHAR(30) NOT NULL, -- esto se borra en nuevas actualizaciones
 PRIMARY KEY (Identificacion),
 FOREIGN KEY(NombrePais) REFERENCES Pais (Nombre), -- esto se borra en nuevas actualizaciones
 UNIQUE (Email)
+--se agrega un telefono en el sprint 2
 );
 
 CREATE TABLE Reservacion (
@@ -24,6 +25,7 @@ PrimerDia DATE NOT NULL,
 UltimoDia DATE NOT NULL,
 PrecioTotal DOUBLE PRECISION,
 PRIMARY KEY(IdentificadorReserva)
+--se agrega en el sprint 2 un estado, cantidadDePersonas, motivo y tipo de actividad, se elimina el precio total.
 );
 
 CREATE TABLE Placa (
@@ -37,12 +39,6 @@ CREATE TABLE Servicios (
 Tipo VARCHAR(50) NOT NULL,
 Precio DOUBLE PRECISION,
 PRIMARY KEY (Tipo)
-);
-
-CREATE TABLE Visita (
-Identificacion CHAR(20) NOT NULL,
-FechaEntrada DATE NOT NULL,
-PRIMARY KEY (Identificacion, FechaEntrada)
 );
 
 CREATE TABLE Parcela (
@@ -87,18 +83,6 @@ FOREIGN KEY(IdentificadorReserva) REFERENCES Reservacion(IdentificadorReserva),
 FOREIGN KEY(Nacionalidad, Poblacion, Actividad) REFERENCES Tarifa(Nacionalidad, Poblacion, Actividad)
 );
 
-CREATE TABLE PrecioVisita(
-IdentificacionVisita CHAR(20) NOT NULL,
-FechaEntrada DATE NOT NULL, -- se le agrega porque es parte de la llave primaria de visita
-Nacionalidad VARCHAR(30) NOT NULL,
-Poblacion VARCHAR(30) NOT NULL,
-Actividad VARCHAR(30) NOT NULL,
-Cantidad SMALLINT,
-PrecioActual DOUBLE PRECISION,
-PRIMARY KEY(IdentificacionVisita, FechaEntrada, Nacionalidad, Poblacion, Actividad),
-FOREIGN KEY (IdentificacionVisita, FechaEntrada) REFERENCES Visita (Identificacion, FechaEntrada),
-FOREIGN KEY(Nacionalidad, Poblacion, Actividad) REFERENCES Tarifa(Nacionalidad, Poblacion, Actividad)
-);
 
 CREATE TABLE Hospedaje(
 IdentificadorReserva VARCHAR(10) NOT NULL,
@@ -127,19 +111,6 @@ Cantidad SMALLINT,
 PRIMARY KEY(TipoServicio, IdentificacionHospedero, ComprobantePago),
 FOREIGN KEY(TipoServicio) REFERENCES Servicios(Tipo),
 FOREIGN KEY(IdentificacionHospedero) REFERENCES Hospedero(Identificacion),
-FOREIGN KEY(ComprobantePago) REFERENCES Pago(Comprobante)
-);
-
-CREATE TABLE VisitaSolicita(
-TipoServicio VARCHAR(50) NOT NULL,
-IdentificacionVisita CHAR(20) NOT NULL,
-FechaEntrada DATE NOT NULL, -- se le agrega porque es parte de la llave primaria de visita
-ComprobantePago CHAR(6) NOT NULL,
-Precio DOUBLE PRECISION,
-Cantidad SMALLINT,
-PRIMARY KEY(TipoServicio, IdentificacionVisita, Precio),
-FOREIGN KEY(TipoServicio) REFERENCES Servicios(Tipo),
-FOREIGN KEY(IdentificacionVisita, FechaEntrada) REFERENCES Visita(Identificacion, FechaEntrada),
 FOREIGN KEY(ComprobantePago) REFERENCES Pago(Comprobante)
 );
 
@@ -327,16 +298,6 @@ VALUES ('8865933684', 'Costa Rica', '9'),
 
 -- Sprint 2
 
-CREATE TABLE NacionalidadVisita  (
-IdentificadorVisita CHAR(20) NOT NULL,
-FechaEntrada DATE NOT NULL,
-NombrePais VARCHAR(30) NOT NULL,
-Cantidad SMALLINT,
-PRIMARY KEY (IdentificadorVisita, FechaEntrada, NombrePais),
-FOREIGN KEY (IdentificadorVisita, FechaEntrada) REFERENCES Visita(Identificacion, FechaEntrada),
-FOREIGN KEY (NombrePais) REFERENCES Pais(Nombre)
-);
-
 CREATE TABLE Trabajador (
 	Cedula varchar(10) NOT Null,
 	Nombre varchar(50),
@@ -350,7 +311,6 @@ CREATE TABLE Trabajador (
 
 ALTER TABLE Trabajador
 ADD Salt varchar(255);
-);
 
 ALTER TABLE Hospedero
 ADD Telefono VARCHAR(20);
@@ -371,3 +331,17 @@ PRIMARY KEY(IdentificadorReserva, NombreProvincia),
 FOREIGN KEY(IdentificadorReserva) REFERENCES Reservacion(IdentificadorReserva),
 FOREIGN KEY(NombreProvincia) REFERENCES Provincia(NombreProvincia)
 )
+
+--Sprint 3
+ALTER TABLE Tarifa
+ADD Esta_Vigente BIT;
+
+--1 significa que la tarifa esta vigente, 0 significa que la tarifa esta cancelada y ya no se usa
+UPDATE Tarifa
+set Tarifa.Esta_Vigente = 1;
+)
+
+CREATE TABLE CambioDolar
+(
+    ValorDolar FLOAT
+);
