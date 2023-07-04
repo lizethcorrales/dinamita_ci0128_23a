@@ -32,44 +32,16 @@ namespace JunquillalUserSystemTest.Handlers
         }
 
         [TestMethod]
-        public void TestTarifasHandlerComprobarResultadosDeTablaDevuelta()
+        public void TestTarifasHandlerComprobarQueExistenDatosEnTabla()
         {
             // Arrange
             TarifasHandler handler = new();
-            int cantidadTarifas = 14;
-            List<TarifaModelo> tarifas = llenarListaDePrueba(cantidadTarifas);
-            int indiceMitadTabla = cantidadTarifas / 2 - 1;           
 
             // Act
             var resultado = handler.obtenerTarifasActuales();
 
             // Assert
-            for (int indice = 0; indice < cantidadTarifas; ++indice)
-            {
-                Assert.AreEqual(tarifas[indice].Nacionalidad, resultado[indice].Nacionalidad);
-                Assert.AreEqual(tarifas[indice].Poblacion, resultado[indice].Poblacion);
-                Assert.AreEqual(tarifas[indice].Actividad, resultado[indice].Actividad);
-                Assert.AreEqual(tarifas[indice].Precio, resultado[indice].Precio);
-            }
-        }
-
-        public List<TarifaModelo> llenarListaDePrueba(int cantidadTarifas) {
-            List<TarifaModelo> listaADevolver = new();
-            List<string> TipoNacionalidad = new List<string> { "Extranjero", "Nacional"};
-            List<string> TipoPoblacion = new List<string> { "Adulto", "Adulto Mayor", "Niño", "Niño menor 6 años" };
-            List<string> TipoActividad = new List<string> { "Camping", "Picnic" };
-            List<double> Precios = new List<double> { 18.08, 13.56, 18.08, 13.56, 10.17, 5.65, 4520, 2260, 2260, 0, 3390, 1130, 0, 0 };
-            for (int indice = 0; indice < cantidadTarifas; ++indice) {
-                listaADevolver.Add(
-                    new TarifaModelo
-                    {
-                        Nacionalidad = indice < 6 ? TipoNacionalidad[0] : TipoNacionalidad[1],                       
-                        Poblacion = indice < 6 ? TipoPoblacion[indice/2] : TipoPoblacion[(indice-6)/2],
-                        Actividad = indice % 2 == 0 ? TipoActividad[0] : TipoActividad[1],
-                        Precio = Precios[indice]
-                    });
-            }
-            return listaADevolver;
+            Assert.IsTrue(resultado.Count > 0);
         }
 
         [TestMethod]

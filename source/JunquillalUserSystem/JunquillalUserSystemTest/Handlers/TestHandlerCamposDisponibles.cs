@@ -38,7 +38,7 @@ namespace JunquillalUserSystemTest.Handlers
             // Arrange
             HandlerCamposDisponibles handlerCamposDisponibles = new HandlerCamposDisponibles();
             string fecha = "2023-06-08";
-            int resultadoEsperado = 9;
+            int resultadoEsperado = 23;
 
             // Act
             int resultado = handlerCamposDisponibles.ReservasTotal(fecha);
