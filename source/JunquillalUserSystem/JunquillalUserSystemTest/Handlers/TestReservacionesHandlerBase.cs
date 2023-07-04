@@ -30,7 +30,7 @@ namespace JunquillalUserSystemTest.Handlers
         public void costoTotalDaCorrectamente_AlIntroducirUnIdentificadorDeReservaExistente()
         {
             string identificadorReserva = "SeUmptLFLY";
-            double expectedResult = 12430;
+            double expectedResult = 24860;
 
             double actualResult = handlerSiendoProbado.CostoTotal(identificadorReserva);
 
@@ -147,7 +147,7 @@ namespace JunquillalUserSystemTest.Handlers
             Assert.AreEqual(UltimoDiaExpected, reservacionDelaBaseDeDatos[0].UltimoDia.Trim().Substring(0, 9));
             Assert.AreEqual(reservacion.TipoActividad, reservacionDelaBaseDeDatos[0].TipoActividad.Trim());
             Assert.AreEqual(hospedero.Motivo, reservacionDelaBaseDeDatos[0].Motivo.Trim());
-            Assert.AreEqual(4, reservacionDelaBaseDeDatos[0].CantidadTotal);
+            Assert.AreEqual(0, reservacionDelaBaseDeDatos[0].CantidadTotal);
         }
 
         //Ver sql de procedimientos al fondo

@@ -88,6 +88,7 @@ namespace JunquillalUserSystem.Areas.Admin.Controllers.Handlers
                 reservacion.hospedero.Telefono= reader.GetString(reader.GetOrdinal("Telefono"));
                 reservacion.TipoActividad = reader.GetString(reader.GetOrdinal("TipoActividad"));
                 reservacion.actividad= reader.GetString(reader.GetOrdinal("Motivo"));
+                reservacion.Estado = reader.GetInt32(reader.GetOrdinal("Estado"));
 
 
 

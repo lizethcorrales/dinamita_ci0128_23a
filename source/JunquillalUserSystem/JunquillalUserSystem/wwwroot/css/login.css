@@ -1,11 +1,13 @@
 ﻿
 .contenido {
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    padding: 150px 250px 150px 250px;
+    justify-content: space-between;
+    align-items: start;
+    text-align: start;
+    padding: 150px 200px 150px 200px;
     background-image: url(../img/RVNJunquillal.png);
     background-color: #cccccc;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 22px;
 }
 
 .contenido div {
@@ -42,3 +44,4 @@
     font-size: 25px;
     font-style: italic;
 }
+

@@ -1,5 +1,5 @@
 ﻿/*
- * Pruebas unitarias creadas porAndrés Matarrita C04668
+ * Pruebas unitarias creadas por Andrés Matarrita C04668
  */
 
 using JunquillalUserSystem.Models;
@@ -97,30 +97,41 @@ namespace JunquillalUserSystemTest.Models
         {
             // Arrange
             var form = new FormCollection(new Dictionary<string, StringValues>
-            {
-               { "cantidad_Adultos_Nacional", new StringValues("2") },
-               { "cantidad_Ninnos_Nacional_mayor6", new StringValues("3") },
-               { "cantidad_Ninnos_Nacional_menor6", new StringValues("1") },
-               { "cantidad_adulto_mayor", new StringValues("1") },
-               { "cantidad_Adultos_Extranjero", new StringValues("5") },
-               { "cantidad_ninnos_extranjero", new StringValues("2") },
-               { "cantidad_adultoMayor_extranjero", new StringValues("0") }
-            });
+       {
+        { "cantidad_Adultos_Nacional", new StringValues("2") },
+        { "cantidad_Ninnos_Nacional_mayor6", new StringValues("3") },
+        { "cantidad_Ninnos_Nacional_menor6", new StringValues("1") },
+        { "cantidad_adulto_mayor", new StringValues("1") },
+        { "cantidad_Adultos_Extranjero", new StringValues("5") },
+        { "cantidad_ninnos_extranjero", new StringValues("2") },
+        { "cantidad_adultoMayor_extranjero", new StringValues("0") }
+         });
 
             var reservacion = new ReservacionModelo();
+            reservacion.tarifas = new List<TarifaModelo>
+        {
+        new TarifaModelo(),
+        new TarifaModelo(),
+        new TarifaModelo(),
+        new TarifaModelo(),
+        new TarifaModelo(),
+        new TarifaModelo(),
+        new TarifaModelo()
+        };
 
             // Act
             var result = reservacion.LlenarCantidadPersonas(reservacion, form);
 
             // Assert
-            Assert.AreEqual(2, result.cantTipoPersona[0]);
-            Assert.AreEqual(3, result.cantTipoPersona[1]);
-            Assert.AreEqual(1, result.cantTipoPersona[2]);
-            Assert.AreEqual(1, result.cantTipoPersona[3]);
-            Assert.AreEqual(5, result.cantTipoPersona[4]);
-            Assert.AreEqual(2, result.cantTipoPersona[5]);
-            Assert.AreEqual(0, result.cantTipoPersona[6]);
+            Assert.AreEqual(2, result.tarifas[0].Cantidad);
+            Assert.AreEqual(3, result.tarifas[1].Cantidad);
+            Assert.AreEqual(1, result.tarifas[2].Cantidad);
+            Assert.AreEqual(1, result.tarifas[3].Cantidad);
+            Assert.AreEqual(5, result.tarifas[4].Cantidad);
+            Assert.AreEqual(2, result.tarifas[5].Cantidad);
+            Assert.AreEqual(0, result.tarifas[6].Cantidad);
         }
+
 
 
         /*
@@ -129,7 +140,7 @@ namespace JunquillalUserSystemTest.Models
          * inicialicen correctamente y tengan los valores esperados.
          */
 
-         [TestMethod]
+        [TestMethod]
          public void Constructores_DebeInicializarPropiedadesCorrectamente()
             {
               // Arrange

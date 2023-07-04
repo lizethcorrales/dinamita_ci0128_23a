@@ -11,44 +11,34 @@
 </head>
 <body>
     <div class="contenido">
-        <div style="background-color: #65B852">
+        <div style="background-color: rgba(101,184,82,0.8)">
             <div>
                 <h2> Bienvenido a la seccion de inicio de sesion </h2>
                 <h3>Por favor introduzca sus credenciales de usuario</h3>
-
             </div>
-            <br>
             <div class="login">
                 <form id="infoUsuario" @Url.Action("Login","Login") method="POST">
                     <div class="Usuario" id="divUsuario">
 
                         <label for="Usuario"> ID: </label>
+                        <br>
 
-                        <input placeholder="Introduzca su ID" type="text" id="usuario" name="ID" maxlength="9" />
+                        <input placeholder="" type="text" id="usuario" name="ID" maxlength="9" />
                         <p class="datoError" id="usuarioError"></p>
                     </div>
-
 
                     <div class="contra" id="divContrasena">
 
                         <label for=»contrasena»> Contraseña: </label>
+                        <br>
 
-                        <input type="password" id="contrasena" name="Contrasena">
+                        <input type="password" id="contrasena" name="Contrasena" maxlength="50">
                         <p class="datoError" id="contraError"></p>
                     </div>
-
-                    <br>
-                    <h4>Seleccione su puesto</h4>
-                    <select name="Puesto" id="Puesto">
-                        <option value="Administrador">Administrador</option>
-                        <option value="Operativo">Operativo</option>
-                    </select>
-
-
+                    <input id="GuardarSesion" name="GuardarSesion" value="1" hidden>
                 </form>
                 <br>
-                <button id="atras" class="botonAtras" type="button" onclick="location.href='../Home/Index'">Regresar a Página principal</button>
-                <button id="botonContinuar" class="botonContinuar" type="button">Continuar</button>
+                <button id="botonContinuar" class="botonContinuar" type="button">Iniciar Sesion</button>
             </div>
 
             @if (ViewData["Mensaje"] != null)

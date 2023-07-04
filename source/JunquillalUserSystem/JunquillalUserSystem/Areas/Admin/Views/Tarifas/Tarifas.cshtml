@@ -6,13 +6,15 @@
 }
 <h1>@ViewBag.MainTitle</h1>
 <div>
+    <a href="@Url.Action("AgregarTarifa","Tarifas")" class="btn btn-success">Agregar Tarifa</a>
     <table class="table">
     <thead>
         <tr>
             <th>Nacionalidad</th>
-            <th>Poblacion</th>
+            <th>Población</th>
             <th>Actividad</th>
             <th>Precio</th>
+            <th>Vigencia</th>
         </tr>
     </thead>
     <tbody>
@@ -22,10 +24,24 @@
                     <td>@item.Nacionalidad</td>
                     <td>@item.Poblacion</td>
                     <td>@item.Actividad</td>
-                    <td>@item.Precio</td>
-                    <td>
-                        @Html.ActionLink("Editar", "EditarTarifa", new {nacionalidad = @item.Nacionalidad, poblacion = @item.Poblacion, actividad = @item.Actividad}, new {@class = "btn btn alert-info", @onclick = "return confirm('¿Desea editar esta tarifa?')"})
-                    </td>
+                    @if (@item.Nacionalidad == "Nacional")
+                        {
+                        <td>₡@item.Precio</td>
+                    }
+                    else
+                    {
+                        <td>$@item.Precio</td>
+                    }
+                    <td>@item.Esta_Vigente</td>
+                    @if (@item.Esta_Vigente == "Vigente")
+                    {
+                        <td>
+                            @Html.ActionLink("Editar", "EditarTarifa", new {nacionalidad = @item.Nacionalidad, poblacion = @item.Poblacion, actividad = @item.Actividad,esta_Vigente = @item.Esta_Vigente}, new {@class = "btn btn alert-info", @onclick = "return confirm('¿Desea editar esta tarifa?')"})
+                        </td>
+                        <td>
+                            @Html.ActionLink("Eliminar", "EliminarTarifa", new {nacionalidad = @item.Nacionalidad, poblacion = @item.Poblacion, actividad = @item.Actividad,esta_Vigente = @item.Esta_Vigente}, new {@class = "btn btn alert-danger", @onclick = "return confirm('¿Desea eliminar esta tarifa?')"})
+                        </td>                        
+                    }
                 </tr>
             }
     </tbody>
