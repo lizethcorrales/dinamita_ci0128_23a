@@ -18,6 +18,7 @@ namespace JunquillalUserSystem.Handlers
         //método para llenar una tabla a partir de la información obtenida de una consulta a la base de datos
         protected DataTable CrearTablaConsulta(string consulta)
         {
+            
             SqlCommand comandoParaConsulta = new SqlCommand(consulta,
             conexion);
             SqlDataAdapter adaptadorParaTabla = new
@@ -27,6 +28,14 @@ namespace JunquillalUserSystem.Handlers
             adaptadorParaTabla.Fill(consultaFormatoTabla);
             conexion.Close();
             return consultaFormatoTabla;
+        }
+
+        public void reuniciarConexion()
+        {
+            var builder = WebApplication.CreateBuilder();
+            rutaConexion =
+            builder.Configuration.GetConnectionString("ContextoJunquillal");
+            conexion = new SqlConnection(rutaConexion);
         }
     }
 }

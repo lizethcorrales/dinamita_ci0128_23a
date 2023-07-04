@@ -1,3 +1,5 @@
+using JunquillalUserSystem.Areas.Admin.Controllers.Handlers;
+using JunquillalUserSystem.Handlers;
 using JunquillalUserSystem.Models.Dependency_Injection;
 using JunquillalUserSystem.Models.Patron_Bridge;
 using Microsoft.CodeAnalysis.Options;
@@ -5,11 +7,14 @@ using Microsoft.CodeAnalysis.Options;
 var builder = WebApplication.CreateBuilder(args);
 
 
-// Registrar las dependencias y la inyección de dependencias
+// Registrar las dependencias y la inyecciï¿½n de dependencias
 builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<IEmailService, SmtpEmailService>();
 builder.Services.AddScoped<IMensajeConfirmacionImplementacion,MensajeConfirmacionImplementacionHTML>();
 builder.Services.AddDistributedMemoryCache();
+builder.Services.AddScoped<ReportesHandler>();
+builder.Services.AddScoped<LoginHandler>();
+builder.Services.AddScoped<TarifasHandler>();
 builder.Services.AddSession(options =>
 {
     options.IdleTimeout = TimeSpan.FromMinutes(30);

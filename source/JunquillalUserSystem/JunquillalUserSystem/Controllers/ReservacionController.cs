@@ -32,16 +32,20 @@ namespace JunquillalUserSystem.Controllers
         }
         public IActionResult FormularioCantidadPersonas()
         {
+
+            ReservacionModelo reservacion = new ReservacionModelo("Camping");
+            reservacion.tarifas = reservacionHandler.cargarTarifasCamping("Camping");
+            TempData["Reservacion"] = JsonSerializer.Serialize(reservacion);
             ViewBag.TipoTurista = "reserva";
             ViewData["IsAdminArea"] = TempData["IsAdminArea"] ;
             TempData["IsAdminArea"] = TempData["IsAdminArea"];
-            return View();
+            return View(reservacion.tarifas);
         }
 
         [HttpPost]
         public IActionResult Calendario()
         {
-            ReservacionModelo reservacion = new ReservacionModelo("Camping");
+            ReservacionModelo reservacion = JsonSerializer.Deserialize<ReservacionModelo>((string)TempData["Reservacion"]);
             reservacion = reservacion.LlenarCantidadPersonas(reservacion,Request.Form);
             TempData["Reservacion"] = JsonSerializer.Serialize(reservacion);
 
@@ -73,12 +77,13 @@ namespace JunquillalUserSystem.Controllers
             reservacion.Identificador = reservacionHandler.crearIdentificador(10);
             reservacion = reservacion.LlenarPlacasResarva(reservacion,Request.Form);
             hospedero = hospedero.LlenarHospedero(Request.Form);
-            reservacionHandler.InsertarEnBaseDatos(hospedero, reservacion);
+            reservacionHandler.transaccionReserva(hospedero, reservacion);
+            reservacionHandler.reuniciarConexion();
             List<PrecioReservacionDesglose> desglose = reservacionHandler.obtenerDesgloseReservaciones(reservacion.Identificador);
             string confirmacion = _mensajeConfirmacionImplementacion.CrearConfirmacionMensaje(reservacion, hospedero, desglose);
             ViewBag.mensaje = new HtmlString(confirmacion);
             //_emailService.EnviarEmail(confirmacion, hospedero.Email);
-            ViewBag.costoTotal = reservacionHandler.CostoTotal(reservacion.Identificador).ToString();
+            ViewBag.costoTotal = "₡" + reservacionHandler.CostoTotal(reservacion.Identificador).ToString();
 
 
             ViewData["IsAdminArea"] = TempData["IsAdminArea"];

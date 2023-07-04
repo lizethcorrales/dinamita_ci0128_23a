@@ -1,0 +1,63 @@
+﻿@model JunquillalUserSystem.Models.TarifaModelo;
+
+@{
+    ViewBag.Title = "Agregar Tarifa";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+
+}
+<html>
+<head>
+    <script defer src="~/js/AgregarTarifas.js"></script>
+</head>
+<body>
+    @if (ViewBag.Message != null)
+    {
+        if (ViewBag.ExitoAlCrear)
+        {
+            <div class="alert-success"><h3>@ViewBag.Message</h3></div>
+        }
+        else
+        {
+            <div class="alert-danger"><h3>@ViewBag.Message</h3></div>
+        }
+    }
+    @using (Html.BeginForm("agregarTarifa", "tarifas", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        @Html.AntiForgeryToken()
+        <h1>Formulario para agregar tarifas</h1>
+        @Html.HiddenFor(model=>model.Esta_Vigente)
+        <div class="form-horizontal">
+            <div class="form-group">
+                @Html.LabelFor(model => model.Nacionalidad) <br>
+                @Html.DropDownListFor(model => model.Nacionalidad, new List<SelectListItem>
+                {
+                    new SelectListItem { Text = "Nacional", Value = "Nacional" },
+                    new SelectListItem { Text = "Extranjero", Value = "Extranjero" }
+            }, "Seleccione una opción") <br>
+                @Html.ValidationMessageFor(model => model.Nacionalidad, "", new {@class = "text-danger"})
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.Poblacion)
+                @Html.TextBoxFor(model => model.Poblacion, new { @class = "form-control"})
+                @Html.ValidationMessageFor(model => model.Poblacion, "", new {@class = "text-danger"})
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.Actividad) <br>
+                @Html.DropDownListFor(model => model.Actividad, new List<SelectListItem>
+                {
+                    new SelectListItem { Text = "Picnic", Value = "Picnic" },
+                    new SelectListItem { Text = "Camping", Value = "Camping" }
+            }, "Seleccione una opción") <br>
+                @Html.ValidationMessageFor(model => model.Actividad, "", new {@class = "text-danger"}) 
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.Precio)
+                @Html.TextBoxFor(model => model.Precio, new { @placeholder = "$ ó ₡", @class = "form-control"})
+                @Html.ValidationMessageFor(model => model.Precio, "", new {@class = "text-danger"})
+            </div>            
+            <input type="submit" class="btn btn-success" value="Agregar Tarifa" />
+        </div>
+    }
+</body>
+
+</html>

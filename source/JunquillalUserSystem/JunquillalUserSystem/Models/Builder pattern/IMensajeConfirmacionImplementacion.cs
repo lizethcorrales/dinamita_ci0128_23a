@@ -6,5 +6,6 @@
         string AgregarEncabezado(string tipoActividad);
         string AgregarDatosHospedero(HospederoModelo hospedero);
         string AgregarDetallesReserva(ReservacionModelo reservacion, List<PrecioReservacionDesglose> desglose);
+        void CrearConfirmacionMensaje(ReservacionModelo reservacionModelo, HospederoModelo hospederoModelo, List<PrecioReservacionDesglose> precioReservacionDesgloses);
     }
 }

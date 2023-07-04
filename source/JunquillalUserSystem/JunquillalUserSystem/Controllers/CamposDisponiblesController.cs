@@ -16,7 +16,7 @@ namespace JunquillalUserSystem.Controllers
         {
 
             ViewBag.camposDisponibles = TempData["camposDisponibles"];
-            //int resultado = 80 - handlerCampos.ReservasTotal("2023-05-13");
+
             //ViewBag.camposDisponibles = resultado.ToString();
             ViewData["IsAdminArea"] = TempData["IsAdminArea"];
             TempData["IsAdminArea"] = TempData["IsAdminArea"];

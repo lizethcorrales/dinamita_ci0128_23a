@@ -50,7 +50,10 @@
                              <ul class="nav-item submenu-content">
                                   <li><a href="@Url.Action("Reservas","AdministrarReservas" , new { area = "Admin" })">Reservas</a></li>
                                   <li><a href="@Url.Action("Tarifas","Tarifas" , new { area = "Admin" })">Tarifas</a></li>
-                              </ul>
+                                @if (puesto == "Administrador") {
+                                  <li><a href="@Url.Action("CambioDolar","CambioDolar" , new { area = "Admin" })">Cambio del Dolar</a></li>
+                                }
+                             </ul>
 
                         </li>
                         <li class="nav-item">
@@ -65,6 +68,11 @@
                                    href="@Url.Action("Registro","Registro" , new { area = "Admin" })">Registrar Empleado </a>
                             </li>
                         }
+
+                        <li class="nav-item">
+                            <a class="@(ViewContext.RouteData.Values["Action"].ToString() == "Index" ? "navbar-brand text-black " : "navbar-brand text-white")"
+                               href="@Url.Action("CerrarSesion","Home")">Cerrar Sesion</a>
+                        </li>
                         
 
                     </ul>

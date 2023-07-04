@@ -5,6 +5,7 @@ var contrasena = document.getElementById("contrasena");
 const cedulaValida = new RegExp("[1-9][0-9]{8}");
 var botonContinuar = document.getElementById("botonContinuar");
 var puesto = document.getElementById("Puesto");
+var acceder = document.getElementById("guardarSesion");
 var form = document.getElementById("infoUsuario");
 
 botonContinuar.addEventListener("click", (e) => {

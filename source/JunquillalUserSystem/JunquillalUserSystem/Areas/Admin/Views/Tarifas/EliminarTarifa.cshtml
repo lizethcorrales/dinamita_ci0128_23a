@@ -1,0 +1,43 @@
+﻿@model JunquillalUserSystem.Models.TarifaModelo;
+
+@{
+    ViewBag.Title = "Eliminar Tarifa";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+
+}
+<html>
+<head>
+</head>
+<body>
+    @using (Html.BeginForm("eliminarTarifa", "tarifas", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        @Html.AntiForgeryToken()
+        <h1>Formulario para eliminar tarifa</h1>
+        @Html.HiddenFor(model=>model.Esta_Vigente)
+        <div class="form-horizontal">
+            <div class="form-group">
+                @Html.LabelFor(model => model.Nacionalidad)
+                @Html.TextBoxFor(model => model.Nacionalidad, new { @class = "form-control"})
+                @Html.ValidationMessageFor(model => model.Nacionalidad, "", new {@class = "text-danger"})
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.Poblacion)
+                @Html.TextBoxFor(model => model.Poblacion, new { @class = "form-control"})
+                @Html.ValidationMessageFor(model => model.Poblacion, "", new {@class = "text-danger"})
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.Actividad)
+                @Html.TextBoxFor(model => model.Actividad, new { @class = "form-control"})
+                @Html.ValidationMessageFor(model => model.Actividad, "", new {@class = "text-danger"})
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.Precio)
+                @Html.TextBoxFor(model => model.Precio, new { @class = "form-control"})
+                @Html.ValidationMessageFor(model => model.Precio, "", new {@class = "text-danger"})
+            </div>
+            <input type="submit" class="btn btn-success" value="Eliminar Tarifa" />
+        </div>
+    }
+</body>
+
+</html>
