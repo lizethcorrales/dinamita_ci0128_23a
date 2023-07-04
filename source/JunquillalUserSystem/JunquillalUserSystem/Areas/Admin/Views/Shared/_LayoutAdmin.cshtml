@@ -68,6 +68,11 @@
                                    href="@Url.Action("Registro","Registro" , new { area = "Admin" })">Registrar Empleado </a>
                             </li>
                         }
+
+                        <li class="nav-item">
+                            <a class="@(ViewContext.RouteData.Values["Action"].ToString() == "Index" ? "navbar-brand text-black " : "navbar-brand text-white")"
+                               href="@Url.Action("CerrarSesion","Home")">Cerrar Sesion</a>
+                        </li>
                         
 
                     </ul>

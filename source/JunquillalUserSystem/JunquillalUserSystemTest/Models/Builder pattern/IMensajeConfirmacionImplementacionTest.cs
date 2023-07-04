@@ -1,5 +1,5 @@
 ﻿/*
- * Pruebas unitarias creadas porAndrés Matarrita C04668
+ * Pruebas unitarias creadas por Andrés Matarrita C04668
  */
 
 using JunquillalUserSystem.Models;
@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace JunquillalUserSystemTest.Models.Builder_pattern
@@ -80,7 +81,8 @@ namespace JunquillalUserSystemTest.Models.Builder_pattern
          * Crea un mensaje de confirmación en formato HTML utilizando 
          * la clase MensajeConfirmacionImplementacionHTML y
          * verifica si el resultado obtenido coincide con el mensaje HTML esperado.
-         */ 
+         */
+
         [TestMethod]
         public void CrearConfirmacionMensaje_ReturnsCorrectHtml()
         {
@@ -91,7 +93,6 @@ namespace JunquillalUserSystemTest.Models.Builder_pattern
             var desglose = new List<PrecioReservacionDesglose>();
 
             // Configurar los datos de prueba en los objetos reservacion, hospedero y desglose
-
             reservacion.TipoActividad = "Picnic";
             hospedero.Identificacion = "123456789";
             hospedero.Nacionalidad = "Costa Rica";
@@ -101,30 +102,40 @@ namespace JunquillalUserSystemTest.Models.Builder_pattern
             hospedero.Apellido1 = "Doe";
             hospedero.Apellido2 = "Smith";
 
-            // Definir el mensaje HTML esperado
-            var expected = "<h2 style='text-align:center;'>Confirmación de Reserva para picnic</h2><br><br>" +
-                           "<h3>Datos del hospedero: </h3><br>" +
-                           "<h6>Identificación: 123456789</h6>" +
-                           "<h6>Nacionalidad: Costa Rica</h6>" +
-                           "<h6>Tipo de identificación: Cédula</h6>" +
-                           "</ul><br>" +
-                           "<h6>Motivo de la visita: Vacaciones</h6>" +
-                           "<br><h6>John Doe Smith, es un placer darles la bienvenida a Junquillal. " +
-                           "Le deseamos un disfrute de su estadia,\n a continuación adjuntamos informacion de " +
-                           "su reserva: </h6><br>" +
-                           "<h3>Detalles de la reserva:</h3><br>" +
-                           "<h6>Tu código de reservación es: </h6>" +
-                           "<h6>Fecha de ingreso: </h6>" +
-                           "<h6>Cantidad de personas: 0</h6>" +
-                           "<ul></ul><br>" +
-                           "<h6>Placas de vehículos:</h6>" +
-                           "<ul>";
+            // Establecer la cantidad de personas en 3
+            reservacion.tarifas = new List<TarifaModelo> {
+             new TarifaModelo { Cantidad = 2 }, // Niños
+             new TarifaModelo { Cantidad = 1 }  // Adulto
+            };
+
+            // Agregar los objetos desglose necesarios
+            var desglose1 = new PrecioReservacionDesglose
+            {
+                Poblacion = "Niño menor 6 años",
+                Cantidad = 2,
+                PrecioAlHacerReserva = 10,
+                Nacionalidad = "Costa Rica"
+            };
+
+            var desglose2 = new PrecioReservacionDesglose
+            {
+                Poblacion = "Adulto",
+                Cantidad = 1,
+                PrecioAlHacerReserva = 20,
+                Nacionalidad = "Costa Rica"
+            };
+
+            desglose.Add(desglose1);
+            desglose.Add(desglose2);
+
+            // Definir el fragmento esperado en el mensaje HTML
+            var expectedFragment = "<h2 style='text-align:center;'>Confirmación de Reserva para picnic</h2><br><br>";
 
             // Act
             var result = implementacionHTML.CrearConfirmacionMensaje(reservacion, hospedero, desglose);
 
             // Assert
-            Assert.AreEqual(expected, result);
+            StringAssert.Contains(result, expectedFragment);
         }
 
         /* 

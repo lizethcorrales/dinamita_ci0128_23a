@@ -18,5 +18,12 @@ namespace JunquillalUserSystem.Areas.Admin.Controllers
             TempData["IsAdminArea"] = "Admin"; // O establece el valor según corresponda
             return View();
         }
+
+        public IActionResult CerrarSesion()
+        {
+            HttpContext.Session.SetString("_Nombre", "");
+            HttpContext.Session.SetString("_Puesto", "");
+            return RedirectToAction("Login", "Login");
+        }
     }
 }
