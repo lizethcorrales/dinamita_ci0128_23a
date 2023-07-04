@@ -20,7 +20,7 @@ namespace JunquillalUserSystemTest.Admin.Handlers
     [TestClass]
     public class ReportesHandlerTest
     {
-        [TestMethod]    
+        [TestMethod]
         public void ReportesHandlerMetodoObtenerReporteSinActividadValida()
         {
             //Arrange
@@ -28,7 +28,7 @@ namespace JunquillalUserSystemTest.Admin.Handlers
             string fechaInicialDePrueba = "2023-06-02";
             string fechaFinalDePrueba = "2023-06-03";
             string tipoReporte = "visitas";
-            List<PrecioReservacionDesglose> reporteEsperado = new();
+            List<ReportesModel> reporteEsperado = new();
             var formEjemploDatos = new Dictionary<string, StringValues>
             {
                 { "fecha-entrada", new StringValues(fechaInicialDePrueba) },
@@ -38,11 +38,11 @@ namespace JunquillalUserSystemTest.Admin.Handlers
             var formEjemplo = new FormCollection(formEjemploDatos);
 
             //Act
-            //List<PrecioReservacionDesglose> reporteObtenido = reportesHandler.obtenerReporte(formEjemplo, "");
+            List<ReportesModel> reporteObtenido = reportesHandler.obtenerReporte(formEjemplo, "");
 
             //Assert
-            //Assert.IsNotNull(reporteObtenido);
-            //CollectionAssert.AreEqual(reporteEsperado, reporteObtenido);
+            Assert.IsNotNull(reporteObtenido);
+            CollectionAssert.AreEqual(reporteEsperado, reporteObtenido);
         }
 
         [TestMethod]
@@ -52,7 +52,7 @@ namespace JunquillalUserSystemTest.Admin.Handlers
             ReportesHandler reportesHandler = new();
             string fechaInicialDePrueba = "2023-06-02";
             string actividad = "Picnic";
-            List<PrecioReservacionDesglose> reporteEsperado = new();
+            List<ReportesModel> reporteEsperado = new();
             var formEjemploDatos = new Dictionary<string, StringValues>
             {
                 { "fecha", new StringValues(fechaInicialDePrueba) }
@@ -60,11 +60,11 @@ namespace JunquillalUserSystemTest.Admin.Handlers
             var formEjemplo = new FormCollection(formEjemploDatos);
 
             //Act
-            //List<PrecioReservacionDesglose> reporteObtenido = reportesHandler.obtenerReporte(formEjemplo, actividad);
+            List<ReportesModel> reporteObtenido = reportesHandler.obtenerReporte(formEjemplo, actividad);
 
             //Assert
-            //Assert.IsNotNull(reporteObtenido);
-            //CollectionAssert.AreEqual(reporteEsperado, reporteObtenido);
+            Assert.IsNotNull(reporteObtenido);
+            CollectionAssert.AreEqual(reporteEsperado, reporteObtenido);
         }
 
         [TestMethod]
@@ -75,7 +75,7 @@ namespace JunquillalUserSystemTest.Admin.Handlers
             string fechaInicialDePrueba = "2023-06-02";
             string tipoReporte = "diario";
             string actividad = "Picnic";
-            List<PrecioReservacionDesglose> reporteEsperado = llenarListaDeReporteDePruebaUnDia();
+            List<ReportesModel> reporteEsperado = llenarListaDeReporteDePruebaUnDia();
             var formEjemploDatos = new Dictionary<string, StringValues>
             {
                 { "fecha-entrada", new StringValues(fechaInicialDePrueba) },
@@ -84,60 +84,60 @@ namespace JunquillalUserSystemTest.Admin.Handlers
             var formEjemplo = new FormCollection(formEjemploDatos);
 
             //Act 
-           // List<PrecioReservacionDesglose> reporteObtenido = reportesHandler.obtenerReporte(formEjemplo, actividad);
+            List<ReportesModel> reporteObtenido = reportesHandler.obtenerReporte(formEjemplo, actividad);
 
 
             //Arrange
-            //Assert.IsNotNull(reporteObtenido);
-            //for (int indice = 0; indice < reporteEsperado.Count; ++indice)
-            //{
-            //    Assert.AreEqual(reporteEsperado[indice].Nacionalidad, reporteEsperado[indice].Nacionalidad);
-            //    Assert.AreEqual(reporteEsperado[indice].Poblacion, reporteEsperado[indice].Poblacion);
-            //    Assert.AreEqual(reporteEsperado[indice].Actividad, reporteEsperado[indice].Actividad);
-            //    Assert.AreEqual(reporteEsperado[indice].Cantidad, reporteEsperado[indice].Cantidad);
-            //    Assert.AreEqual(reporteEsperado[indice].PrecioAlHacerReserva, reporteEsperado[indice].PrecioAlHacerReserva);
-            //}
+            Assert.IsNotNull(reporteObtenido);
+            for (int indice = 0; indice < reporteEsperado.Count; ++indice)
+            {
+                Assert.AreEqual(reporteEsperado[indice].Nacionalidad, reporteEsperado[indice].Nacionalidad);
+                Assert.AreEqual(reporteEsperado[indice].Poblacion, reporteEsperado[indice].Poblacion);
+                Assert.AreEqual(reporteEsperado[indice].Actividad, reporteEsperado[indice].Actividad);
+                Assert.AreEqual(reporteEsperado[indice].Cantidad, reporteEsperado[indice].Cantidad);
+                Assert.AreEqual(reporteEsperado[indice].VentasTotales, reporteEsperado[indice].VentasTotales);
+            }
         }
 
-        public List<PrecioReservacionDesglose> llenarListaDeReporteDePruebaUnDia()
+        public List<ReportesModel> llenarListaDeReporteDePruebaUnDia()
         {
-            List<PrecioReservacionDesglose> reporte = new List<PrecioReservacionDesglose>
+            List<ReportesModel> reporte = new List<ReportesModel>
             {
-                new PrecioReservacionDesglose
+                new ReportesModel
                 {
                     Nacionalidad = "Extranjero", Poblacion = "Adulto",
-                    Actividad = "Picnic", Cantidad = 1, PrecioAlHacerReserva = 13.56
+                    Actividad = "Picnic", Cantidad = 1, VentasTotales = 13.56
                 },
-                new PrecioReservacionDesglose
+                new ReportesModel
                 {
                     Nacionalidad = "Nacional", Poblacion = "Adulto",
-                    Actividad = "Picnic", Cantidad = 3, PrecioAlHacerReserva = 6780
+                    Actividad = "Picnic", Cantidad = 3, VentasTotales = 6780
                 },
-                new PrecioReservacionDesglose
+                new ReportesModel
                 {
                     Nacionalidad = "Extranjero", Poblacion = "Adulto Mayor",
-                    Actividad = "Picnic", Cantidad = 1, PrecioAlHacerReserva = 0
+                    Actividad = "Picnic", Cantidad = 1, VentasTotales = 0
                 },
-                new PrecioReservacionDesglose
+                new ReportesModel
                 {
                     Nacionalidad = "Nacional", Poblacion = "Adulto Mayor",
-                    Actividad = "Picnic", Cantidad = 1, PrecioAlHacerReserva = 0
+                    Actividad = "Picnic", Cantidad = 1, VentasTotales = 0
                 },
-                new PrecioReservacionDesglose
+                new ReportesModel
                 {
                     Nacionalidad = "Extranjero", Poblacion = "Niño",
-                    Actividad = "Picnic", Cantidad = 1, PrecioAlHacerReserva = 5.65
+                    Actividad = "Picnic", Cantidad = 1, VentasTotales = 5.65
                 },
-                new PrecioReservacionDesglose
+                new ReportesModel
                 {
                     Nacionalidad = "Nacional", Poblacion = "Niño",
-                    Actividad = "Picnic", Cantidad = 3, PrecioAlHacerReserva = 3390
+                    Actividad = "Picnic", Cantidad = 3, VentasTotales = 3390
                 },
-                new PrecioReservacionDesglose
+                new ReportesModel
                 {
                     Nacionalidad = "Nacional", Poblacion = "Niño menor 6 años",
-                    Actividad = "Picnic", Cantidad = 2, PrecioAlHacerReserva = 0
-                } 
+                    Actividad = "Picnic", Cantidad = 2, VentasTotales = 0
+                }
             };
             return reporte;
         }
@@ -151,7 +151,7 @@ namespace JunquillalUserSystemTest.Admin.Handlers
             string fechaFinalDePrueba = "2023-07-04";
             string tipoReporte = "visitas";
             string actividad = "Camping";
-            List<PrecioReservacionDesglose> reporteEsperado = llenarListaDeReporteDePruebaRangoDias();
+            List<ReportesModel> reporteEsperado = llenarListaDeReporteDePruebaRangoDias();
             var formEjemploDatos = new Dictionary<string, StringValues>
             {
                 { "fecha-entrada", new StringValues(fechaInicialDePrueba) },
@@ -161,101 +161,37 @@ namespace JunquillalUserSystemTest.Admin.Handlers
             var formEjemplo = new FormCollection(formEjemploDatos);
 
             //Act 
-            //List<PrecioReservacionDesglose> reporteObtenido = reportesHandler.obtenerReporte(formEjemplo, actividad);
+            List<ReportesModel> reporteObtenido = reportesHandler.obtenerReporte(formEjemplo, actividad);
 
-            
+
             //Arrange
-        //    Assert.IsNotNull(reporteObtenido);
-        //    for (int indice = 0; indice < reporteEsperado.Count; ++indice)
-        //    {
-        //        Assert.AreEqual(reporteEsperado[indice].Nacionalidad, reporteObtenido[indice].Nacionalidad);
-        //        Assert.AreEqual(reporteEsperado[indice].Poblacion, reporteObtenido[indice].Poblacion);
-        //        Assert.AreEqual(reporteEsperado[indice].Actividad, reporteObtenido[indice].Actividad);
-        //        Assert.AreEqual(reporteEsperado[indice].Cantidad, reporteObtenido[indice].Cantidad);
-        //        Assert.AreEqual(reporteEsperado[indice].PrecioAlHacerReserva, reporteObtenido[indice].PrecioAlHacerReserva);
-        //    }
+            Assert.IsNotNull(reporteObtenido);
+            for (int indice = 0; indice < reporteEsperado.Count; ++indice)
+            {
+                Assert.AreEqual(reporteEsperado[indice].Nacionalidad, reporteObtenido[indice].Nacionalidad);
+                Assert.AreEqual(reporteEsperado[indice].Poblacion, reporteObtenido[indice].Poblacion);
+                Assert.AreEqual(reporteEsperado[indice].Actividad, reporteObtenido[indice].Actividad);
+                Assert.AreEqual(reporteEsperado[indice].Cantidad, reporteObtenido[indice].Cantidad);
+                Assert.AreEqual(reporteEsperado[indice].VentasTotales, reporteObtenido[indice].VentasTotales);
+            }
         }
 
-        public List<PrecioReservacionDesglose> llenarListaDeReporteDePruebaRangoDias()
+        public List<ReportesModel> llenarListaDeReporteDePruebaRangoDias()
         {
-            List<PrecioReservacionDesglose> reporte = new List<PrecioReservacionDesglose>
+            List<ReportesModel> reporte = new List<ReportesModel>
             {
-                new PrecioReservacionDesglose
+                new ReportesModel
                 {
                     Nacionalidad = "Nacional", Poblacion = "Adulto",
-                    Actividad = "Camping", Cantidad = 2, PrecioAlHacerReserva = 9040
+                    Actividad = "Camping", Cantidad = 2, VentasTotales = 9040
                 },
-                new PrecioReservacionDesglose
+                new ReportesModel
                 {
                     Nacionalidad = "Nacional", Poblacion = "Niño",
-                    Actividad = "Camping", Cantidad = 1, PrecioAlHacerReserva = 3390
+                    Actividad = "Camping", Cantidad = 1, VentasTotales = 3390
                 }
             };
             return reporte;
         }
-
-        [TestMethod]
-        public void AgregarDatoConPrecioReservacionDesgloseNulo()
-        {
-            //Arrange
-            ReportesHandler reportesHandler = new();
-            string separador = "\t";
-
-            //Act & Assert
-            try
-            {
-                //reportesHandler.agregarDato(null, separador);
-            } catch (Exception ex)
-            {
-                throw;
-            }
-        }
-
-        [TestMethod]
-        public void AgregarDatoConSeparadorNulo()
-        {
-            //Arrange
-            ReportesHandler reportesHandler = new();
-            PrecioReservacionDesglose desgloseIndividual = new();
-
-            //Act & Assert
-            try
-            {
-                //reportesHandler.agregarDato(desgloseIndividual, null);
-            }
-            catch (Exception ex)
-            {
-                throw;
-            }
-        }
-
-        [TestMethod]
-        public void EscribirCSVConPrecioReservacionDesgloseNulo()
-        {
-            //Arrange
-            ReportesHandler reportesHandler = new();
-            List<PrecioReservacionDesglose> reporteEsperado = llenarListaDeReporteDePruebaRangoDias();
-            string fechaInicialDePrueba = "2023-05-09";
-            string fechaFinalDePrueba = "2023-05-12";
-            string tipoReporte = "visitas";
-            var formEjemploDatos = new Dictionary<string, StringValues>
-            {
-                { "fecha-entrada", new StringValues(fechaInicialDePrueba) },
-                { "fecha-salida", new StringValues(fechaFinalDePrueba) },
-                { "reportes", new StringValues(tipoReporte) },
-            };
-            var formEjemplo = new FormCollection(formEjemploDatos);
-
-            //Act & Assert
-            try
-            {
-               // reportesHandler.escribirCSV(null, formEjemplo);
-            }
-            catch (Exception ex)
-            {
-                throw;
-            }
-        }
     }
-
 }
