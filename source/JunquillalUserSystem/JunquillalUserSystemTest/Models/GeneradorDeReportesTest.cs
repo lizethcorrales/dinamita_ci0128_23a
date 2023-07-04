@@ -196,5 +196,57 @@ namespace JunquillalUserSystemTest.Controllers
             // Assert          
             Assert.IsTrue(resultado.Length == cantidadDeFilasYColumnasEsperado);
         }
+
+        [TestMethod]
+        public void GeneradorDeReportes_ComprobarQueSeGeneraCorrectamenteReporteDeLiquidacion()
+        {
+            // Arrange
+            GeneradorDeReportes generador = new();
+            string fechaEsperada = "2023-07-05";
+            string nacionalidaEsperada = "Nacional";
+            string poblacionEsperada = "Adulto";
+            string actividadEsperada = "Picnic";
+            int cantidadEsperada = 5;
+            int ventasTotales = 11300;
+            string headerEsperado = "Reporte Esperado";
+            string[] reporteEsperado = { fechaEsperada, nacionalidaEsperada, poblacionEsperada, actividadEsperada, cantidadEsperada.ToString(), "₡" + ventasTotales.ToString() };
+            string[] nombreDeColumnas = { "FECHA", "TIPO DE VISITANTE", "ESTATUS", "TIPO DE VISITA", "CANTIDAD", "VENTAS TOTALES" };
+            List<ReportesModel> reporte = new List<ReportesModel>
+            {
+                new ReportesModel
+                {
+                    PrimerDia = fechaEsperada, Nacionalidad = nacionalidaEsperada, Poblacion = poblacionEsperada,
+                    Actividad = actividadEsperada, Cantidad = cantidadEsperada, VentasTotales = ventasTotales
+                }
+            };
+            string[,] resultadoEsperado = crearResultadoEsperado(reporteEsperado, nombreDeColumnas, reporte.Count+2);
+            for (int fila = 0; fila < nombreDeColumnas.Length; ++fila)
+                resultadoEsperado[0, fila] = headerEsperado;
+            //Act
+            var resultado = generador.agregarContenidoAExcelReporteLiquidacion(reporte, headerEsperado);
+
+            // Assert          
+            for (int fila = 0; fila < reporte.Count+2; ++fila)
+                for (int columna = 0; columna < nombreDeColumnas.Length; ++columna)
+                    Assert.AreEqual(resultadoEsperado[fila,columna], resultado[fila, columna]);
+        }
+
+        public string[,] crearResultadoEsperado(string[] reporte, string[] nombreColumnas, int cantidadFilas)
+        {
+            string[,] resultado = new string[cantidadFilas, reporte.Length];
+            for (int fila = 1; fila < cantidadFilas; ++fila)
+            {
+                for (int columna = 0; columna < reporte.Length; ++columna)
+                {
+                    if (fila == 1)
+                        resultado[fila, columna] = nombreColumnas[columna];
+                    else
+                        resultado[fila, columna] = reporte[columna];
+                }
+            }
+            return resultado;
+        }
+
+
     }
 }
