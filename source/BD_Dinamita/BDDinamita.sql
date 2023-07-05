@@ -35,11 +35,6 @@ PRIMARY KEY (IdentificadorReserva, Placa),
 FOREIGN KEY (IdentificadorReserva) REFERENCES Reservacion (IdentificadorReserva)
 );
 
-CREATE TABLE Servicios (
-Tipo VARCHAR(50) NOT NULL,
-Precio DOUBLE PRECISION,
-PRIMARY KEY (Tipo)
-);
 
 CREATE TABLE Parcela (
 NumeroParcela SMALLINT NOT NULL,
@@ -102,17 +97,6 @@ FOREIGN KEY (IdentificadorReserva) REFERENCES Reservacion(IdentificadorReserva),
 FOREIGN KEY (ComprobantePago) REFERENCES Pago(Comprobante)
 );
 
-CREATE TABLE HospederoSolicita(
-TipoServicio VARCHAR(50) NOT NULL,
-IdentificacionHospedero CHAR(20) NOT NULL,
-ComprobantePago CHAR(6) NOT NULL,
-Precio DOUBLE PRECISION,
-Cantidad SMALLINT,
-PRIMARY KEY(TipoServicio, IdentificacionHospedero, ComprobantePago),
-FOREIGN KEY(TipoServicio) REFERENCES Servicios(Tipo),
-FOREIGN KEY(IdentificacionHospedero) REFERENCES Hospedero(Identificacion),
-FOREIGN KEY(ComprobantePago) REFERENCES Pago(Comprobante)
-);
 
 -- Insertar tuplas de prueba
 
@@ -339,7 +323,6 @@ ADD Esta_Vigente BIT;
 --1 significa que la tarifa esta vigente, 0 significa que la tarifa esta cancelada y ya no se usa
 UPDATE Tarifa
 set Tarifa.Esta_Vigente = 1;
-)
 
 CREATE TABLE CambioDolar
 (

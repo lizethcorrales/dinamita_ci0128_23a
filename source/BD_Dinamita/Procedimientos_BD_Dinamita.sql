@@ -83,7 +83,7 @@ BEGIN
 END;
 
 GO
-CREATE PROCEDURE insertar_PrecioReservacionNuevo(
+CREATE PROCEDURE insertar_PrecioReservacion(
 	@identificador_Reserva AS VARCHAR(10),
 	@cantidad AS SMALLINT ,
 	@poblacion AS VARCHAR(25),
@@ -102,96 +102,8 @@ SELECT @precio = Tarifa.precio
 		VALUES (@identificador_Reserva, @nacionalidad ,  @poblacion ,@tipoActividad, @cantidad, @precio);
 		
 END;
+
 GO
-
--- Este procedimiento agrega a la tabla PrecioReservacion, el precio por cada tipo de población registrada en la reservación.
-GO
-CREATE PROCEDURE insertar_PrecioReservacion(
-	@identificador_Reserva AS VARCHAR(10),
-	@adulto_nacional AS SMALLINT,
-	@ninno_nacional_mayor6 AS SMALLINT,
-	@ninno_nacional_menor6 AS SMALLINT,
-	@adulto_mayor_nacional AS SMALLINT,
-	@adulto_extranjero AS SMALLINT,
-	@ninno_extranjero AS SMALLINT,
-	@adulto_mayor_extranjero AS SMALLINT,
-	@tipoActividad AS VARCHAR(10)
-) AS
-BEGIN
-	DECLARE @precio AS DOUBLE PRECISION;
-
-	IF (@adulto_nacional > 0)
-		BEGIN
-		SELECT @precio = Tarifa.precio
-		FROM Tarifa
-		WHERE Tarifa.Nacionalidad = 'Nacional' AND Tarifa.Poblacion = 'Adulto' AND Tarifa.Actividad = @tipoActividad;
-
-		INSERT INTO PrecioReservacion
-		VALUES (@identificador_Reserva, 'Nacional', 'Adulto',@tipoActividad, @adulto_nacional, @precio);
-		END;
-
-	IF (@ninno_nacional_menor6 > 0) 
-		BEGIN
-		SELECT @precio = Tarifa.precio
-		FROM Tarifa
-		WHERE Tarifa.Nacionalidad = 'Nacional' AND Tarifa.Poblacion = 'Niño menor 6 años' AND Tarifa.Actividad = @tipoActividad;
- 
-		INSERT INTO PrecioReservacion
-		VALUES (@identificador_Reserva, 'Nacional', 'Niño menor 6 años', @tipoActividad, @ninno_nacional_menor6, @precio);
-		END;
-
-	IF (@ninno_nacional_mayor6 > 0) 
-		BEGIN
-		SELECT @precio = Tarifa.precio
-		FROM Tarifa
-		WHERE Tarifa.Nacionalidad = 'Nacional' AND Tarifa.Poblacion = 'Niño' AND Tarifa.Actividad = @tipoActividad;
- 
-		INSERT INTO PrecioReservacion
-		VALUES (@identificador_Reserva, 'Nacional', 'Niño', @tipoActividad, @ninno_nacional_mayor6, @precio);
-		END;
-
-	IF (@adulto_mayor_nacional > 0)
-		BEGIN
-		SELECT @precio = Tarifa.precio
-		FROM Tarifa
-		WHERE Tarifa.Nacionalidad = 'Nacional' AND Tarifa.Poblacion = 'Adulto Mayor' AND Tarifa.Actividad = @tipoActividad;
-
-		INSERT INTO PrecioReservacion
-		VALUES (@identificador_Reserva, 'Nacional', 'Adulto Mayor', @tipoActividad, @adulto_mayor_nacional, @precio);
-		END;
-
-	IF (@adulto_extranjero > 0)
-		BEGIN
-		SELECT @precio = Tarifa.precio
-		FROM Tarifa
-		WHERE Tarifa.Nacionalidad = 'Extranjero' AND Tarifa.Poblacion = 'Adulto' AND Tarifa.Actividad = @tipoActividad;
-
-		INSERT INTO PrecioReservacion
-		VALUES (@identificador_Reserva, 'Extranjero', 'Adulto', @tipoActividad, @adulto_extranjero, @precio);
-		END;
-
-	IF (@ninno_extranjero >0) 
-		BEGIN
-		SELECT @precio = Tarifa.precio
-		FROM Tarifa
-		WHERE Tarifa.Nacionalidad = 'Extranjero' AND Tarifa.Poblacion = 'Niño' AND Tarifa.Actividad = @tipoActividad;
-
-		INSERT INTO PrecioReservacion
-		VALUES (@identificador_Reserva, 'Extranjero', 'Niño', @tipoActividad, @ninno_extranjero, @precio);
-		END;
-
-	IF (@adulto_mayor_extranjero > 0)
-		BEGIN
-		SELECT @precio = Tarifa.precio
-		FROM Tarifa
-		WHERE Tarifa.Nacionalidad = 'Nacional' AND Tarifa.Poblacion = 'Adulto Mayor' AND Tarifa.Actividad = @tipoActividad;
-
-		INSERT INTO PrecioReservacion
-		VALUES (@identificador_Reserva, 'Extranjero', 'Adulto Mayor', @tipoActividad, @adulto_mayor_extranjero, @precio);
-		END;
-
-END;
-
 -- Este procedimiento agrega las placas ingresadas por el reservante a la tabla Placa
 CREATE PROCEDURE insertar_Placas (
 	@identificador_reserva AS VARCHAR(10),
@@ -317,46 +229,6 @@ BEGIN
 ELSE
     SET @result = '';
 
-END;
-
-GO
-CREATE PROCEDURE insertarVisita(
-	@identificacion AS CHAR(20),
-	@fechaEntrada AS DATE
-)AS
-BEGIN
-	SELECT Visita.Identificacion, Visita.FechaEntrada
-	FROM Visita
-	WHERE Visita.Identificacion = @identificacion AND Visita.FechaEntrada = @fechaEntrada;
-
-	IF @@ROWCOUNT <= 0
-		BEGIN
-		INSERT INTO Visita
-		VALUES (@identificacion, @fechaEntrada)
-		END;
-
-END;
-
-GO
-CREATE PROCEDURE insertarNacionalidadVisita (
-	@identificacionVisita AS CHAR(20),
-	@fechaEntrada AS DATE,
-	@NombrePais AS VARCHAR(30),
-	@cantidad AS SMALLINT
-) AS 
-BEGIN 
-	SELECT Pais.Nombre
-	FROM Pais
-	WHERE Pais.Nombre = @NombrePais;
-
-	IF @@ROWCOUNT <= 0
-		BEGIN 
-		INSERT INTO Pais
-		VALUES(@NombrePais);
-		END;
-
-	INSERT INTO NacionalidadVisita
-	VALUES (@identificacionVisita, @fechaEntrada, @NombrePais, @cantidad);
 END;
 
 
@@ -651,8 +523,10 @@ BEGIN
 	END;
 END;
 
+
+
 GO 
- Alter PROCEDURE insertarHospedajeReservacion(
+CREATE PROCEDURE insertarHospedajeReservacion(
 	@identificadorReserva AS VARCHAR(10),
 	@numeroParcela AS INT
 )AS
